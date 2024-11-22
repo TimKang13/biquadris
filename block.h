@@ -14,10 +14,12 @@ class Block {
         Coordinate position;
         // Shape matrix representing filled cells
         std::vector<std::vector<bool>> shape;
+        // Character used to represent filled cells
+        char fill;
         // Helper functions
         void rotateMatrix(int degrees);
     public:
-        Block(const Coordinate& pos = {0, 0});
+        Block(const Coordinate& pos = {0, 0}, char fill = '#');
         virtual ~Block() = default;
         // Rotates the block 90 degrees clockwise
         void rotateCW();
@@ -29,11 +31,12 @@ class Block {
         Coordinate getPosition() const;
         void setPosition(const Coordinate& newPos);
         const std::vector<std::vector<bool>>& getShape() const;
+        char getFill() const;
 };
 
 class IBlock : public Block {
     public:
-        IBlock(const Coordinate& pos = {0, 0}) : Block{pos} {
+        IBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'I'} {
             shape = {
                 {0,0,0,0},
                 {0,0,0,0},
@@ -45,7 +48,7 @@ class IBlock : public Block {
 
 class JBlock : public Block {
     public:
-        JBlock(const Coordinate& pos = {0, 0}) : Block{pos} {
+        JBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'J'} {
             shape = {
                 {0,0,0},
                 {1,0,0},
@@ -56,7 +59,7 @@ class JBlock : public Block {
 
 class SBlock : public Block {
     public:
-        SBlock(const Coordinate& pos = {0, 0}) : Block{pos} {
+        SBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'S'} {
             shape = {
                 {0,0,0},
                 {0,1,1},
