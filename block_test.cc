@@ -6,7 +6,6 @@ void printBlock(const Block& block) {
               << block.getPosition().col << ")\n";
     // Print shape
     for (size_t i = 0; const auto& row : block.getShape()) {
-        std::cout << "(" << i++ << "): ";
         for (bool cell : row) {
             std::cout << (cell ? '#' : '.');
         }
