@@ -7,7 +7,7 @@ void printBlock(const Block& block) {
     // Print shape
     for (size_t i = 0; const auto& row : block.getShape()) {
         for (bool cell : row) {
-            std::cout << (cell ? '#' : '.');
+            std::cout << (cell ? block.getFill() : '.');
         }
         std::cout << '\n';
     }
