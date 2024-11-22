@@ -1,0 +1,68 @@
+#ifndef BLOCK_H
+#define BLOCK_H
+#include <vector>
+#include <utility>
+
+struct Coordinate {
+    int row, col;
+    Coordinate(int r = 0, int c = 0): row{r}, col{c} {}
+};
+
+class Block {
+    protected:
+        // Position of block's bottom-left
+        Coordinate position;
+        // Shape matrix representing filled cells
+        std::vector<std::vector<bool>> shape;
+        // Helper functionss
+        void rotateMatrix(int degrees);
+    public:
+        Block(const Coordinate& pos = {0, 0});
+        virtual ~Block() = default;
+        // Rotates the block 90 degrees clockwise
+        void rotateCW();
+        // Rotates the block 90 degrees counter-clockwise
+        void rotateCCW();
+        // Returns vector of absolute coordinates of all filled cells
+        std::vector<Coordinate> getAbsolutePositions() const;
+        // Getters and setters
+        Coordinate getPosition() const;
+        void setPosition(const Coordinate& newPos);
+        const std::vector<std::vector<bool>>& getShape() const;
+};
+
+class IBlock : public Block {
+    public:
+        IBlock(const Coordinate& pos = {0, 0}) : Block{pos} {
+            shape = {
+                {0,0,0,0},
+                {0,0,0,0},
+                {0,0,0,0},
+                {1,1,1,1}
+            };
+        }
+};
+
+class JBlock : public Block {
+    public:
+        JBlock(const Coordinate& pos = {0, 0}) : Block{pos} {
+            shape = {
+                {0,0,0},
+                {1,0,0},
+                {1,1,1}
+            };
+        }
+};
+
+class SBlock : public Block {
+    public:
+        SBlock(const Coordinate& pos = {0, 0}) : Block{pos} {
+            shape = {
+                {0,0,0},
+                {0,1,1},
+                {1,1,0}
+            };
+        }
+};
+
+#endif
