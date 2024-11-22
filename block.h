@@ -14,7 +14,7 @@ class Block {
         Coordinate position;
         // Shape matrix representing filled cells
         std::vector<std::vector<bool>> shape;
-        // Helper functionss
+        // Helper functions
         void rotateMatrix(int degrees);
     public:
         Block(const Coordinate& pos = {0, 0});

@@ -40,12 +40,12 @@ void Block::rotateCCW() {
 
 std::vector<Coordinate> Block::getAbsolutePositions() const {
     std::vector<Coordinate> positions;
-
     for (int row = 0; row < shape.size(); ++row) {
+        int relativeRow = shape.size() - row - 1; // Convert row index to bottom-left origin
         for (int col = 0; col < shape[row].size(); ++col) {
             if (shape[row][col]) {
                 positions.emplace_back(
-                    position.row + row,
+                    position.row + relativeRow,
                     position.col + col
                 );
             }
