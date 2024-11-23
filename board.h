@@ -20,7 +20,7 @@ class Board {
         //current block position and current grid
         bool checkCollision(Block &b);
         // clear full rows and dead cells
-        void clear();
+        int clear();
         // clear full rows
         int clearFullRows();
         void clearDeadCells();
