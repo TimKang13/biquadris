@@ -5,11 +5,10 @@
 Cell::Cell(char c = ' ', int life = -1): 
     c{c}, life{life} {}
 
-int Cell::getLife(){
+int Cell::getLife() const{
     return life;
 }
 
-
-char Cell::getC(){
+char Cell::getC() const{
     return c;
 }

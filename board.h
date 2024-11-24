@@ -26,6 +26,10 @@ class Board {
         void clearDeadCells();
         void collapseRows();
         void placeBlock(Block &b);
+
+        //for testing
+        void printGrid();
+        void setGrid(int r, int c, Cell cell);
 };
 
 #endif

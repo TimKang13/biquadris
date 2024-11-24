@@ -8,8 +8,8 @@ class Cell {
     int life;
     public:
         Cell(char c, int life);
-        int getLife();
-        char getC();
+        int getLife() const;
+        char getC() const;
 };
 
 #endif
