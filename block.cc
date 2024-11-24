@@ -1,7 +1,7 @@
 #include "block.h"
 #include <stdexcept>
 
-Block::Block(const Coordinate& pos): position{pos} {}
+Block::Block(const Coordinate& pos, char fill): position{pos}, fill{fill} {}
 
 void Block::rotateMatrix(int degrees) {
     // Validate input
@@ -57,11 +57,14 @@ std::vector<Coordinate> Block::getAbsolutePositions() const {
 void Block::setPosition(const Coordinate& newPosition) {
     position = newPosition;
 }
-
 Coordinate Block::getPosition() const {
     return position;
 }
 
 const std::vector<std::vector<bool>>& Block::getShape() const {
     return shape;
+}
+
+char Block::getFill() const {
+    return fill;
 }
