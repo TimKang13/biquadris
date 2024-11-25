@@ -9,8 +9,8 @@ class Player {
         int score;
         int level;
         Board board;
-        Block* curBlock;
-        Block* nextBlock;
+        std::unique_ptr<Block> currentBlock;
+        std::unique_ptr<Block> nextBlock;
 
     public:
         // Constructor and destructor
@@ -20,9 +20,16 @@ class Player {
         void applySpecialAction(const std::string &action);
         void moveLeft();
         void moveRight();
+        void moveDown();
         void rotateCW();
         void rotateCCW();
         void drop();
+
+        // Level actions
+        void levelUp();
+        void levelDown();
+        void noRandom();
+        void makeLevelRandom();
 
         // Getters
         int getScore() const;
@@ -34,6 +41,7 @@ class Player {
         // Setters
         void setScore(int newScore);
         void setLevel(int newLevel);
+        void setCurrentBlock(char blockChar);
 };
 
 #endif
