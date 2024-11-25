@@ -67,11 +67,9 @@ void Game::updateDisplay(){
 
 }
 
-GameState Game::getGameState() {
+GameState getGameState() {
     return {
-        .players = players,
-        .turn = turn,
-        .numTotalMoves = numTotalMoves
+        .players = getplayers
     };
 }
 

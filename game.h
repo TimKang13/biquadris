@@ -10,9 +10,7 @@
 using namespace std;
 
 struct GameState {
-    std::vector<Player> players;
-    bool playerTurn;
-    int totalMoves;
+    std::vector<std::unique_ptr<Player>> players;
 };
 
 class Game: public Subject {
@@ -36,7 +34,7 @@ class Game: public Subject {
         pair<int,string> getUserCmd();
         void executeCmd(string cmd);
         void updateDisplay();
-        GameState getGameState();
+        GameState getGameState() {return {.players = players};}
 
         //getters
         Player getPlayer1() const;
