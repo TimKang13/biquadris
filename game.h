@@ -1,6 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
-#include <player.h>
+#include "player.h"
 #include "command_interpreter.h"
 #include <vector>
 #include <utility>

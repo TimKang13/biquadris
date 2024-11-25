@@ -15,6 +15,7 @@ Game::Game(std::vector<std::unique_ptr<Player>>& players, CommandInterpreter& CI
 
 void Game::switchPlayer(){
     //after turn ends, generate new current turn player's block and switch turn
+    players[turn]->advanceBlock();
     turn = !turn;
     ++numTotalMoves;
 }
@@ -81,6 +82,8 @@ void Game::startGame(){
             }
             endTurn = "drop" == cmdPair.second || "" == cmdPair.second;
         }
+        //change turn
+        switchPlayer();
     } 
     endProgram();
 }
