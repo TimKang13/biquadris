@@ -12,3 +12,7 @@ int Cell::getLife() const{
 char Cell::getC() const{
     return c;
 }
+
+int Cell::getLevel() const{
+    return level;
+}

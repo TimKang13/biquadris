@@ -8,6 +8,8 @@
 class Board {
     // current board 
     std::vector<std::vector<Cell>> grid;
+    std::vector< cabinet;
+    int emptyCabinetIndex;
 
     public:
         //ctor
@@ -20,12 +22,12 @@ class Board {
         //current block position and current grid
         bool checkCollision(Block &b);
         // clear full rows and dead cells
-        int clear();
+        int clear(int level);
         // clear full rows
         int clearFullRows();
-        void clearDeadCells();
+        int clearDeadCells();
         void collapseRows();
-        void placeBlock(Block &b);
+        int placeBlock(Block &b, int level);
 
         //for testing
         void printGrid();

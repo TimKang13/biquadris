@@ -1,8 +1,32 @@
 #include "player.h"
+#include "levels.h"
 #include <stdexcept>
 #include <memory>
 
-Player::Player(): score{0}, level{0}, currentBlock{nullptr}, nextBlock{nullptr} {}
+Player::Player(): score{0}, level{std::make_unique<LevelZero>()}, currentBlock{nullptr}, nextBlock{nullptr} {}
+
+Player::Player(int levelNum): score{0}, currentBlock{nullptr}, nextBlock{nullptr} {
+    switch(levelNum){
+        case 0:
+            level = std::make_unique<LevelZero>();
+            break;
+        case 1:
+            level = std::make_unique<LevelOne>();
+            break;
+        case 2:
+            level = std::make_unique<LevelTwo>();
+            break;
+        case 3:
+            level = std::make_unique<LevelThree>();
+            break;
+        case 4:
+            level = std::make_unique<LevelFour>();
+            break;
+        default:
+            throw std::invalid_argument("Invalid level");
+    }
+}
+
 
 Player::~Player() {}
 
@@ -61,7 +85,8 @@ bool Player::drop() {
         currentBlock->setPosition(newPos);
         if(!board.checkCollision(*currentBlock)){
             //can place!!
-            board.placeBlock(*currentBlock);
+            int points = board.placeBlock(*currentBlock, level->getLevelNumber());
+            score += points;
             return true;
         }
     }
@@ -69,16 +94,41 @@ bool Player::drop() {
     return false;
 }
 
+void Player::advanceBlock(){
+
+}
+
 // Getters
 int Player::getScore() const { return score; }
-int Player::getLevel() const { return level; }
+int Player::getLevelNumber() const { return level->getLevelNumber(); }
 const Board& Player::getBoard() const { return board; }
 const Block* Player::getCurrentBlock() const { return currentBlock.get(); }
 const Block* Player::getNextBlock() const { return nextBlock.get(); }
 
 // Setters
 void Player::setScore(int newScore) { score = newScore; }
-void Player::setLevel(int newLevel) { level = newLevel; }
+void Player::setLevel(int newLevel) { 
+    switch (newLevel) {
+        case 0:
+            level = std::make_unique<LevelZero>();
+            break;
+        case 1:
+            level = std::make_unique<LevelOne>();
+            break;
+        case 2:
+            level = std::make_unique<LevelTwo>();
+            break;
+        case 3:
+            level = std::make_unique<LevelThree>();
+            break;
+        case 4:
+            level = std::make_unique<LevelFour>();
+            break;
+        default:
+            throw std::invalid_argument("Invalid level");
+    }
+}
+
 void Player::setCurrentBlock(char blockChar) {
     // Reset the current block
     currentBlock.reset();
