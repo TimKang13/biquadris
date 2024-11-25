@@ -4,6 +4,7 @@
 #include <string>
 #include <utility>
 #include <sstream>
+using namespace std;
 
 CommandInterpreter::CommandInterpreter(){
     // using a map format to accomodate for renaming commands
@@ -23,12 +24,13 @@ CommandInterpreter::CommandInterpreter(){
     };
 }
 
-std::pair<int, std::string> CommandInterpreter::getUserMove(std::istream& input) {
+std::pair<int, std::string> CommandInterpreter::getUserCmd(std::istream& input) {
     std::string line;
 
     
     // get a valid command
     while(std::getline(input, line)) {
+        if(line == "") return {0,""};
         std::istringstream iss{line};
         std::string word;
         iss >> word;
@@ -47,12 +49,13 @@ std::pair<int, std::string> CommandInterpreter::getUserMove(std::istream& input)
             std::string oldName;
             std::string newName;
             iss >> oldName >> newName;
-            rename(oldName, newName);
+           // rename(oldName, newName);
             continue;
         }
 
         break;
     } 
+    
     updateNum();
     return commandToReturn;
     
@@ -73,7 +76,7 @@ void CommandInterpreter::updateNum() {
 bool CommandInterpreter::isValid(std::string temp) {
     if(temp == "I" || temp == "J" || temp == "S" || temp == "L" || temp == "O" || temp == "Z" || temp == "T") return true;
     for(int i = 0; i <= temp.length(); i++) {
-        std::vector<int> commandValues = getCommandValue(temp.substr(0,i)); // all command values that match the substring
+        std::vector<std::string> commandValues = getCommandValue(temp.substr(0,i)); // all command values that match the substring
         if(commandValues.size() == 1) {
             commandToReturn.second = commandValues[0];
             return true;
@@ -84,8 +87,8 @@ bool CommandInterpreter::isValid(std::string temp) {
 }
 
 // get all commands values in the commands map that match the substring
-std::vector<int> CommandInterpreter::getCommandValue(std::string substring) {
-    std::vector<int> temp;
+std::vector<std::string> CommandInterpreter::getCommandValue(std::string substring) {
+    std::vector<std::string> temp;
     // go through the entire map
     for (auto& p : commands) {
         if(p.first.find(substring) != std::string::npos) temp.emplace_back(p.second);
@@ -107,6 +110,5 @@ std::pair<int, std::string> CommandInterpreter::separateNumber(std::string word)
 
     // Extract the remaining string starting from pos
     std::string letters = word.substr(pos);
-    commandToReturn.first = number;
-    commandToReturn.second = letters;
+    return {number, letters};
 }
