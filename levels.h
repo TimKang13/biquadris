@@ -3,9 +3,12 @@
 #include "block.h"
 #include <map>
 class Level {
+
     public: 
+        virtual int getLevelNumber() const = 0;
         virtual std::shared_ptr<Block> getBlock(int playerNum) = 0;
         virtual ~Level() {};
+
 };
 
 class LevelZero: public Level {
@@ -19,6 +22,7 @@ class LevelZero: public Level {
         std::shared_ptr<Block> getBlock(int playerNum) override;
         std::vector<std::string>getSequenceOne();
         std::vector<std::string>getSequenceTwo();
+        int getLevelNumber() const override;
 };
 
 class LevelOne: public Level {
@@ -26,6 +30,7 @@ class LevelOne: public Level {
     public:
         LevelOne(int seed = 0);
         std::shared_ptr<Block> getBlock(int playerNum) override;
+        int getLevelNumber() const override;
 };
 
 class LevelTwo: public Level {
@@ -33,6 +38,7 @@ class LevelTwo: public Level {
     public:
         LevelTwo(int seed = 0);
         std::shared_ptr<Block> getBlock(int playerNum) override;
+        int getLevelNumber() const override;
 };
 class LevelThree: public Level {
     int seed;
@@ -40,6 +46,7 @@ class LevelThree: public Level {
     public:
         LevelThree(int seed = 0);
         std::shared_ptr<Block> getBlock(int playerNum) override;
+        int getLevelNumber() const override;
         void setRandom(bool input);
 };
 
@@ -51,6 +58,7 @@ class LevelFour: public Level {
         void setRandom(bool input);
         LevelFour(int seed = 0);
         std::shared_ptr<Block> getBlock(int playerNum) override;
+        int getLevelNumber() const override;
 };
 
 std::shared_ptr<Block> createBlock(const std::map<int, std::string> &probabilities, int randNum);

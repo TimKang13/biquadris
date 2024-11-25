@@ -34,7 +34,7 @@ LevelZero::LevelZero(std::string fileOne, std::string fileTwo) : count1(0), coun
     }
 }
 
-// given the player number (either 1 or 2),returns the next block for that player, update the count
+// given the player number (either 0 or 1),returns the next block for that player, update the count
 std::shared_ptr<Block> LevelZero::getBlock(int playerNum) {
     // Get the next block type for Player 1
     std::string blockType;
@@ -171,3 +171,9 @@ std::shared_ptr<Block> createBlock(const std::map<int, std::string> &probabiliti
 
     return nullptr;
 }
+
+int LevelZero::getLevelNumber() const{return 0;}
+int LevelOne::getLevelNumber() const{return 1;}
+int LevelTwo::getLevelNumber() const{return 2;}
+int LevelThree::getLevelNumber() const{return 3;}
+int LevelFour::getLevelNumber() const{return 4;}

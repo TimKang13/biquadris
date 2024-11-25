@@ -30,14 +30,16 @@ bool Board::checkCollision(Block &b){
 
 // clear full rows and dead cells and update grid
 // return rows cleared
-int Board::clear(){
-    //clear full rows, return score?
+int Board::clear(int level){
+    //clear full rows, return points?
     int rowsCleared = clearFullRows();
+    int rowsClearedPoints = (rowsCleared+level)*(rowsCleared+level);
     // now clear dead cells
-    clearDeadCells();
+    int fullBlockClearPoints = clearDeadCells();
     // move everything down if cleared
-    clearFullRows();
-    return rowsCleared;
+    collapseRows();
+    
+    return rowsClearedPoints+fullBlockClearPoints;
 }
 
 // clear full rows
@@ -62,12 +64,13 @@ int Board::clearFullRows(){
     return count;
 }
 
-void Board::clearDeadCells(){
+int Board::clearDeadCells(){
     for(int i = 0; i < this->grid.size(); ++i){
         for(int j = 0; j < this->grid[i].size(); ++j){
             this->grid[i][j] = EMPTY_CELL;
         }
     }
+    return 0; //implement dead cell points logic
 }
 
 void Board::collapseRows(){
@@ -108,7 +111,7 @@ void Board::collapseRows(){
 }
 
 //place block if no collision, do nothing if collision 
-void Board::placeBlock(Block &b){
+int Board::placeBlock(Block &b, int level){
     if(!checkCollision(b)){
         // char c = b.getCharacter();
         char c = 'j';
@@ -119,6 +122,8 @@ void Board::placeBlock(Block &b){
             this->grid[row][col] = Cell(c, 10); // 10 for now, will have to implement logic
         }
     }
+    int points = clear(level); //clears the grid and (ex. full row) and returns points scored
+    return points;
 }
 
 //for testing
