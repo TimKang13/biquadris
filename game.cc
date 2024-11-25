@@ -62,8 +62,13 @@ void Game::executeCmd(string cmd){
 void Game::updateDisplay(){
 
 }
-GameState Game::getGameState(){
 
+GameState Game::getGameState() {
+    return {
+        .players = players,
+        .turn = turn,
+        .numTotalMoves = numTotalMoves
+    };
 }
 
 //start game   //note: prefix for non prefix commands need to be filtered out in CI

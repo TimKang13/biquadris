@@ -7,7 +7,9 @@
 using namespace std;
 
 struct GameState {
-
+    std::vector<Player> players;
+    bool playerTurn;
+    int totalMoves;
 };
 
 class Game {
