@@ -1,4 +1,5 @@
 #include "game.h"
+#include "command_interpreter.h"
 #include <player.h>
 #include <vector>
 #include <string>
@@ -9,39 +10,38 @@
 using namespace std;
 
 
-Game::Game(std::vector<Player>& players, CommandLineInterpreter& CI):
-    players{players}, turn{0}, CI{CI}, numTotalMoves{0} {}
-
+Game::Game(std::vector<std::unique_ptr<Player>>& players, CommandInterpreter& CI):
+    players{players}, highScores{{0, 0}}, turn{0}, isGameOver{false}, CI{CI}, numTotalMoves{0} {}
 
 void Game::switchPlayer(){
-    turn = 
-    // handles turn switching logic
-    ++numTotalMoves; //?
+    //after turn ends, generate new current turn player's block and switch turn
+    turn = !turn;
+    ++numTotalMoves;
 }
 pair<int, string> Game::getUserCmd(){
-
+    return CI.getUserCmd(cin);
 }
 void Game::executeCmd(string cmd){
     if (cmd == "left") {
-        players[turn].moveLeft();
+        players[turn]->moveLeft();
     } else if (cmd == "right") {
-        players[turn].moveRight();
+        players[turn]->moveRight();
     } else if (cmd == "down") {
-        players[turn].moveDown();
+        players[turn]->moveDown();
     } else if (cmd == "clockwise") {
-        players[turn].rotateCW();
+        players[turn]->rotateCW();
     } else if (cmd == "counterclockwise") {
-        players[turn].rotateCCW();
+        players[turn]->rotateCCW();
     } else if (cmd == "drop") {
-        players[turn].drop();
+        players[turn]->drop();
     } else if (cmd == "levelup") {
-        players[turn].levelUp();
+        players[turn]->levelUp();
     } else if (cmd == "leveldown") {
-        players[turn].levelDown();
+        players[turn]->levelDown();
     } else if (cmd == "norandom") {
-        players[turn].noRandom();
+        players[turn]->noRandom();
     } else if (cmd == "random") {
-        players[turn].makeLevelRandom();
+        players[turn]->makeLevelRandom();
     } else if (cmd.substr(0, 8) == "sequence") {
         string s;
         ifstream f{cmd.substr(9)};
@@ -51,9 +51,9 @@ void Game::executeCmd(string cmd){
     } else if (cmd == "restart") {
     } else if (cmd == "I" || cmd == "J" || cmd == "L" || 
                cmd == "O" || cmd == "S" || cmd == "T" || cmd == "Z") {
-        players[turn].setCurrentBlock(cmd);
+        players[turn]->setCurrentBlock(cmd[0]);
     } else if(cmd ==""){
-        //EOF
+        isGameOver = true;
     } else {
         std::cout << "Invalid command" << "\n";
     }
@@ -68,17 +68,45 @@ GameState Game::getGameState(){
 
 //start game   //note: prefix for non prefix commands need to be filtered out in CI
 void Game::startGame(){
-    while(1){
-        pair<int, string> cmdPair = getUserCmd();
-        for(int i = 0; i < cmdPair.first; ++i){
-            executeCmd(cmdPair.second);
+    while(!isGameOver){ //while game continues
+        bool endTurn = false;
+        while(!endTurn){ //next player's turn if drop
+            pair<int, string> cmdPair = getUserCmd();
+            for(int i = 0; i < cmdPair.first; ++i){
+                executeCmd(cmdPair.second);
+            }
+            endTurn = "drop" == cmdPair.second || "" == cmdPair.second;
         }
-    }
+    } 
+    endGame();
+}
+
+void Game::restartGame() {
+    players.clear(); //hope this frees the previous pts...
+    players.push_back(std::make_unique<Player>());
+    players.push_back(std::make_unique<Player>());
+    turn = 0;
+    isGameOver = false;
+    numTotalMoves = 0;
+}
+
+void Game::endGame(){
+    // anything that needs to be run when game is over
+    exit(0);
 }
 
 int main(){
     //initialize everything and put it to game
-    Game g {};
+    
+    CommandInterpreter CI;
+    // Create the list of players
+    std::vector<std::unique_ptr<Player>> players;
+    players.push_back(std::make_unique<Player>());
+    players.push_back(std::make_unique<Player>());
+
+    // Initialize the game
+    Game g {players, CI};
+
     g.startGame();
     // maybe play again feature here?
 }
