@@ -4,6 +4,8 @@
 #include <vector>
 #include <utility>
 #include <string>
+#include <subject.h>
+#include <command_interpreter.h>
 using namespace std;
 
 struct GameState {
@@ -12,7 +14,7 @@ struct GameState {
     int totalMoves;
 };
 
-class Game {
+class Game: public Subject {
     std::vector<Player> players;
     bool turn;
     CommandInterpreter CI;
