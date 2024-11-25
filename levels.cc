@@ -2,6 +2,7 @@
 #include <iostream>
 #include <memory>
 #include <map>
+#include <string>
 #include <stdexcept>
 #include "levels.h"
 

@@ -9,7 +9,7 @@ class Cell {
     int level;
     int lockerID;
     public:
-        Cell(char c, int life, int level, int lockerID);
+        Cell(char c = ' ', int life = -1, int level = 0, int lockerID);
         int getLife() const;
         char getC() const;
         int getLevel() const;

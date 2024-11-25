@@ -34,6 +34,10 @@ class Board {
         void collapseRows();
         int placeBlock(Block &b, int level);
 
+        char getCell(int row, int col) const {
+            return grid[row][col].getC();
+        }
+
         //for testing
         void printGrid();
         void setGrid(int r, int c, Cell cell);
