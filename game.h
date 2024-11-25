@@ -1,11 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
-#include <player.h>
+#include "player.h"
 #include "command_interpreter.h"
 #include <vector>
 #include <utility>
 #include <string>
-#include <subject.h>
+#include "subject.h"
 #include <memory>
 using namespace std;
 
