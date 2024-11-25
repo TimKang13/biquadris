@@ -33,7 +33,10 @@ void Game::executeCmd(string cmd){
     } else if (cmd == "counterclockwise") {
         players[turn]->rotateCCW();
     } else if (cmd == "drop") {
-        players[turn]->drop();
+        bool canDrop = players[turn]->drop();
+        if(!canDrop){
+            endGame();
+        }
     } else if (cmd == "levelup") {
         players[turn]->levelUp();
     } else if (cmd == "leveldown") {
@@ -49,6 +52,7 @@ void Game::executeCmd(string cmd){
             executeCmd(s);
         }
     } else if (cmd == "restart") {
+        restartGame();
     } else if (cmd == "I" || cmd == "J" || cmd == "L" || 
                cmd == "O" || cmd == "S" || cmd == "T" || cmd == "Z") {
         players[turn]->setCurrentBlock(cmd[0]);
@@ -78,7 +82,7 @@ void Game::startGame(){
             endTurn = "drop" == cmdPair.second || "" == cmdPair.second;
         }
     } 
-    endGame();
+    endProgram();
 }
 
 void Game::restartGame() {
@@ -91,6 +95,16 @@ void Game::restartGame() {
 }
 
 void Game::endGame(){
+    cout << "run it back?" << endl;
+    while(1){
+        pair<int, string> cmdPair = getUserCmd();
+        string cmd = cmdPair.second;
+        if(cmd == "restart") restartGame();
+        else if(cmd == "") endProgram();
+    }
+}
+
+void Game::endProgram(){
     // anything that needs to be run when game is over
     exit(0);
 }
@@ -110,3 +124,4 @@ int main(){
     g.startGame();
     // maybe play again feature here?
 }
+
