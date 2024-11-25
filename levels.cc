@@ -49,10 +49,17 @@ std::shared_ptr<Block> LevelZero::getBlock(int playerNum) {
     if(blockType == "iblock") { //
         return std::make_shared<IBlock>();
     } else if (blockType == "jblock") {
-        std::cout<< "is running" << "\n";
         return std::make_shared<JBlock>();
+    } else if(blockType == "lblock") {
+        return std::make_shared<LBlock>();
+    } else if(blockType == "tblock") {
+        return std::make_shared<TBlock>();
     } else if(blockType == "sblock") {
         return std::make_shared<SBlock>();
+    } else if(blockType == "oblock") {
+        return std::make_shared<OBlock>();
+    } else if(blockType == "zblock") {
+        return std::make_shared<ZBlock>();
     }
     return nullptr;
 }
