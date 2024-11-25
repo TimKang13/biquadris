@@ -6,7 +6,7 @@
 using namespace std;
 
 const int EMPTY_LIFE = -1;
-const Cell EMPTY_CELL = Cell(' ', EMPTY_LIFE);
+const Cell EMPTY_CELL = Cell(' ', EMPTY_LIFE, -1, -1);
 
 Board::Board():
     grid{8, std::vector<Cell>(11, EMPTY_CELL)} {}
@@ -32,8 +32,8 @@ bool Board::checkCollision(Block &b){
 // return rows cleared
 int Board::clear(int level){
     //clear full rows, return points?
-    int rowsCleared = clearFullRows();
-    int rowsClearedPoints = (rowsCleared+level)*(rowsCleared+level);
+    pair<int, int> rowsClearedPair = clearFullRows();
+    int rowsClearedPoints = (rowsClearedPair.first+level)*(rowsClearedPair.first+level);
     // now clear dead cells
     int fullBlockClearPoints = clearDeadCells();
     // move everything down if cleared
@@ -43,8 +43,9 @@ int Board::clear(int level){
 }
 
 // clear full rows
-int Board::clearFullRows(){
+pair<int,int> Board::clearFullRows(){
     int count = 0; 
+    int fullBlockClearPoints = 0;
     std::vector<Cell> emptyRow(grid[0].size(), EMPTY_CELL);
 
     for(int i = 0; i < this->grid.size(); ++i){
@@ -57,11 +58,20 @@ int Board::clearFullRows(){
             }
         }
         if(isRowFull){
+            for(int j = 0; j < this->grid[i].size(); ++j){
+                //add locker logic
+                int id = grid[i][j].getLockerID();
+                lockers[id].count -= 1;
+                if(lockers[id].count == 0){ //then we cleared all objects
+                    fullBlockClearPoints += (lockers[id].level + 1)*(lockers[id].level + 1);
+                }
+                emptyLocker = id; //update which locker is empty
+            }
             grid[i] = emptyRow;
             ++count;
         }
     }
-    return count;
+    return {count, fullBlockClearPoints};
 }
 
 int Board::clearDeadCells(){
@@ -113,13 +123,20 @@ void Board::collapseRows(){
 //place block if no collision, do nothing if collision 
 int Board::placeBlock(Block &b, int level){
     if(!checkCollision(b)){
-        // char c = b.getCharacter();
-        char c = 'j';
+        char c = b.getFill();
         std::vector<Coordinate> positions = b.getAbsolutePositions();
         for(int i = 0; i < positions.size(); ++i){
             int row = positions[i].row;
             int col = positions[i].col;
-            this->grid[row][col] = Cell(c, 10); // 10 for now, will have to implement logic
+            int lockerID;
+            if(emptyLocker == -1){  //all locker full, need to emplace back
+                lockerID = lockers.size();
+                lockers.emplace_back(CellLocker{4, c, level});
+            } else {
+                lockerID = emptyLocker;
+                lockers[lockerID] = CellLocker{4, c, level};
+            }
+            this->grid[row][col] = Cell(c, 10, level, lockerID); // 10 for now, will have to implement logic
         }
     }
     int points = clear(level); //clears the grid and (ex. full row) and returns points scored
