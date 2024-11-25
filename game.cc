@@ -64,13 +64,7 @@ void Game::executeCmd(string cmd){
 }
 
 void Game::updateDisplay(){
-
-}
-
-GameState getGameState() {
-    return {
-        .players = getplayers
-    };
+    notifyObservers();
 }
 
 //start game   //note: prefix for non prefix commands need to be filtered out in CI
