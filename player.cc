@@ -58,11 +58,14 @@ bool Player::drop() {
     Coordinate newPos = currentBlock->getPosition();
     for(int row = 7; row >= 0; --row){
         newPos.row = row;
-        currentBlock
-        if(){
-
+        currentBlock->setPosition(newPos);
+        if(!board.checkCollision(*currentBlock)){
+            //can place!!
+            board.placeBlock(*currentBlock);
+            return true;
         }
     }
+    currentBlock->setPosition(oldPos);
     return false;
 }
 
