@@ -57,6 +57,27 @@ class JBlock : public Block {
         }
 };
 
+class LBlock : public Block {
+    public:
+        LBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'L'} {
+            shape = {
+                {0,0,0},
+                {0,0,1},
+                {1,1,1}
+            };
+        }
+};
+
+class OBlock : public Block {
+    public:
+        OBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'O'} {
+            shape = {
+                {1,1},
+                {1,1}
+            };
+        }
+};
+
 class SBlock : public Block {
     public:
         SBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'S'} {
@@ -68,4 +89,25 @@ class SBlock : public Block {
         }
 };
 
+class ZBlock : public Block {
+    public:
+        ZBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'Z'} {
+            shape = {
+                {0,0,0},
+                {1,1,0},
+                {0,1,1}
+            };
+        }
+};
+
+class TBlock : public Block {
+    public:
+        TBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'T'} {
+            shape = {
+                {0,0,0},
+                {1,1,1},
+                {0,1,0}
+            };
+        }
+};
 #endif
