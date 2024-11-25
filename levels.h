@@ -11,10 +11,11 @@ class Level {
 class LevelZero: public Level {
     std::vector<std::string> sequenceOne;
     std::vector<std::string> sequenceTwo;
+    // variables for tracking which block each sequence is currently on
     int count1;
     int count2;
     public:
-        LevelZero();
+        LevelZero(std::string file1 = "sequenceOne.txt", std::string file2 = "sequencetwo.txt");
         std::shared_ptr<Block> getBlock(int playerNum) override;
         std::vector<std::string>getSequenceOne();
         std::vector<std::string>getSequenceTwo();
@@ -35,15 +36,19 @@ class LevelTwo: public Level {
 };
 class LevelThree: public Level {
     int seed;
+    bool isRandom;
     public:
         LevelThree(int seed = 0);
         std::shared_ptr<Block> getBlock(int playerNum) override;
+        void setRandom(bool input);
 };
 
 class LevelFour: public Level {
     int seed;
     int blocksWithoutClear;
+    bool isRandom;
     public:
+        void setRandom(bool input);
         LevelFour(int seed = 0);
         std::shared_ptr<Block> getBlock(int playerNum) override;
 };
