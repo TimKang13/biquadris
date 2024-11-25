@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <block.h>
+#include "displays.h"
 using namespace std;
 
 
@@ -78,6 +79,7 @@ void Game::startGame(){
     while(!isGameOver){ //while game continues
         bool endTurn = false;
         while(!endTurn){ //next player's turn if drop
+            updateDisplay();
             pair<int, string> cmdPair = getUserCmd();
             for(int i = 0; i < cmdPair.first; ++i){
                 executeCmd(cmdPair.second);
@@ -123,6 +125,9 @@ int main() {
 
     // Initialize the game - note the std::move
     Game g{std::move(players), CI};
+
+    TextDisplay display(g);
+    g.attach(&display);
 
     g.startGame();
 }
