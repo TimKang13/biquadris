@@ -2,43 +2,58 @@
 #include <stdexcept>
 #include <memory>
 
-Player::Player(): score{0}, level{0}, curBlock{nullptr}, nextBlock{nullptr} {}
+Player::Player(): score{0}, level{0}, currentBlock{nullptr}, nextBlock{nullptr} {}
 
-Player::~Player() {
-    delete curBlock;
-    delete nextBlock;
-}
+Player::~Player() {}
 
 void Player::applySpecialAction(const std::string& action) {}
 
 void Player::moveLeft() {
-
+    if (!currentBlock) return;
+    Coordinate oldPos = currentBlock->getPosition();
+    Coordinate newPos = currentBlock->getPosition();
+    newPos.col--;
+    currentBlock->setPosition(newPos);
+    bool valid = !board.checkCollision(*currentBlock);
+    if (!valid) currentBlock->setPosition(oldPos);
 }
 
 void Player::moveRight() {
-
+    if (!currentBlock) return;
+    Coordinate oldPos = currentBlock->getPosition();
+    Coordinate newPos = currentBlock->getPosition();
+    newPos.col++;
+    currentBlock->setPosition(newPos);
+    bool valid = !board.checkCollision(*currentBlock);
+    if (!valid) currentBlock->setPosition(oldPos);
 }
 
 void Player::moveDown() {
-
+    if (!currentBlock) return;
+    Coordinate oldPos = currentBlock->getPosition();
+    Coordinate newPos = currentBlock->getPosition();
+    newPos.row++;
+    currentBlock->setPosition(newPos);
+    bool valid = !board.checkCollision(*currentBlock);
+    if (!valid) currentBlock->setPosition(oldPos);
 }
 
 void Player::rotateCW() {
-    if (curBlock) {
-        // TODO: NEEDS TO CHECK IF ROTATING IS VALID
-        curBlock->rotateCW();
-    }
+    if (!currentBlock) return;
+    currentBlock->rotateCW();
+    bool valid = !board.checkCollision(*currentBlock);
+    if (!valid) currentBlock->rotateCCW();
 }
 
 void Player::rotateCCW() {
-    if (curBlock) {
-        // TODO: NEEDS TO CHECK IF ROTATING IS VALID
-        curBlock->rotateCCW();
-    }
+    if (!currentBlock) return;
+    currentBlock->rotateCW();
+    bool valid = !board.checkCollision(*currentBlock);
+    if (!valid) currentBlock->rotateCCW();
 }
 
 void Player::drop() {
-    if (curBlock) {
+    if (currentBlock) {
         
     }
 }
