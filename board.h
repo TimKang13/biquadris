@@ -8,8 +8,8 @@
 class Board {
     // current board 
     std::vector<std::vector<Cell>> grid;
-    std::vector< cabinet;
-    int emptyCabinetIndex;
+    // std::vector< cabinet;
+    // int emptyCabinetIndex;
 
     public:
         //ctor

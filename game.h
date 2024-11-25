@@ -10,22 +10,20 @@
 using namespace std;
 
 struct GameState {
-    std::vector<std::unique_ptr<Player>> players;
+    const std::vector<std::unique_ptr<Player>>& players;
 };
 
 class Game: public Subject {
     std::vector<std::unique_ptr<Player>> players;
     std::vector<int> highScores;
-
     bool turn;
     bool isGameOver;
     CommandInterpreter CI;
     int numTotalMoves;
 
     public:
-        //ctor and dtor
-        Game(std::vector<std::unique_ptr<Player>>& playerList, CommandInterpreter& CI);
-        ~Game();
+        Game(std::vector<std::unique_ptr<Player>>&& playerList, CommandInterpreter& CI);
+        ~Game() = default;
         void startGame();
         void endGame();
         void restartGame();
@@ -34,7 +32,9 @@ class Game: public Subject {
         pair<int,string> getUserCmd();
         void executeCmd(string cmd);
         void updateDisplay();
-        GameState getGameState() {return {.players = players};}
+        GameState getGameState() const {
+            return GameState{players};
+        }
 
         //getters
         Player getPlayer1() const;

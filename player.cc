@@ -77,7 +77,7 @@ void Player::rotateCCW() {
 }
 
 bool Player::drop() {
-    if (!currentBlock) return;
+    if (!currentBlock) return false;
     Coordinate oldPos = currentBlock->getPosition();
     Coordinate newPos = currentBlock->getPosition();
     for(int row = 7; row >= 0; --row){

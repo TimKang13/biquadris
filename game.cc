@@ -1,6 +1,6 @@
 #include "game.h"
 #include "command_interpreter.h"
-#include <player.h>
+#include "player.h"
 #include <vector>
 #include <string>
 #include <utility>
@@ -10,8 +10,13 @@
 using namespace std;
 
 
-Game::Game(std::vector<std::unique_ptr<Player>>& players, CommandInterpreter& CI):
-    players{players}, highScores{{0, 0}}, turn{0}, isGameOver{false}, CI{CI}, numTotalMoves{0} {}
+Game::Game(std::vector<std::unique_ptr<Player>>&& playerList, CommandInterpreter& CI):
+    players{std::move(playerList)},
+    highScores{{0, 0}},
+    turn{0},
+    isGameOver{false},
+    CI{CI},
+    numTotalMoves{0} {}
 
 void Game::switchPlayer(){
     //after turn ends, generate new current turn player's block and switch turn
@@ -39,13 +44,13 @@ void Game::executeCmd(string cmd){
             endGame();
         }
     } else if (cmd == "levelup") {
-        players[turn]->levelUp();
+        // players[turn]->levelUp();
     } else if (cmd == "leveldown") {
-        players[turn]->levelDown();
+        // players[turn]->levelDown();
     } else if (cmd == "norandom") {
-        players[turn]->noRandom();
+        // players[turn]->noRandom();
     } else if (cmd == "random") {
-        players[turn]->makeLevelRandom();
+        // players[turn]->makeLevelRandom();
     } else if (cmd.substr(0, 8) == "sequence") {
         string s;
         ifstream f{cmd.substr(9)};
@@ -109,19 +114,16 @@ void Game::endProgram(){
     exit(0);
 }
 
-int main(){
-    //initialize everything and put it to game
-    
+int main() {
     CommandInterpreter CI;
     // Create the list of players
     std::vector<std::unique_ptr<Player>> players;
     players.push_back(std::make_unique<Player>());
     players.push_back(std::make_unique<Player>());
 
-    // Initialize the game
-    Game g {players, CI};
+    // Initialize the game - note the std::move
+    Game g{std::move(players), CI};
 
     g.startGame();
-    // maybe play again feature here?
 }
 

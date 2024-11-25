@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 //ctor
-Cell::Cell(char c = ' ', int life = -1): 
+Cell::Cell(char c, int life):
     c{c}, life{life} {}
 
 int Cell::getLife() const{
