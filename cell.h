@@ -7,11 +7,13 @@ class Cell {
     char c;
     int life;
     int level;
+    int lockerID;
     public:
-        Cell(char c, int life);
+        Cell(char c, int life, int level, int lockerID);
         int getLife() const;
         char getC() const;
         int getLevel() const;
+        int getLockerID() const;
 };
 
 #endif
