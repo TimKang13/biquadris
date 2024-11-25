@@ -2,6 +2,8 @@
 #define LEVEL_H
 #include "block.h"
 #include <map>
+#include <string>  
+
 class Level {
 
     public: 
@@ -18,7 +20,7 @@ class LevelZero: public Level {
     int count1;
     int count2;
     public:
-        LevelZero(std::string file1 = "sequenceOne.txt", std::string file2 = "sequencetwo.txt");
+        LevelZero(std::string file1 = "sequence1.txt", std::string file2 = "sequence2.txt");
         std::shared_ptr<Block> getBlock(int playerNum) override;
         std::vector<std::string>getSequenceOne();
         std::vector<std::string>getSequenceTwo();

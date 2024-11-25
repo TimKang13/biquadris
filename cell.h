@@ -8,7 +8,7 @@ class Cell {
     int life;
     int level;
     public:
-        Cell(char c, int life);
+        Cell(char c = ' ', int life = -1);
         int getLife() const;
         char getC() const;
         int getLevel() const;

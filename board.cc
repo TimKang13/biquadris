@@ -148,61 +148,61 @@ void Board::setGrid(int r, int c, Cell cell){
     grid[r][c] = cell;
 }
 
-int main() {
-    Board b {};
+// int main() {
+//     Board b {};
 
-    b.printGrid();
+//     b.printGrid();
 
-    // Place a JBlock at position (6, 6)
-    JBlock jBlock(Coordinate{6, 6});
-    cout << b.checkCollision(jBlock);
-    b.placeBlock(jBlock);
+//     // Place a JBlock at position (6, 6)
+//     JBlock jBlock(Coordinate{6, 6});
+//     cout << b.checkCollision(jBlock);
+//     b.placeBlock(jBlock);
 
-    cout << "Board after placing JBlock at (6, 6):" << endl;
-    b.printGrid();
-    // Test setGrid: Manually fill some cells
-    cout << "Setting cells on row 7 to simulate a filled row:" << endl;
-    for (int col = 0; col < 11; ++col) {
-        b.setGrid(7, col, Cell('x', 10)); // Fill row 7
-    }
-    b.printGrid();
+//     cout << "Board after placing JBlock at (6, 6):" << endl;
+//     b.printGrid();
+//     // Test setGrid: Manually fill some cells
+//     cout << "Setting cells on row 7 to simulate a filled row:" << endl;
+//     for (int col = 0; col < 11; ++col) {
+//         b.setGrid(7, col, Cell('x', 10)); // Fill row 7
+//     }
+//     b.printGrid();
 
-    // Test clearFullRows: Clear the fully filled row
-    cout << "Clearing full rows:" << endl;
-    int rowsCleared = b.clearFullRows();
-    cout << "Rows Cleared: " << rowsCleared << endl;
-    b.printGrid();
+//     // Test clearFullRows: Clear the fully filled row
+//     cout << "Clearing full rows:" << endl;
+//     int rowsCleared = b.clearFullRows();
+//     cout << "Rows Cleared: " << rowsCleared << endl;
+//     b.printGrid();
 
-    // Test setGrid and collapseRows: Add scattered blocks and collapse rows
-    cout << "Setting scattered cells to test row collapsing:" << endl;
-    b.setGrid(6, 0, Cell('o', 10));
-    b.setGrid(5, 1, Cell('o', 10));
-    b.setGrid(4, 2, Cell('o', 10));
-    b.printGrid();
+//     // Test setGrid and collapseRows: Add scattered blocks and collapse rows
+//     cout << "Setting scattered cells to test row collapsing:" << endl;
+//     b.setGrid(6, 0, Cell('o', 10));
+//     b.setGrid(5, 1, Cell('o', 10));
+//     b.setGrid(4, 2, Cell('o', 10));
+//     b.printGrid();
 
-    cout << "Collapsing rows:" << endl;
-    b.collapseRows();
-    b.printGrid();
+//     cout << "Collapsing rows:" << endl;
+//     b.collapseRows();
+//     b.printGrid();
 
-    // Test collision detection
-    cout << "Testing collision detection for a IBlock at (6, 6):" << endl;
-    IBlock iBlock(Coordinate{6, 6});
-    cout << "Collision detected: " << (b.checkCollision(iBlock) ? "Yes" : "No") << endl;
+//     // Test collision detection
+//     cout << "Testing collision detection for a IBlock at (6, 6):" << endl;
+//     IBlock iBlock(Coordinate{6, 6});
+//     cout << "Collision detected: " << (b.checkCollision(iBlock) ? "Yes" : "No") << endl;
 
-    // Test placing a block with no collision
-    cout << "Placing IBlock at (6, 6):" << endl;
-    b.placeBlock(iBlock);
-    b.printGrid();
+//     // Test placing a block with no collision
+//     cout << "Placing IBlock at (6, 6):" << endl;
+//     b.placeBlock(iBlock);
+//     b.printGrid();
 
-        // Test collision detection
-    cout << "Testing collision detection for a IBlock at (7, 3):" << endl;
-    iBlock = IBlock{Coordinate{7,3}};
-    cout << "Collision detected: " << (b.checkCollision(iBlock) ? "Yes" : "No") << endl;
+//         // Test collision detection
+//     cout << "Testing collision detection for a IBlock at (7, 3):" << endl;
+//     iBlock = IBlock{Coordinate{7,3}};
+//     cout << "Collision detected: " << (b.checkCollision(iBlock) ? "Yes" : "No") << endl;
 
-    // Test clearing all cells
-    cout << "Clearing all cells:" << endl;
-    b.clearDeadCells();
-    b.printGrid();
+//     // Test clearing all cells
+//     cout << "Clearing all cells:" << endl;
+//     b.clearDeadCells();
+//     b.printGrid();
 
-    return 0;
-}
+//     return 0;
+// }

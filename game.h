@@ -5,14 +5,15 @@
 #include <vector>
 #include <utility>
 #include <string>
+#include "subject.h"
 #include <memory>
 using namespace std;
 
 struct GameState {
-
+    const std::vector<std::unique_ptr<Player>>& players;
 };
 
-class Game {
+class Game: public Subject {
     std::vector<std::unique_ptr<Player>> players;
     std::vector<int> highScores;
     bool turn;
@@ -21,9 +22,8 @@ class Game {
     int numTotalMoves;
 
     public:
-        //ctor and dtor
-        Game(std::vector<std::unique_ptr<Player>>& playerList, CommandInterpreter& CI);
-        ~Game();
+        Game(std::vector<std::unique_ptr<Player>>&& playerList, CommandInterpreter& CI);
+        ~Game() = default;
         void startGame();
         void endGame();
         void restartGame();
@@ -32,7 +32,9 @@ class Game {
         pair<int,string> getUserCmd();
         void executeCmd(string cmd);
         void updateDisplay();
-        GameState getGameState();
+        GameState getGameState() const {
+            return GameState{players};
+        }
 
         //getters
         Player getPlayer1() const;

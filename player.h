@@ -31,10 +31,10 @@ class Player {
         void advanceBlock();
 
         // Level actions
-        void levelUp();
-        void levelDown();
-        void noRandom();
-        void makeLevelRandom();
+        // void levelUp();
+        // void levelDown();
+        // void noRandom();
+        // void makeLevelRandom();
 
         // Getters
         int getScore() const;

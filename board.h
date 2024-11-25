@@ -8,8 +8,8 @@
 class Board {
     // current board 
     std::vector<std::vector<Cell>> grid;
-    std::vector< cabinet;
-    int emptyCabinetIndex;
+    // std::vector< cabinet;
+    // int emptyCabinetIndex;
 
     public:
         //ctor
@@ -28,6 +28,10 @@ class Board {
         int clearDeadCells();
         void collapseRows();
         int placeBlock(Block &b, int level);
+
+        char getCell(int row, int col) const {
+            return grid[row][col].getC();
+        }
 
         //for testing
         void printGrid();
