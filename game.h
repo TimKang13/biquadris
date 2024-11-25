@@ -25,8 +25,9 @@ class Game {
         Game(std::vector<std::unique_ptr<Player>>& playerList, CommandInterpreter& CI);
         ~Game();
         void startGame();
-        void restartGame();
         void endGame();
+        void restartGame();
+        void endProgram();
         void switchPlayer();
         pair<int,string> getUserCmd();
         void executeCmd(string cmd);

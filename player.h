@@ -23,7 +23,7 @@ class Player {
         void moveDown();
         void rotateCW();
         void rotateCCW();
-        void drop();
+        bool drop();
 
         // Level actions
         void levelUp();

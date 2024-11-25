@@ -14,7 +14,7 @@ void Player::moveLeft() {
     Coordinate newPos = currentBlock->getPosition();
     newPos.col--;
     currentBlock->setPosition(newPos);
-    bool valid = !board.checkCollision(*currentBlock);
+    bool valid = newPos.col >= 0 && !board.checkCollision(*currentBlock);
     if (!valid) currentBlock->setPosition(oldPos);
 }
 
@@ -24,7 +24,7 @@ void Player::moveRight() {
     Coordinate newPos = currentBlock->getPosition();
     newPos.col++;
     currentBlock->setPosition(newPos);
-    bool valid = !board.checkCollision(*currentBlock);
+    bool valid = newPos.col <= 10 && !board.checkCollision(*currentBlock);
     if (!valid) currentBlock->setPosition(oldPos);
 }
 
@@ -34,7 +34,7 @@ void Player::moveDown() {
     Coordinate newPos = currentBlock->getPosition();
     newPos.row++;
     currentBlock->setPosition(newPos);
-    bool valid = !board.checkCollision(*currentBlock);
+    bool valid = newPos.row <= 7 && !board.checkCollision(*currentBlock);
     if (!valid) currentBlock->setPosition(oldPos);
 }
 
@@ -52,10 +52,18 @@ void Player::rotateCCW() {
     if (!valid) currentBlock->rotateCCW();
 }
 
-void Player::drop() {
-    if (currentBlock) {
-        
+bool Player::drop() {
+    if (!currentBlock) return;
+    Coordinate oldPos = currentBlock->getPosition();
+    Coordinate newPos = currentBlock->getPosition();
+    for(int row = 7; row >= 0; --row){
+        newPos.row = row;
+        currentBlock
+        if(){
+
+        }
     }
+    return false;
 }
 
 // Getters
