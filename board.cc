@@ -21,6 +21,9 @@ bool Board::checkCollision(Block &b){
     for(int i = 0; i < positions.size(); ++i){
         int row = positions[i].row;
         int col = positions[i].col;
+        if(row < 0 || row >= HEIGHT || col < 0 || col >= WIDTH) {
+            return true; 
+        }
         if(this->grid[row][col].getC() != ' '){
             return true;
         }
