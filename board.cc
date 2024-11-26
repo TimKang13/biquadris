@@ -136,10 +136,10 @@ int Board::placeBlock(Block &b, int level){
             int lockerID;
             if(emptyLocker == -1){  //all locker full, need to emplace back
                 lockerID = lockers.size();
-                // lockers.emplace_back(CellLocker{4, c, level});
+                lockers.emplace_back(CellLocker{4, c, level});
             } else {
                 lockerID = emptyLocker;
-                // lockers[lockerID] = CellLocker{4, c, level};
+                lockers.push_back(CellLocker{4, c, level});
             }
             this->grid[row][col] = Cell(c, 10, level, lockerID); // 10 for now, will have to implement logic
         }
