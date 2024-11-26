@@ -79,7 +79,7 @@ void Player::rotateCW() {
 
 void Player::rotateCCW() {
     if (!currentBlock) return;
-    currentBlock->rotateCW();
+    currentBlock->rotateCCW();
     bool valid = !board.checkCollision(*currentBlock);
     if (!valid) currentBlock->rotateCCW();
 }
