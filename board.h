@@ -20,9 +20,14 @@ class Board {
     public:
         //ctor
         Board();
+        //constants
+        static const int WIDTH = 11;
+        static const int HEIGHT = 15;
         //accessors
         std::vector<std::vector<Cell>> getGrid();
-
+        char getCell(int row, int col) const {
+            return grid[row][col].getC();
+        }
         //check if this block is colliding given 
         //current block position and current grid
         bool checkCollision(Block &b);
@@ -33,10 +38,6 @@ class Board {
         int clearDeadCells();
         void collapseRows();
         int placeBlock(Block &b, int level);
-
-        char getCell(int row, int col) const {
-            return grid[row][col].getC();
-        }
 
         //for testing
         void printGrid();
