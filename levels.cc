@@ -7,46 +7,29 @@
 #include "levels.h"
 
 // sets list of blocks in sequence one and sequence two based on the given input files
-LevelZero::LevelZero(std::string fileOne, std::string fileTwo) : count1(0), count2(0) {
+LevelZero::LevelZero(std::string file) : count{0} {
     // Load sequence1.txt into sequenceOne
-    std::ifstream streamOne{fileOne};
+    std::ifstream streamOne{file};
     if (!streamOne) {
         throw std::runtime_error("Error: Could not open sequence1.txt");
     }
     std::string line;
     while (std::getline(streamOne, line)) {
-        sequenceOne.push_back(line);
+        sequenceText.push_back(line);
     }
-    if (sequenceOne.empty()) {
-        throw std::runtime_error("Error: sequence1.txt is empty");
-    }
-    
-    // load sequence2.txt into sequenceTwo
-    line = "";
-    std::ifstream streamTwo{fileTwo};
-    if (!streamTwo) {
-        throw std::runtime_error("Error: Could not open sequence2.txt");
-    }
-    while (std::getline(streamTwo, line)) {
-        sequenceTwo.push_back(line);
-    }
-    if (sequenceTwo.empty()) {
-        throw std::runtime_error("Error: sequence2.txt is empty");
+    if (sequenceText.empty()) {
+        std::string error = "Error: " + file + " is empty";
+        throw std::runtime_error(error);
     }
 }
 
 // given the player number (either 0 or 1),returns the next block for that player, update the count
-std::unique_ptr<Block> LevelZero::getBlock(int playerNum) {
+std::unique_ptr<Block> LevelZero::getBlock() {
     // Get the next block type for Player 1
     std::string blockType;
-    if(playerNum == 1) {
-        blockType = sequenceOne[count1];
-        count1 = (count1 + 1) % sequenceOne.size(); // Loop back to the start
-    } else {
-        blockType = sequenceOne[count2];
-        count2 = (count2 + 1) % sequenceTwo.size(); // Loop back to the start
-    }
-    std::cout<< blockType << "\n";
+    blockType = sequenceText[count];
+    count = (count + 1) % sequenceText.size(); // Loop back to the start
+ //   std::cout<< blockType << "\n";
     if(blockType == "iblock") { //
         return std::make_unique<IBlock>();
     } else if (blockType == "jblock") {
@@ -66,14 +49,13 @@ std::unique_ptr<Block> LevelZero::getBlock(int playerNum) {
 }
 
 // for testing purposes
-std::vector<std::string> LevelZero::getSequenceOne() {return sequenceOne;} 
-std::vector<std::string> LevelZero::getSequenceTwo() {return sequenceTwo;}
+std::vector<std::string> LevelZero::getSequence() {return sequenceText;} 
 
 // sets seed for randomizer to be parameter, default is 0
 LevelOne::LevelOne(int seed): seed{seed} {}
 
 // gets next block for level one
-std::unique_ptr<Block> LevelOne::getBlock(int playerNum) {
+std::unique_ptr<Block> LevelOne::getBlock() {
     srand(seed);
     //probability calcualted using culmulative distribution
    static const std::map<int, std::string> blockProbabilities = {
@@ -96,7 +78,7 @@ std::unique_ptr<Block> LevelOne::getBlock(int playerNum) {
 LevelTwo::LevelTwo(int seed): seed{seed} {}
 
 // gets next block for level 2
-std::unique_ptr<Block> LevelTwo::getBlock(int playerNum) {
+std::unique_ptr<Block> LevelTwo::getBlock() {
     srand(seed);
     static const std::map<int, std::string> blockProbabilities = {
         {1, "iblock"},  // 1/7
@@ -116,7 +98,7 @@ std::unique_ptr<Block> LevelTwo::getBlock(int playerNum) {
 // gets next block for level 3
 // need to write logic for random and norandom
 LevelThree::LevelThree(int seed): seed{seed} {}
-std::unique_ptr<Block> LevelThree::getBlock(int playerNum) {
+std::unique_ptr<Block> LevelThree::getBlock() {
     srand(seed);
     static const std::map<int, std::string> blockProbabilities = {
         {1, "iblock"},  // 1/9
@@ -137,7 +119,7 @@ std::unique_ptr<Block> LevelThree::getBlock(int playerNum) {
 
 // will finish integrating one by one block after 
 LevelFour::LevelFour(int seed): seed{seed}, blocksWithoutClear{0} {}
-std::unique_ptr<Block> LevelFour::getBlock(int playerNum) {
+std::unique_ptr<Block> LevelFour::getBlock() {
     srand(seed);
     static const std::map<int, std::string> blockProbabilities = {
         {1, "iblock"},  // 1/9

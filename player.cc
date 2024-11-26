@@ -3,12 +3,18 @@
 #include <stdexcept>
 #include <memory>
 
-Player::Player(): score{0}, level{std::make_unique<LevelZero>()}, currentBlock{nullptr}, nextBlock{nullptr} {}
+// default constructor
+Player::Player(std::string fileName): sequenceFile{fileName} {
+    level = std::make_unique<LevelZero>(sequenceFile);
+    currentBlock = level->getBlock();
+    nextBlock = level->getBlock();
+}
 
-Player::Player(int levelNum): score{0}, currentBlock{nullptr}, nextBlock{nullptr} {
+
+Player::Player(std::string sequence, int player_num, int levelNum): player_num{player_num}, score{0}{
     switch(levelNum){
         case 0:
-            level = std::make_unique<LevelZero>();
+            level = std::make_unique<LevelZero>(sequence);
             break;
         case 1:
             level = std::make_unique<LevelOne>();
@@ -25,6 +31,8 @@ Player::Player(int levelNum): score{0}, currentBlock{nullptr}, nextBlock{nullptr
         default:
             throw std::invalid_argument("Invalid level");
     }
+    currentBlock = level->getBlock();
+    nextBlock = level->getBlock();
 }
 
 
@@ -104,13 +112,13 @@ int Player::getLevelNumber() const { return level->getLevelNumber(); }
 const Board& Player::getBoard() const { return board; }
 const Block* Player::getCurrentBlock() const { return currentBlock.get(); }
 const Block* Player::getNextBlock() const { return nextBlock.get(); }
-
+const std::string Player::getSequenceFile() const {return sequenceFile;}
 // Setters
 void Player::setScore(int newScore) { score = newScore; }
 void Player::setLevel(int newLevel) { 
     switch (newLevel) {
         case 0:
-            level = std::make_unique<LevelZero>();
+            level = std::make_unique<LevelZero>(sequenceFile);
             break;
         case 1:
             level = std::make_unique<LevelOne>();

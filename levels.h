@@ -9,22 +9,19 @@ class Level {
 
     public: 
         virtual int getLevelNumber() const = 0;
-        virtual std::unique_ptr<Block> getBlock(int playerNum) = 0;
+        virtual std::unique_ptr<Block> getBlock() = 0;
         virtual ~Level() {};
 
 };
 
 class LevelZero: public Level {
-    std::vector<std::string> sequenceOne;
-    std::vector<std::string> sequenceTwo;
+    std::vector<std::string> sequenceText;
     // variables for tracking which block each sequence is currently on
-    int count1;
-    int count2;
+    int count;
     public:
-        LevelZero(std::string file1 = "sequence1.txt", std::string file2 = "sequence2.txt");
-        std::unique_ptr<Block> getBlock(int playerNum) override;
-        std::vector<std::string>getSequenceOne();
-        std::vector<std::string>getSequenceTwo();
+        LevelZero(std::string file);
+        std::unique_ptr<Block> getBlock() override;
+        std::vector<std::string>getSequence();
         int getLevelNumber() const override;
 };
 
@@ -32,7 +29,7 @@ class LevelOne: public Level {
     int seed;
     public:
         LevelOne(int seed = 0);
-        std::unique_ptr<Block> getBlock(int playerNum) override;
+        std::unique_ptr<Block> getBlock() override;
         int getLevelNumber() const override;
 };
 
@@ -40,7 +37,7 @@ class LevelTwo: public Level {
     int seed;
     public:
         LevelTwo(int seed = 0);
-        std::unique_ptr<Block> getBlock(int playerNum) override;
+        std::unique_ptr<Block> getBlock() override;
         int getLevelNumber() const override;
 };
 class LevelThree: public Level {
@@ -48,7 +45,7 @@ class LevelThree: public Level {
     bool isRandom;
     public:
         LevelThree(int seed = 0);
-        std::unique_ptr<Block> getBlock(int playerNum) override;
+        std::unique_ptr<Block> getBlock() override;
         int getLevelNumber() const override;
         void setRandom(bool input);
 };
@@ -60,7 +57,7 @@ class LevelFour: public Level {
     public:
         void setRandom(bool input);
         LevelFour(int seed = 0);
-        std::unique_ptr<Block> getBlock(int playerNum) override;
+        std::unique_ptr<Block> getBlock() override;
         int getLevelNumber() const override;
 };
 

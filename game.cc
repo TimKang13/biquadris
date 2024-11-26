@@ -93,9 +93,11 @@ void Game::startGame(){
 }
 
 void Game::restartGame() {
+    std::string sequenceOne = players[0]->getSequenceFile();
+    std::string sequenceTwo = players[1]->getSequenceFile();
     players.clear(); //hope this frees the previous pts...
-    players.push_back(std::make_unique<Player>());
-    players.push_back(std::make_unique<Player>());
+    players.push_back(std::make_unique<Player>(sequenceOne)); // temporary solution
+    players.push_back(std::make_unique<Player>(sequenceTwo));
     turn = 0;
     isGameOver = false;
     numTotalMoves = 0;
@@ -117,11 +119,13 @@ void Game::endProgram(){
 }
 
 int main() {
+    std::string sequenceOne = "sequence1.txt";
+    std::string sequenceTwo = "sequence2.txt";
     CommandInterpreter CI {};
     // Create the list of players
     std::vector<std::unique_ptr<Player>> players;
-    players.push_back(std::make_unique<Player>());
-    players.push_back(std::make_unique<Player>());
+    players.push_back(std::make_unique<Player>(sequenceOne));
+    players.push_back(std::make_unique<Player>(sequenceTwo));
 
     // Initialize the game - note the std::move
     Game g{std::move(players), CI};
