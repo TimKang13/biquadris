@@ -47,7 +47,7 @@ std::vector<Coordinate> Block::getAbsolutePositions() const {
         for (int col = 0; col < shape[row].size(); ++col) {
             if (shape[row][col]) {
                 positions.emplace_back(
-                    position.row + relativeRow,
+                    position.row - relativeRow,
                     position.col + col
                 );
             }
