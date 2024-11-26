@@ -46,7 +46,7 @@ void Player::moveLeft() {
     Coordinate newPos = currentBlock->getPosition();
     newPos.col--;
     currentBlock->setPosition(newPos);
-    bool valid = newPos.col >= 0 && !board.checkCollision(*currentBlock);
+    bool valid = !board.checkCollision(*currentBlock);
     if (!valid) currentBlock->setPosition(oldPos);
 }
 
@@ -56,7 +56,7 @@ void Player::moveRight() {
     Coordinate newPos = currentBlock->getPosition();
     newPos.col++;
     currentBlock->setPosition(newPos);
-    bool valid = newPos.col <= Board::WIDTH - 1 && !board.checkCollision(*currentBlock);
+    bool valid = !board.checkCollision(*currentBlock);
     if (!valid) currentBlock->setPosition(oldPos);
 }
 
