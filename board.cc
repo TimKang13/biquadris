@@ -9,7 +9,7 @@ const int EMPTY_LIFE = -1;
 const Cell EMPTY_CELL = Cell(' ', EMPTY_LIFE, -1, -1);
 
 Board::Board():
-    grid{8, std::vector<Cell>(11, EMPTY_CELL)} {}
+    grid{HEIGHT, std::vector<Cell>(WIDTH, EMPTY_CELL)} {}
 
 std::vector<std::vector<Cell>> Board::getGrid(){
     return grid;
