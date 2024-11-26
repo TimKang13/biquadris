@@ -10,11 +10,11 @@ Player::Player(std::string fileName): sequenceFile{fileName} {
     nextBlock = level->getBlock();
 }
 
-
-Player::Player(std::string sequence, int player_num, int levelNum): player_num{player_num}, score{0}{
+// constructor with cmd line args
+Player::Player(std::string fileName, int levelNum): sequenceFile{fileName}{
     switch(levelNum){
         case 0:
-            level = std::make_unique<LevelZero>(sequence);
+            level = std::make_unique<LevelZero>(sequenceFile);
             break;
         case 1:
             level = std::make_unique<LevelOne>();
