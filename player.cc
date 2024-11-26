@@ -103,7 +103,8 @@ bool Player::drop() {
 }
 
 void Player::advanceBlock(){
-
+    currentBlock = std::move(nextBlock);
+    nextBlock = level->getBlock();
 }
 
 // Getters

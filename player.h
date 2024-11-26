@@ -17,7 +17,7 @@ class Player {
     public:
         // Constructor and destructor
         Player(std::string fileName);
-        Player(std::string sequenceFile, int level = 0);
+        Player(std::string sequenceFile, int level);
         ~Player();
         // Game actions
         void applySpecialAction(const std::string &action);
