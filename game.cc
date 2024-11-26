@@ -6,7 +6,7 @@
 #include <utility>
 #include <iostream>
 #include <fstream>
-#include <block.h>
+#include "block.h"
 #include "displays.h"
 using namespace std;
 
@@ -117,7 +117,7 @@ void Game::endProgram(){
 }
 
 int main() {
-    CommandInterpreter CI;
+    CommandInterpreter CI {};
     // Create the list of players
     std::vector<std::unique_ptr<Player>> players;
     players.push_back(std::make_unique<Player>());
