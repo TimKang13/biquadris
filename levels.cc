@@ -36,7 +36,7 @@ LevelZero::LevelZero(std::string fileOne, std::string fileTwo) : count1(0), coun
 }
 
 // given the player number (either 0 or 1),returns the next block for that player, update the count
-std::shared_ptr<Block> LevelZero::getBlock(int playerNum) {
+std::unique_ptr<Block> LevelZero::getBlock(int playerNum) {
     // Get the next block type for Player 1
     std::string blockType;
     if(playerNum == 1) {
@@ -48,19 +48,19 @@ std::shared_ptr<Block> LevelZero::getBlock(int playerNum) {
     }
     std::cout<< blockType << "\n";
     if(blockType == "iblock") { //
-        return std::make_shared<IBlock>();
+        return std::make_unique<IBlock>();
     } else if (blockType == "jblock") {
-        return std::make_shared<JBlock>();
+        return std::make_unique<JBlock>();
     } else if(blockType == "lblock") {
-        return std::make_shared<LBlock>();
+        return std::make_unique<LBlock>();
     } else if(blockType == "tblock") {
-        return std::make_shared<TBlock>();
+        return std::make_unique<TBlock>();
     } else if(blockType == "sblock") {
-        return std::make_shared<SBlock>();
+        return std::make_unique<SBlock>();
     } else if(blockType == "oblock") {
-        return std::make_shared<OBlock>();
+        return std::make_unique<OBlock>();
     } else if(blockType == "zblock") {
-        return std::make_shared<ZBlock>();
+        return std::make_unique<ZBlock>();
     }
     return nullptr;
 }
@@ -73,7 +73,7 @@ std::vector<std::string> LevelZero::getSequenceTwo() {return sequenceTwo;}
 LevelOne::LevelOne(int seed): seed{seed} {}
 
 // gets next block for level one
-std::shared_ptr<Block> LevelOne::getBlock(int playerNum) {
+std::unique_ptr<Block> LevelOne::getBlock(int playerNum) {
     srand(seed);
     //probability calcualted using culmulative distribution
    static const std::map<int, std::string> blockProbabilities = {
@@ -96,7 +96,7 @@ std::shared_ptr<Block> LevelOne::getBlock(int playerNum) {
 LevelTwo::LevelTwo(int seed): seed{seed} {}
 
 // gets next block for level 2
-std::shared_ptr<Block> LevelTwo::getBlock(int playerNum) {
+std::unique_ptr<Block> LevelTwo::getBlock(int playerNum) {
     srand(seed);
     static const std::map<int, std::string> blockProbabilities = {
         {1, "iblock"},  // 1/7
@@ -116,7 +116,7 @@ std::shared_ptr<Block> LevelTwo::getBlock(int playerNum) {
 // gets next block for level 3
 // need to write logic for random and norandom
 LevelThree::LevelThree(int seed): seed{seed} {}
-std::shared_ptr<Block> LevelThree::getBlock(int playerNum) {
+std::unique_ptr<Block> LevelThree::getBlock(int playerNum) {
     srand(seed);
     static const std::map<int, std::string> blockProbabilities = {
         {1, "iblock"},  // 1/9
@@ -128,7 +128,7 @@ std::shared_ptr<Block> LevelThree::getBlock(int playerNum) {
         {9, "zblock"}  // 2/9
     };
     int randNum = (rand() % 9) + 1;
-    std::shared_ptr<Block> temp = createBlock(blockProbabilities,randNum);
+    std::unique_ptr<Block> temp = createBlock(blockProbabilities,randNum);
     // set block to be heavy
     //temp.setHeavy(true);
     return temp;
@@ -137,7 +137,7 @@ std::shared_ptr<Block> LevelThree::getBlock(int playerNum) {
 
 // will finish integrating one by one block after 
 LevelFour::LevelFour(int seed): seed{seed}, blocksWithoutClear{0} {}
-std::shared_ptr<Block> LevelFour::getBlock(int playerNum) {
+std::unique_ptr<Block> LevelFour::getBlock(int playerNum) {
     srand(seed);
     static const std::map<int, std::string> blockProbabilities = {
         {1, "iblock"},  // 1/9
@@ -149,7 +149,7 @@ std::shared_ptr<Block> LevelFour::getBlock(int playerNum) {
         {9, "zblock"}  // 2/9
     };
     int randNum = (rand() % 9) + 1;
-    std::shared_ptr<Block> temp = createBlock(blockProbabilities,randNum);
+    std::unique_ptr<Block> temp = createBlock(blockProbabilities,randNum);
     //temp.setHeavy(true);
     blocksWithoutClear++;
     if (blocksWithoutClear % 5 == 0) {
@@ -157,17 +157,25 @@ std::shared_ptr<Block> LevelFour::getBlock(int playerNum) {
     }
     return temp;
 }
-std::shared_ptr<Block> createBlock(const std::map<int, std::string> &probabilities, int randNum) {
+std::unique_ptr<Block> createBlock(const std::map<int, std::string> &probabilities, int randNum) {
     std::string blockType;
     for (auto& p : probabilities) {
         if(randNum <= p.first) blockType = p.second;
     }
     if(blockType == "iblock") {
-        return std::make_shared<IBlock>();
+        return std::unique_ptr<IBlock>();
     } else if (blockType == "jblock") {
-        return std::make_shared<JBlock>();
+        return std::unique_ptr<JBlock>();
     } else if(blockType == "sblock") {
-        return std::make_shared<SBlock>();
+        return std::unique_ptr<SBlock>();
+    } else if(blockType == "zblock") {
+        return std::unique_ptr<ZBlock>();
+    } else if(blockType == "oblock") {
+        return std::unique_ptr<OBlock>();
+    } else if(blockType == "tblock") {
+        return std::unique_ptr<TBlock>();
+    } else {
+        return std::unique_ptr<LBlock>();
     }
 
     return nullptr;
