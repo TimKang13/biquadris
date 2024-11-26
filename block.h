@@ -38,7 +38,7 @@ class Block {
 
 class IBlock : public Block {
     public:
-        IBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'I'} {
+        IBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'I'} {
             shape = {
                 {0,0,0,0},
                 {0,0,0,0},
@@ -50,7 +50,7 @@ class IBlock : public Block {
 
 class JBlock : public Block {
     public:
-        JBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'J'} {
+        JBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'J'} {
             shape = {
                 {0,0,0},
                 {1,0,0},
@@ -61,7 +61,7 @@ class JBlock : public Block {
 
 class LBlock : public Block {
     public:
-        LBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'L'} {
+        LBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'L'} {
             shape = {
                 {0,0,0},
                 {0,0,1},
@@ -72,7 +72,7 @@ class LBlock : public Block {
 
 class OBlock : public Block {
     public:
-        OBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'O'} {
+        OBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'O'} {
             shape = {
                 {1,1},
                 {1,1}
@@ -82,7 +82,7 @@ class OBlock : public Block {
 
 class SBlock : public Block {
     public:
-        SBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'S'} {
+        SBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'S'} {
             shape = {
                 {0,0,0},
                 {0,1,1},
@@ -93,7 +93,7 @@ class SBlock : public Block {
 
 class ZBlock : public Block {
     public:
-        ZBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'Z'} {
+        ZBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'Z'} {
             shape = {
                 {0,0,0},
                 {1,1,0},
@@ -104,7 +104,7 @@ class ZBlock : public Block {
 
 class TBlock : public Block {
     public:
-        TBlock(const Coordinate& pos = {0, 0}) : Block{pos, 'T'} {
+        TBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'T'} {
             shape = {
                 {0,0,0},
                 {1,1,1},
