@@ -17,14 +17,15 @@ class TextDisplay : public Observer {
         }
 
         void displayBoards(const std::vector<std::unique_ptr<Player>>& players) {
-            for (int y = 4; y >= 0; y--) {
-                for (int x = 0; x < 4; x++)
-                    std::cout << players[0]->getBoard().getCell(y, x) << "X";
-                std::cout << "  ";
-                for (int x = 0; x < 4; x++)
-                    std::cout << players[1]->getBoard().getCell(y, x) << "X";
+            std::cout << std::string(Board::WIDTH, '-') << "\t" << std::string(Board::WIDTH, '-') << "\n";
+            // Print board contents
+            for (int y = 0; y < Board::HEIGHT; y++) {
+                for (int x = 0; x < Board::WIDTH; x++) std::cout << players[0]->getBoard().getCell(y, x);
+                std::cout << "\t";
+                for (int x = 0; x < Board::WIDTH; x++) std::cout << players[1]->getBoard().getCell(y, x);
                 std::cout << "\n";
             }
+            std::cout << std::string(Board::WIDTH, '-') << "\t" << std::string(Board::WIDTH, '-') << "\n";
         }
 };
 
