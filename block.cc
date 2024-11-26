@@ -1,5 +1,7 @@
 #include "block.h"
 #include <stdexcept>
+using namespace std;
+
 
 Block::Block(const Coordinate& pos, char fill): position{pos}, fill{fill} {}
 

@@ -2,6 +2,7 @@
 #define LEVEL_H
 #include "block.h"
 #include <map>
+#include <memory>
 #include <string>  
 
 class Level {

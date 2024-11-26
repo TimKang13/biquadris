@@ -2,6 +2,8 @@
 #define BLOCK_H
 #include <vector>
 #include <utility>
+using namespace std;
+
 
 struct Coordinate {
     int row, col;
