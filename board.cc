@@ -78,9 +78,11 @@ pair<int,int> Board::clearFullRows(){
 }
 
 int Board::clearDeadCells(){
-    for(int i = 0; i < this->grid.size(); ++i){
-        for(int j = 0; j < this->grid[i].size(); ++j){
-            this->grid[i][j] = EMPTY_CELL;
+    for(int i = 0; i < this->grid.size(); ++i) {
+        for(int j = 0; j < this->grid[i].size(); ++j) {
+            if(this->grid[i][j].getC() != ' ' && this->grid[i][j].getLife() == 0) {
+                this->grid[i][j] = EMPTY_CELL;
+            }
         }
     }
     return 0; //implement dead cell points logic
@@ -134,10 +136,10 @@ int Board::placeBlock(Block &b, int level){
             int lockerID;
             if(emptyLocker == -1){  //all locker full, need to emplace back
                 lockerID = lockers.size();
-                lockers.emplace_back(CellLocker{4, c, level});
+                // lockers.emplace_back(CellLocker{4, c, level});
             } else {
                 lockerID = emptyLocker;
-                lockers[lockerID] = CellLocker{4, c, level};
+                // lockers[lockerID] = CellLocker{4, c, level};
             }
             this->grid[row][col] = Cell(c, 10, level, lockerID); // 10 for now, will have to implement logic
         }
