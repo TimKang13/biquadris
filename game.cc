@@ -19,12 +19,19 @@ Game::Game(std::vector<std::unique_ptr<Player>>&& playerList, CommandInterpreter
     CI{CI},
     numTotalMoves{0} {}
 
-void Game::switchPlayer(){
-    //after turn ends, generate new current turn player's block and switch turn
-    players[turn]->advanceBlock();
+void Game::startTurn(){
+    bool canPlaceNextBlock = players[turn]->advanceBlock();
+    if(!canPlaceNextBlock){
+        endGame();
+    }
+}
+
+void Game::endTurn(){
+    players[turn]->flushCurrentBlock();
     turn = !turn;
     ++numTotalMoves;
 }
+
 pair<int, string> Game::getUserCmd(){
     return CI.getUserCmd(cin);
 }
@@ -77,17 +84,17 @@ void Game::updateDisplay(){
 //start game   //note: prefix for non prefix commands need to be filtered out in CI
 void Game::startGame(){
     while(!isGameOver){ //while game continues
-        bool endTurn = false;
-        while(!endTurn){ //next player's turn if drop
+        startTurn(); //will end game if currentBlock cannot be placed
+        bool isTurnOver = false;
+        while(!isTurnOver){ //next player's turn if drop
             updateDisplay();
             pair<int, string> cmdPair = getUserCmd();
             for(int i = 0; i < cmdPair.first; ++i){
                 executeCmd(cmdPair.second);
             }
-            endTurn = "drop" == cmdPair.second || "" == cmdPair.second;
+            isTurnOver = "drop" == cmdPair.second || "" == cmdPair.second;
         }
-        //change turn
-        switchPlayer();
+        endTurn();
     } 
     endProgram();
 }
@@ -104,7 +111,9 @@ void Game::restartGame() {
 }
 
 void Game::endGame(){
-    cout << "run it back?" << endl;
+    string winner = turn ? "player1" : "player2";
+    cout << "winner: " << winner << endl;
+    cout << "restart game?" << endl;
     while(1){
         pair<int, string> cmdPair = getUserCmd();
         string cmd = cmdPair.second;

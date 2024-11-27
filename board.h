@@ -22,7 +22,7 @@ class Board {
         Board();
         //constants
         static const int WIDTH = 11;
-        static const int HEIGHT = 15;
+        static const int HEIGHT = 18;
         //accessors
         std::vector<std::vector<Cell>> getGrid();
         char getCell(int row, int col) const {

@@ -28,7 +28,8 @@ class Game: public Subject {
         void endGame();
         void restartGame();
         void endProgram();
-        void switchPlayer();
+        void startTurn();
+        void endTurn();
         pair<int,string> getUserCmd();
         void executeCmd(string cmd);
         void updateDisplay();

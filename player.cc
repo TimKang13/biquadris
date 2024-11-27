@@ -7,7 +7,7 @@
 // default constructor
 Player::Player(std::string fileName): sequenceFile{fileName} {
     level = std::make_unique<LevelZero>(sequenceFile);
-    currentBlock = level->getBlock();
+    currentBlock = nullptr;
     nextBlock = level->getBlock();
 }
 
@@ -32,7 +32,7 @@ Player::Player(std::string fileName, int levelNum): sequenceFile{fileName}{
         default:
             throw std::invalid_argument("Invalid level");
     }
-    currentBlock = level->getBlock();
+    currentBlock = nullptr;
     nextBlock = level->getBlock();
 }
 
@@ -103,9 +103,17 @@ bool Player::drop() {
     return false;
 }
 
-void Player::advanceBlock(){
+bool Player::advanceBlock(){
     currentBlock = std::move(nextBlock);
     nextBlock = level->getBlock();
+    if(board.checkCollision(*currentBlock)){
+        return false; //can't place block
+    } 
+    return true; //can place block
+}
+
+void Player::flushCurrentBlock(){
+    currentBlock.reset(); //leaves unique_ptr empty
 }
 
 void Player::levelUp() {
