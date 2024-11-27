@@ -14,6 +14,9 @@ void TextDisplay::render(const std::vector<std::unique_ptr<Player>>& players, co
     const std::string border = '.' + std::string(Board::WIDTH, '-') + '.';
     // Score and level info
     displayScoreInfo(players, highScores);
+
+    //cell life testing
+    std::cout<< players[0]->getBoard().getCellLife(17,10) << endl;
     
     //locker testing
     std::vector<CellLocker> lockers = players[0]->getBoard().getLockers();
@@ -69,7 +72,7 @@ void TextDisplay::displayBoardRow(const Player* player, const std::vector<Coordi
     for (int col = 0; col < Board::WIDTH; ++col) {
         bool isBlock = std::any_of(blockCords.begin(), blockCords.end(),
             [row, col](const Coordinate& pos) { return pos.row == row && pos.col == col; });
-        std::cout << (isBlock ? block->getFill() : player->getBoard().getCell(row, col));
+        std::cout << (isBlock ? block->getFill() : player->getBoard().getCellChar(row, col));
     }
     std::cout << '|';
 }
