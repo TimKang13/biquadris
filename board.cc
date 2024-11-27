@@ -14,7 +14,7 @@ Board::Board():
 std::vector<std::vector<Cell>> Board::getGrid(){
     return grid;
 }
-
+int Board::getRowsCleared() const {return rowsCleared;}
 //check if current position of the block collides
 bool Board::checkCollision(Block &b){
     std::vector<Coordinate> positions = b.getAbsolutePositions();
@@ -36,6 +36,7 @@ bool Board::checkCollision(Block &b){
 int Board::clear(int level){
     //clear full rows, return points?
     pair<int, int> rowsClearedPair = clearFullRows();
+    rowsCleared = rowsClearedPair.first;
     int rowsClearedPoints = 0;
     if(rowsClearedPair.first > 0){ //only when at least one rows cleared
         rowsClearedPoints = (rowsClearedPair.first+level)*(rowsClearedPair.first+level);
@@ -184,6 +185,8 @@ void Board::printGrid() {
 void Board::setGrid(int r, int c, Cell cell){
     grid[r][c] = cell;
 }
+
+void Board::setRowsCleared(int num) {rowsCleared = num;}
 
 // int main() {
 //     Board b {};

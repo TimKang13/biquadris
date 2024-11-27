@@ -97,6 +97,12 @@ void Game::startGame(){
                 executeCmd(cmdPair.second);
             }
             isTurnOver = "drop" == cmdPair.second || "" == cmdPair.second;
+            if(cmdPair.second == "drop" && players[turn]->getBoard().getRowsCleared() > 1){
+                cout << "special action activated" << endl;
+                //string specialAction = getSpecialAction();
+                //player[!turn]->applySpecialAction();
+                players[turn]->setBoardRowsCleared(0); 
+            }
             if(players[turn]->getScore() > highScores[turn]){
                 highScores[turn] = players[turn]->getScore();
             }

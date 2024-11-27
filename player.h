@@ -51,6 +51,7 @@ class Player {
         void setScore(int newScore);
         void setLevel(int newLevel);
         void setCurrentBlock(char blockChar);
+        void setBoardRowsCleared(int num);
 };
 
 #endif
