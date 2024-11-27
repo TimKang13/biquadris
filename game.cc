@@ -19,6 +19,10 @@ Game::Game(std::vector<std::unique_ptr<Player>>&& playerList, CommandInterpreter
     CI{CI},
     numTotalMoves{0} {}
 
+GameState Game::getGameState() const{
+    return GameState{players, highScores};
+}
+
 void Game::startTurn(){
     bool canPlaceNextBlock = players[turn]->advanceBlock();
     if(!canPlaceNextBlock){
@@ -100,6 +104,14 @@ void Game::startGame(){
 }
 
 void Game::restartGame() {
+    //set high score
+    if(players[0]->getScore() > highScores[0]){
+        highScores[0] = players[0]->getScore();
+    }
+    if(players[1]->getScore() > highScores[1]){
+        highScores[1] = players[1]->getScore();
+    }
+    
     std::string sequenceOne = players[0]->getSequenceFile();
     std::string sequenceTwo = players[1]->getSequenceFile();
     int seed = players[0]->getSeed();
