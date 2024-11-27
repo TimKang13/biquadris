@@ -8,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include "block.h"
-#include "displays.h"
+#include "text_display.h"
 #include <fstream>
 
 using namespace std;

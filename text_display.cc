@@ -1,4 +1,4 @@
-#include "displays.h"
+#include "text_display.h"
 #include <iomanip>
 
 // CONSTRUCTOR
