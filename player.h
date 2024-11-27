@@ -13,6 +13,8 @@ class Player {
         Board board;
         std::unique_ptr<Block> currentBlock;
         std::unique_ptr<Block> nextBlock;
+        //special action
+        bool isHeavy;
 
     public:
         // Constructor and destructor
@@ -20,7 +22,11 @@ class Player {
         Player(std::string sequenceFile, int level, int seed);
         ~Player();
         // Game actions
+        void removeSpecialAction();
         void applySpecialAction(const std::string &action);
+        void applyBlind();
+        void applyForce(char blockChar);
+        void applyHeavy();
         void moveLeft();
         void moveRight();
         void moveDown();
@@ -46,6 +52,7 @@ class Player {
         const Block* getNextBlock() const;
         const std::string getSequenceFile() const;
         const int getSeed() const;
+        const bool getIsHeavy() const;
 
         // Setters
         void setScore(int newScore);
