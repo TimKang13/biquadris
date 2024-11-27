@@ -4,10 +4,12 @@
 #include <string>
 #include <utility>
 #include <sstream>
+#include <fstream>
 using namespace std;
 
 CommandInterpreter::CommandInterpreter(){
     // using a map format to accomodate for renaming commands
+    useCmdLine = false;
     commands = {{"left", "left"},
             {"right", "right"},
             {"down", "down"},
@@ -26,6 +28,35 @@ CommandInterpreter::CommandInterpreter(){
 }
 
 std::pair<int, std::string> CommandInterpreter::getUserCmd(std::istream& input) {
+    if(!useCmdLine) {
+        while(count < sequence.size()) {
+            std::istringstream iss{sequence[count]};
+            std::string word;
+            iss >> word;
+            commandToReturn = separateNumber(sequence[count]);
+            if(isValid()) {
+                if(commandToReturn.second == "sequence" || commandToReturn.second == "norandom") {
+                    std::string file;
+                    iss >> file;
+                    commandToReturn.second = commandToReturn.second +  " " + file;
+                }
+                if(commandToReturn.second == "rename") {
+                    std::string oldName;
+                    std::string newName;
+                    iss >> oldName >> newName;
+                    rename(oldName, newName);
+                    count++;
+                    continue;
+                }
+                updateNum();
+                count++;
+                return commandToReturn;
+            }
+            count++;
+        }
+        useCmdLine = true;
+    }
+    
     std::string line;
     // get a valid command
     while(std::getline(input, line)) {
@@ -62,19 +93,35 @@ std::pair<int, std::string> CommandInterpreter::getUserCmd(std::istream& input) 
 }
 
 std::string CommandInterpreter::getSpecialAction(std::istream& in) {
-    std::string action; 
+    std::string line;
     std::cout << "Please enter a special action (force/heavy/blind): ";
-    while(true) {
-        if (!(in >> action)) {
-            return "";
+
+    while (std::getline(in, line)) {
+        std::istringstream iss{line};
+        std::string action, type;
+        iss >> action;
+
+        // Check if the action is valid
+        auto it = specialActions.find(action);
+        if (it != specialActions.end()) {
+            if (it->second == "force") {
+                // Expect a type argument after "force"
+                if (iss >> type && (type == "L" || type == "Z" || type == "O" || type == "L" || type == "I" || type == "J" || type == "T")) {
+
+                    return it->second + " " + type;
+                } else {
+                    std::cout << "Invalid or missing type for 'force'. Please try again.\n";
+                    continue;
+                }
+            }
+            // For "heavy" or "blind", no additional input is required
+            return it->second;
         }
-        for (auto& p : specialActions) {
-            if(action == p.first) return p.second;
-        }
-        
+
         std::cout << "Invalid action. Please try again.\n";
     }
-    
+
+    return ""; // Return an empty string if no valid input is provided
 }
 // changes any numbers greater than one to one for commands that shouldn't be run more than once
 void CommandInterpreter::updateNum() {
@@ -145,4 +192,18 @@ void CommandInterpreter::rename(std::string oldName, std::string newName) {
         specialActions.erase(it);
         specialActions.insert({newName, value});
     }
+}
+
+void CommandInterpreter::setSequence(string file) {
+    ifstream f{file};
+    if(!f.good()) {
+        std::cerr << "File does not exist" << std::endl;
+        return;
+    }
+    string line;
+    while(f >> line) {
+        sequence.emplace_back(line);
+    }
+    useCmdLine = false;
+    count = 0;
 }
