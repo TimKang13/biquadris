@@ -107,6 +107,41 @@ void Player::advanceBlock(){
     nextBlock = level->getBlock();
 }
 
+void Player::levelUp() {
+    int levelNumber = level->getLevelNumber();
+    if(levelNumber == 4) return;
+    if(levelNumber == 0) {
+        level = std::make_unique<LevelOne>();
+    } else if(levelNumber == 1) {
+        level = std::make_unique<LevelTwo>();
+    } else if(levelNumber == 2) {
+        level = std::make_unique<LevelThree>();
+    } else {
+        level = std::make_unique<LevelFour>();
+    }
+}
+
+void Player::levelDown(){
+    int levelNumber = level->getLevelNumber();
+    if(levelNumber == 0) return;
+    if(levelNumber == 1) {
+        level = std::make_unique<LevelZero>(sequenceFile);
+    } else if(levelNumber == 2) {
+        level = std::make_unique<LevelOne>();
+    } else if(levelNumber == 3) {
+        level = std::make_unique<LevelTwo>();
+    } else {
+        level = std::make_unique<LevelThree>();
+    }
+}
+void Player::noRandom() {
+    if(level->getLevelNumber() != 3 && level->getLevelNumber() != 4) return;
+    level->setRandom(false);
+}
+void Player::makeLevelRandom(){
+    
+}
+
 // Getters
 int Player::getScore() const { return score; }
 int Player::getLevelNumber() const { return level->getLevelNumber(); }

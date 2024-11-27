@@ -116,6 +116,8 @@ std::unique_ptr<Block> LevelThree::getBlock() {
     return temp;
 }
 
+void LevelThree::setRandom(bool input) {isRandom = input;}
+void LevelFour::setRandom(bool input) {isRandom = input;}
 
 // will finish integrating one by one block after 
 LevelFour::LevelFour(int seed): seed{seed}, blocksWithoutClear{0} {}
