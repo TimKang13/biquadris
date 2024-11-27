@@ -60,6 +60,7 @@ std::vector<Coordinate> Block::getAbsolutePositions() const {
 void Block::setPosition(const Coordinate& newPosition) {
     position = newPosition;
 }
+void Block::setHeavy(bool input) {heavy = input;}
 Coordinate Block::getPosition() const {
     return position;
 }
