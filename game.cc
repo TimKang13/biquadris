@@ -45,9 +45,9 @@ void Game::executeCmd(string cmd){
             endGame();
         }
     } else if (cmd == "levelup") {
-        // players[turn]->levelUp();
+        players[turn]->levelUp();
     } else if (cmd == "leveldown") {
-        // players[turn]->levelDown();
+        players[turn]->levelDown();
     } else if (cmd == "norandom") {
         // players[turn]->noRandom();
     } else if (cmd == "random") {
@@ -116,23 +116,5 @@ void Game::endGame(){
 void Game::endProgram(){
     // anything that needs to be run when game is over
     exit(0);
-}
-
-int main() {
-    std::string sequenceOne = "sequence1.txt";
-    std::string sequenceTwo = "sequence2.txt";
-    CommandInterpreter CI {};
-    // Create the list of players
-    std::vector<std::unique_ptr<Player>> players;
-    players.push_back(std::make_unique<Player>(sequenceOne, 0));
-    players.push_back(std::make_unique<Player>(sequenceTwo, 0));
-
-    // Initialize the game - note the std::move
-    Game g{std::move(players), CI};
-
-    TextDisplay display(g);
-    g.attach(&display);
-
-    g.startGame();
 }
 
