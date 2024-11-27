@@ -11,7 +11,7 @@ class Level {
         virtual int getLevelNumber() const = 0;
         virtual std::unique_ptr<Block> getBlock() = 0;
         virtual ~Level() {};
-
+        virtual void setRandom(bool random) {};
 };
 
 class LevelZero: public Level {
