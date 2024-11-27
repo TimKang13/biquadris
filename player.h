@@ -29,7 +29,8 @@ class Player {
         bool drop();
 
         //Block actions
-        void advanceBlock();
+        bool advanceBlock();
+        void flushCurrentBlock();
 
         //Level actions
         void levelUp();
