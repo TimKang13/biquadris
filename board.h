@@ -15,7 +15,7 @@ class Board {
     // current board 
     std::vector<std::vector<Cell>> grid;
     std::vector<CellLocker> lockers;
-    int emptyLocker; //-1 if all full . then emplace back
+    std::vector<int> emptyLockers; 
 
     public:
         //ctor
