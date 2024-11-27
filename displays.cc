@@ -11,11 +11,11 @@ void TextDisplay::notify() {
 
 // RENDER GAME
 void TextDisplay::render(const std::vector<std::unique_ptr<Player>>& players, const std::vector<int>& highScores) {
-    const std::string border = std::string(Board::WIDTH, '-');
+    const std::string border = '.' + std::string(Board::WIDTH, '-') + '.';
     // Score and level info
     displayScoreInfo(players, highScores);
     // Top border
-    std::cout << border << SPACE << border << "\n";
+    std::cout << border  << SPACE  << border << "\n";
     // Game boards row by row
     const auto blockCords0 = players[0]->getCurrentBlock() ? 
         players[0]->getCurrentBlock()->getAbsolutePositions() : std::vector<Coordinate>{};
@@ -28,7 +28,7 @@ void TextDisplay::render(const std::vector<std::unique_ptr<Player>>& players, co
         std::cout << "\n";
     }
     // Bottom border
-    std::cout << border << SPACE << border << "\n";
+    std::cout << border << SPACE  << border  << "\n";
     // Next blocks
     displayNextBlocks(players[0]->getNextBlock(), players[1]->getNextBlock());
 }
@@ -59,11 +59,13 @@ void TextDisplay::displayScoreInfo(const std::vector<std::unique_ptr<Player>>& p
 // DISPLAY A SINGLE ROW OF A PLAYER'S BOARD
 void TextDisplay::displayBoardRow(const Player* player, const std::vector<Coordinate>& blockCords, int row) {
     const Block* block = player->getCurrentBlock();
+    std::cout << '|';
     for (int col = 0; col < Board::WIDTH; ++col) {
         bool isBlock = std::any_of(blockCords.begin(), blockCords.end(),
             [row, col](const Coordinate& pos) { return pos.row == row && pos.col == col; });
         std::cout << (isBlock ? block->getFill() : player->getBoard().getCell(row, col));
     }
+    std::cout << '|';
 }
 
 // DISPLAY NEXT BLOCKS
