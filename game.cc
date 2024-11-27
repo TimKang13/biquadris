@@ -64,11 +64,7 @@ void Game::executeCmd(string cmd){
     } else if (cmd == "random") {
         players[turn]->makeLevelRandom();
     } else if (cmd.substr(0, 8) == "sequence") {
-        string s;
-        ifstream f{cmd.substr(9)};
-        while(f >> s){
-            executeCmd(s);
-        }
+        CI.setSequence(cmd.substr(9));
     } else if (cmd == "restart") {
         restartGame();
     } else if (cmd == "I" || cmd == "J" || cmd == "L" || 
