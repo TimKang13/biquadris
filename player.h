@@ -6,7 +6,7 @@
 
 class Player {
     private:
-        int player_num;
+        int seed;
         std::string sequenceFile;
         int score;
         std::unique_ptr<Level> level;
@@ -17,7 +17,7 @@ class Player {
     public:
         // Constructor and destructor
         Player(std::string fileName);
-        Player(std::string sequenceFile, int level);
+        Player(std::string sequenceFile, int level, int seed);
         ~Player();
         // Game actions
         void applySpecialAction(const std::string &action);
@@ -45,6 +45,7 @@ class Player {
         const Block* getCurrentBlock() const;
         const Block* getNextBlock() const;
         const std::string getSequenceFile() const;
+        const int getSeed() const;
 
         // Setters
         void setScore(int newScore);

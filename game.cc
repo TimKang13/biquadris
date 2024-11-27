@@ -102,9 +102,10 @@ void Game::startGame(){
 void Game::restartGame() {
     std::string sequenceOne = players[0]->getSequenceFile();
     std::string sequenceTwo = players[1]->getSequenceFile();
+    int seed = players[0]->getSeed();
     players.clear(); //hope this frees the previous pts...
-    players.push_back(std::make_unique<Player>(sequenceOne, 0)); // temporary solution
-    players.push_back(std::make_unique<Player>(sequenceTwo, 0));
+    players.push_back(std::make_unique<Player>(sequenceOne, 0, seed)); // temporary solution
+    players.push_back(std::make_unique<Player>(sequenceTwo, 0, seed));
     turn = 0;
     isGameOver = false;
     numTotalMoves = 0;

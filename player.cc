@@ -12,22 +12,22 @@ Player::Player(std::string fileName): sequenceFile{fileName} {
 }
 
 // constructor with cmd line args
-Player::Player(std::string fileName, int levelNum): sequenceFile{fileName}{
+Player::Player(std::string fileName, int levelNum, int seed): seed{seed}, sequenceFile{fileName}{
     switch(levelNum){
         case 0:
             level = std::make_unique<LevelZero>(sequenceFile);
             break;
         case 1:
-            level = std::make_unique<LevelOne>();
+            level = std::make_unique<LevelOne>(seed);
             break;
         case 2:
-            level = std::make_unique<LevelTwo>();
+            level = std::make_unique<LevelTwo>(seed);
             break;
         case 3:
-            level = std::make_unique<LevelThree>();
+            level = std::make_unique<LevelThree>(seed);
             break;
         case 4:
-            level = std::make_unique<LevelFour>();
+            level = std::make_unique<LevelFour>(seed);
             break;
         default:
             throw std::invalid_argument("Invalid level");
@@ -120,13 +120,13 @@ void Player::levelUp() {
     int levelNumber = level->getLevelNumber();
     if(levelNumber == 4) return;
     if(levelNumber == 0) {
-        level = std::make_unique<LevelOne>();
+        level = std::make_unique<LevelOne>(seed);
     } else if(levelNumber == 1) {
-        level = std::make_unique<LevelTwo>();
+        level = std::make_unique<LevelTwo>(seed);
     } else if(levelNumber == 2) {
-        level = std::make_unique<LevelThree>();
+        level = std::make_unique<LevelThree>(seed);
     } else {
-        level = std::make_unique<LevelFour>();
+        level = std::make_unique<LevelFour>(seed);
     }
 }
 
@@ -136,11 +136,11 @@ void Player::levelDown(){
     if(levelNumber == 1) {
         level = std::make_unique<LevelZero>(sequenceFile);
     } else if(levelNumber == 2) {
-        level = std::make_unique<LevelOne>();
+        level = std::make_unique<LevelOne>(seed);
     } else if(levelNumber == 3) {
-        level = std::make_unique<LevelTwo>();
+        level = std::make_unique<LevelTwo>(seed);
     } else {
-        level = std::make_unique<LevelThree>();
+        level = std::make_unique<LevelThree>(seed);
     }
 }
 void Player::noRandom() {
@@ -158,6 +158,7 @@ const Board& Player::getBoard() const { return board; }
 const Block* Player::getCurrentBlock() const { return currentBlock.get(); }
 const Block* Player::getNextBlock() const { return nextBlock.get(); }
 const std::string Player::getSequenceFile() const {return sequenceFile;}
+const int Player::getSeed() const {return seed;};
 // Setters
 void Player::setScore(int newScore) { score = newScore; }
 void Player::setLevel(int newLevel) { 
