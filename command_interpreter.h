@@ -6,6 +6,7 @@
 
 class CommandInterpreter {
     std::map<std::string, std::string> commands;
+    std::map<std::string, std::string> specialActions;
     std::vector<std::string> macros; // to be implemented later, not sure how macro works yet
     std::pair<int, std::string> commandToReturn;
     std::pair<int, std::string> separateNumber(std::string word);
@@ -16,6 +17,7 @@ class CommandInterpreter {
     public:
         CommandInterpreter();
         std::pair<int, std::string> getUserCmd(std::istream& input);
+        std::string getSpecialAction(std::istream& input);
 };
 
 #endif

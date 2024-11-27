@@ -22,6 +22,7 @@ CommandInterpreter::CommandInterpreter(){
             {"sequence", "sequence"},
             {"rename", "rename"}
     };
+    specialActions = {{"heavy", "heavy"}, {"blind", "blind"}, {"force", "force"}};
 }
 
 std::pair<int, std::string> CommandInterpreter::getUserCmd(std::istream& input) {
@@ -60,6 +61,21 @@ std::pair<int, std::string> CommandInterpreter::getUserCmd(std::istream& input) 
     
 }
 
+std::string CommandInterpreter::getSpecialAction(std::istream& in) {
+    std::string action; 
+    std::cout << "Please enter a special action (force/heavy/blind): ";
+    while(true) {
+        if (!(in >> action)) {
+            return "";
+        }
+        for (auto& p : specialActions) {
+            if(action == p.first) return p.second;
+        }
+        
+        std::cout << "Invalid action. Please try again.\n";
+    }
+    
+}
 // changes any numbers greater than one to one for commands that shouldn't be run more than once
 void CommandInterpreter::updateNum() {
     if(commandToReturn.first == 0) return;
@@ -78,7 +94,6 @@ bool CommandInterpreter::isValid() {
         commandToReturn.second = commandValues[0];
         return true;
     }
-    
 
     return false;
 }
@@ -113,12 +128,21 @@ std::pair<int, std::string> CommandInterpreter::separateNumber(std::string word)
     return {number, letters};
 }
 
-// rename a certain command, if that name doesn't exist, do nothing
+// rename a certain command or special action, if that name doesn't exist, do nothing
 void CommandInterpreter::rename(std::string oldName, std::string newName) {
+    // rename a command
     auto it = commands.find(oldName);
     if (it != commands.end()) {
         std::string value = it->second;
         commands.erase(it);
         commands.insert({newName, value});
+        return;
+    }
+    //rename special action 
+    it = specialActions.find(oldName);
+    if (it != specialActions.end()) {
+        std::string value = it->second;
+        specialActions.erase(it);
+        specialActions.insert({newName, value});
     }
 }

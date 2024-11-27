@@ -99,7 +99,7 @@ void Game::startGame(){
             isTurnOver = "drop" == cmdPair.second || "" == cmdPair.second;
             if(cmdPair.second == "drop" && players[turn]->getBoard().getRowsCleared() > 1){
                 cout << "special action activated" << endl;
-                //string specialAction = getSpecialAction();
+                string specialAction = CI.getSpecialAction(cin);
                 //player[!turn]->applySpecialAction();
                 players[turn]->setBoardRowsCleared(0); 
             }
