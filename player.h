@@ -14,7 +14,8 @@ class Player {
         std::unique_ptr<Block> currentBlock;
         std::unique_ptr<Block> nextBlock;
         //special action
-        bool isHeavy;
+        bool heavy;
+        bool blind;
 
     public:
         // Constructor and destructor
@@ -52,7 +53,8 @@ class Player {
         const Block* getNextBlock() const;
         const std::string getSequenceFile() const;
         const int getSeed() const;
-        const bool getIsHeavy() const;
+        const bool isHeavy() const;
+        const bool isBlind() const;
 
         // Setters
         void setScore(int newScore);
