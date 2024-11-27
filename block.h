@@ -36,6 +36,7 @@ class Block {
         // Getters and setters
         Coordinate getPosition() const;
         void setPosition(const Coordinate& newPos);
+        void setHeavy(bool in);
         const std::vector<std::vector<bool>>& getShape() const;
         char getFill() const;
         int getLife() const;
