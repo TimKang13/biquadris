@@ -1,23 +1,35 @@
 #include "displays.h"
+#include <iomanip>
 
 // Constructor
 TextDisplay::TextDisplay(Game& g) : game(g) {}
 
 // Notification handler
 void TextDisplay::notify() {
-    displayBoards(game.getGameState().players);
+    displayBoards(game.getGameState().players, game.getGameState().highScores);
 }
 
 // Displays the boards of both players
-void TextDisplay::displayBoards(const std::vector<std::unique_ptr<Player>>& players) {
+void TextDisplay::displayBoards(const std::vector<std::unique_ptr<Player>>& players, const std::vector<int>& highScores) {
     const std::string border = std::string(Board::WIDTH, '-');
     const char SPACE = '\t';
+    const int WIDTH = 12;
 
     // Display levels and scores
-    std::cout << "Level:    " << players[0]->getLevelNumber()
-              << SPACE << "Level:    " << players[1]->getLevelNumber() << "\n";
-    std::cout << "Score:    " << players[0]->getScore()
-              << SPACE << "Score:    " << players[1]->getScore() << "\n";
+    std::cout << std::left << std::setw(WIDTH) << "Level:"
+              << players[0]->getLevelNumber()
+              << SPACE << std::setw(WIDTH) << "Level:"
+              << players[1]->getLevelNumber() << "\n";
+
+    std::cout << std::left << std::setw(WIDTH) << "High Score:"
+              << highScores[0]
+              << SPACE << std::setw(WIDTH) << "High Score:"
+              << highScores[1] << "\n";
+
+    std::cout << std::left << std::setw(WIDTH) << "Score:"
+              << players[0]->getScore()
+              << SPACE << std::setw(WIDTH) << "Score:"
+              << players[1]->getScore() << "\n";
 
     // Display top border
     std::cout << border << SPACE << border << "\n";

@@ -20,7 +20,7 @@ public:
 
 private:
     // Helper methods
-    void displayBoards(const std::vector<std::unique_ptr<Player>>& players);
+    void displayBoards(const std::vector<std::unique_ptr<Player>>& players, const std::vector<int>& highScores);
     void displayBoardRow(const Player* player, const std::vector<Coordinate>& positions, int y);
 };
 

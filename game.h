@@ -11,6 +11,7 @@ using namespace std;
 
 struct GameState {
     const std::vector<std::unique_ptr<Player>>& players;
+    const std::vector<int>& highScores;
 };
 
 class Game: public Subject {
@@ -33,9 +34,7 @@ class Game: public Subject {
         pair<int,string> getUserCmd();
         void executeCmd(string cmd);
         void updateDisplay();
-        GameState getGameState() const {
-            return GameState{players};
-        }
+        GameState getGameState() const;
 
         //getters
         Player getPlayer1() const;
