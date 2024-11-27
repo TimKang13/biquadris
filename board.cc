@@ -144,9 +144,7 @@ int Board::placeBlock(Block &b, int level){
         int lockerID;
         if(emptyLocker == -1){
             lockerID = lockers.size();
-            cout << "filling locker " << c << endl;
             lockers.emplace_back(CellLocker{4, c, level});
-            cout << lockers[lockerID].c << endl;
         } else {
             lockerID = emptyLocker;
             lockers[lockerID] = CellLocker{4, c, level};
