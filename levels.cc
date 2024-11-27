@@ -9,43 +9,16 @@
 // sets list of blocks in sequence one and sequence two based on the given input files
 LevelZero::LevelZero(std::string file) : count{0} {
     // Load sequence1.txt into sequenceOne
-    std::ifstream streamOne{file};
-    if (!streamOne) {
-        throw std::runtime_error("Error: Could not open file");
-    }
-    std::string line;
-    while (std::getline(streamOne, line)) {
-        sequenceText.push_back(line);
-    }
-    if (sequenceText.empty()) {
-        std::string error = "Error: " + file + " is empty";
-        throw std::runtime_error(error);
-    }
+    sequenceText = parseBlockSequence(file);
 }
 
 // gets the block for player in level zero
 std::unique_ptr<Block> LevelZero::getBlock() {
 
-    std::string blockType;
-    blockType = sequenceText[count];
+    std::string blockType = sequenceText[count];
     count = (count + 1) % sequenceText.size(); // Loop back to the start
  //   std::cout<< blockType << "\n";
-    if(blockType == "iblock") { //
-        return std::make_unique<IBlock>();
-    } else if (blockType == "jblock") {
-        return std::make_unique<JBlock>();
-    } else if(blockType == "lblock") {
-        return std::make_unique<LBlock>();
-    } else if(blockType == "tblock") {
-        return std::make_unique<TBlock>();
-    } else if(blockType == "sblock") {
-        return std::make_unique<SBlock>();
-    } else if(blockType == "oblock") {
-        return std::make_unique<OBlock>();
-    } else if(blockType == "zblock") {
-        return std::make_unique<ZBlock>();
-    }
-    return nullptr;
+    return createBlock(blockType);
 }
 
 // for testing purposes
@@ -71,8 +44,9 @@ std::unique_ptr<Block> LevelOne::getBlock() {
     };
     // Generate a random number between 1 and 12
     int randNum = (rand() % 12) + 1;
-    unique_ptr<Block> tempBlock = createBlock(blockProbabilities, randNum);
-    return createBlock(blockProbabilities, randNum);
+    string blockType = getBlockType(blockProbabilities,randNum);
+    std::unique_ptr<Block> temp = createBlock(blockType);
+    return temp;
 }
 
 LevelTwo::LevelTwo(int seed) {
@@ -94,60 +68,56 @@ std::unique_ptr<Block> LevelTwo::getBlock() {
 
     // Generate a random number between 1 and 7
     int randNum = (rand() % 7) + 1;
-    return createBlock(blockProbabilities, randNum);
+    string blockType = getBlockType(blockProbabilities,randNum);
+    std::unique_ptr<Block> temp = createBlock(blockType);
+    return temp;
 }
 
 // gets next block for level 3
 // need to write logic for random and norandom
 LevelThree::LevelThree(int seed) {
     srand(seed);  
+    isRandom = true;
 }
 std::unique_ptr<Block> LevelThree::getBlock() {
-
-    static const std::map<int, std::string> blockProbabilities = {
-        {1, "iblock"},  // 1/9
-        {2, "jblock"},  // 1/9
-        {3, "lblock"},  // 1/9
-        {4, "oblock"},  // 1/9
-        {5, "tblock"}, // 1/9
-        {7, "sblock"}, // 2/9
-        {9, "zblock"}  // 2/9
-    };
-    int randNum = (rand() % 9) + 1;
-    std::unique_ptr<Block> temp = createBlock(blockProbabilities,randNum);
+    std::unique_ptr<Block> temp;
+    if(isRandom) {
+        static const std::map<int, std::string> blockProbabilities = {
+            {1, "iblock"},  // 1/9
+            {2, "jblock"},  // 1/9
+            {3, "lblock"},  // 1/9
+            {4, "oblock"},  // 1/9
+            {5, "tblock"}, // 1/9
+            {7, "sblock"}, // 2/9
+            {9, "zblock"}  // 2/9
+        };
+        int randNum = (rand() % 9) + 1;
+        string blockType = getBlockType(blockProbabilities,randNum);
+        temp = createBlock(blockType);
+    } else {
+        string blockType = sequenceText[count];
+        count = (count + 1) % sequenceText.size(); // Loop back to the start
+        temp =  createBlock(blockType);
+    }
+    
     // set block to be heavy
     //temp.setHeavy(true);
     return temp;
 }
 
+void LevelThree::addSequence(std::string file) {
+    sequenceText = parseBlockSequence(file);
+    count = 0;
+}
 void LevelThree::setRandom(bool input) {isRandom = input;}
-void LevelFour::setRandom(bool input) {isRandom = input;}
 
 // will finish integrating one by one block after 
-LevelFour::LevelFour(int seed): blocksWithoutClear{0} {
+LevelFour::LevelFour(int seed): LevelThree(seed), blocksWithoutClear{0} {
     srand(seed);
 }
-std::unique_ptr<Block> LevelFour::getBlock() {
-    
-    static const std::map<int, std::string> blockProbabilities = {
-        {1, "iblock"},  // 1/9
-        {2, "jblock"},  // 1/9
-        {3, "lblock"},  // 1/9
-        {4, "oblock"},  // 1/9
-        {5, "tblock"}, // 1/9
-        {7, "sblock"}, // 2/9
-        {9, "zblock"}  // 2/9
-    };
-    int randNum = (rand() % 9) + 1;
-    std::unique_ptr<Block> temp = createBlock(blockProbabilities,randNum);
-    //temp.setHeavy(true);
-    blocksWithoutClear++;
-    if (blocksWithoutClear % 5 == 0) {
-        //dropOneByOneBlock(gameBoard);
-    }
-    return temp;
-}
-std::unique_ptr<Block> createBlock(const std::map<int, std::string> &probabilities, int randNum) {
+// std::unique_ptr<Block> LevelFour::getBlock() {}
+
+std::string getBlockType(const std::map<int, std::string> &probabilities, int randNum) {
     std::string blockType;
     for (auto& p : probabilities) {
         if(randNum <= p.first) {
@@ -155,6 +125,9 @@ std::unique_ptr<Block> createBlock(const std::map<int, std::string> &probabiliti
             break;
         } 
     }
+    return blockType;
+}
+std::unique_ptr<Block> createBlock(std::string blockType) {
     if(blockType == "iblock") {
         return std::make_unique<IBlock>();
     } else if (blockType == "jblock") {
@@ -174,6 +147,25 @@ std::unique_ptr<Block> createBlock(const std::map<int, std::string> &probabiliti
     return nullptr;
 }
 
+std::vector<std::string> parseBlockSequence(const std::string& file) {
+    std::ifstream stream{file};
+
+    std::vector<std::string> sequence;
+    std::string line;
+    while (std::getline(stream, line)) {
+        if (line == "iblock" || line == "jblock" || line == "sblock" || 
+            line == "zblock" || line == "tblock" || line == "lblock" || 
+            line == "oblock") {
+            sequence.push_back(line);
+        }
+    }
+
+    if (sequence.empty()) {
+        throw std::runtime_error("Error: " + file + " is empty or contains no valid blocks");
+    }
+
+    return sequence;
+}
 int LevelZero::getLevelNumber() const{return 0;}
 int LevelOne::getLevelNumber() const{return 1;}
 int LevelTwo::getLevelNumber() const{return 2;}

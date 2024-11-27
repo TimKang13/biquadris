@@ -35,7 +35,7 @@ class Player {
         //Level actions
         void levelUp();
         void levelDown();
-        void noRandom();
+        void noRandom(std::string file);
         void makeLevelRandom();
 
         // Getters

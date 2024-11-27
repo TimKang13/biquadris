@@ -12,6 +12,7 @@ class Level {
         virtual std::unique_ptr<Block> getBlock() = 0;
         virtual ~Level() {};
         virtual void setRandom(bool random) {};
+        virtual void addSequence(std::string file) {}
 };
 
 class LevelZero: public Level {
@@ -41,25 +42,26 @@ class LevelTwo: public Level {
         int getLevelNumber() const override;
 };
 class LevelThree: public Level {
-
+    std::vector<std::string> sequenceText;
+    int count;
     bool isRandom;
     public:
         LevelThree(int seed = 0);
         std::unique_ptr<Block> getBlock() override;
         int getLevelNumber() const override;
         void setRandom(bool input) override;
+        void addSequence(std::string file) override;
 };
 
-class LevelFour: public Level {
-
-    int blocksWithoutClear;
-    bool isRandom;
-    public:
-        void setRandom(bool input) override;
-        LevelFour(int seed = 0);
-        std::unique_ptr<Block> getBlock() override;
-        int getLevelNumber() const override;
+class LevelFour : public LevelThree {
+public:
+    LevelFour(int seed = 0);
+   // std::unique_ptr<Block> getBlock() override;
+    int getLevelNumber() const override;
+    int blocksWithoutClear; // Tracks blocks placed without clearing rows
 };
 
-std::unique_ptr<Block> createBlock(const std::map<int, std::string> &probabilities, int randNum);
+std::unique_ptr<Block> createBlock(std::string blockType);
+std::vector<std::string> parseBlockSequence(const std::string& file);
+std::string getBlockType(const std::map<int, std::string> &probabilities, int randNum);
 #endif
