@@ -23,8 +23,9 @@ class Block {
         void rotateMatrix(int degrees);
         int life;
         bool invincible;
+        bool heavy;
     public:
-        Block(const Coordinate& pos = {0, 0}, char fill = '#', int life = -1, bool invincible = true);
+        Block(const Coordinate& pos = {0, 0}, char fill = '#', int life = -1, bool invincible = true, bool heavy = false);
         virtual ~Block() = default;
         // Rotates the block 90 degrees clockwise
         void rotateCW();
@@ -39,6 +40,7 @@ class Block {
         char getFill() const;
         int getLife() const;
         bool isInvincible() const;
+        bool isHeavy() const;
 };
 
 class IBlock : public Block {

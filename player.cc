@@ -4,16 +4,17 @@
 #include <iostream>
 #include <memory>
 #include <fstream>
+using namespace std;
 
 // default constructor
-Player::Player(std::string fileName): sequenceFile{fileName} {
+Player::Player(std::string fileName): sequenceFile{fileName}, heavy{false}, blind{false}{
     level = std::make_unique<LevelZero>(sequenceFile);
     currentBlock = nullptr;
     nextBlock = level->getBlock();
 }
 
 // constructor with cmd line args
-Player::Player(std::string fileName, int levelNum, int seed): seed{seed}, sequenceFile{fileName}{
+Player::Player(std::string fileName, int levelNum, int seed): seed{seed}, sequenceFile{fileName}, heavy{false}{
     switch(levelNum){
         case 0:
             level = std::make_unique<LevelZero>(sequenceFile);
@@ -40,7 +41,35 @@ Player::Player(std::string fileName, int levelNum, int seed): seed{seed}, sequen
 
 Player::~Player() {}
 
-void Player::applySpecialAction(const std::string& action) {}
+void Player::removeSpecialAction(){
+    heavy = false;
+    blind = false;
+}
+
+void Player::applySpecialAction(const std::string& action) {
+    if(action == "blind"){
+        applyBlind();
+    } else if(action == "heavy"){
+        applyHeavy();
+    } else if (action.substr(0, 5) == "force"){
+        char blockChar = action[6];
+        applyForce(blockChar);
+    } else {
+        cout << "invalid special action string" << endl;
+    }
+}
+
+//special actions
+void Player::applyHeavy(){
+    heavy = true;
+}
+void Player::applyBlind(){
+    blind = true;
+}
+void Player::applyForce(char blockChar){
+    //applied when the player's next block is not yet current block.
+    nextBlock = createBlock(std::string(1, std::tolower(blockChar)) + "block");
+}
 
 void Player::moveLeft() {
     if (!currentBlock) return;
@@ -166,7 +195,9 @@ const Board& Player::getBoard() const { return board; }
 const Block* Player::getCurrentBlock() const { return currentBlock.get(); }
 const Block* Player::getNextBlock() const { return nextBlock.get(); }
 const std::string Player::getSequenceFile() const {return sequenceFile;}
-const int Player::getSeed() const {return seed;};
+const int Player::getSeed() const {return seed;}
+const bool Player::isHeavy() const {return heavy;}
+const bool Player::isBlind() const {return blind;}
 // Setters
 void Player::setScore(int newScore) { score = newScore; }
 void Player::setBoardRowsCleared(int num) {board.setRowsCleared(num);}

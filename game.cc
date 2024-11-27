@@ -31,9 +31,15 @@ void Game::startTurn(){
 }
 
 void Game::endTurn(){
+    if(players[turn]->getScore() > highScores[turn]){
+        highScores[turn] = players[turn]->getScore();
+    }
+    //remove special action for current player
+    players[turn]->removeSpecialAction();
     players[turn]->flushCurrentBlock();
-    turn = !turn;
     ++numTotalMoves;
+
+    turn = !turn; //switch turn
 }
 
 pair<int, string> Game::getUserCmd(){
@@ -58,11 +64,8 @@ void Game::executeCmd(string cmd){
         if(players[turn]->getBoard().getRowsCleared() > 1){
             cout << "special action activated" << endl;
             string specialAction = CI.getSpecialAction(cin);
-            //player[!turn]->applySpecialAction();
+            players[!turn]->applySpecialAction(specialAction);
             players[turn]->setBoardRowsCleared(0); 
-        }
-        if(players[turn]->getScore() > highScores[turn]){
-            highScores[turn] = players[turn]->getScore();
         }
     } else if (cmd == "levelup") {
         players[turn]->levelUp();
