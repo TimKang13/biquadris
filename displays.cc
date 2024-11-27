@@ -88,7 +88,7 @@ void TextDisplay::displayNextBlocks(const Block* nextBlock1, const Block* nextBl
         size_t shapeRow1 = nextBlock1 ? 
             (shape1.size() - PREVIEW_HEIGHT + i) : 0;
         size_t shapeRow2 = nextBlock2 ? 
-            (shape1.size() - PREVIEW_HEIGHT + i) : 0;
+            (shape2.size() - PREVIEW_HEIGHT + i) : 0;
         // Get shape row strings
         std::string leftPreview = "";
         std::string rightPreview = "";
