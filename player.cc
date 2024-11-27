@@ -71,7 +71,6 @@ void Player::applyForce(char blockChar){
     nextBlock = createBlock(std::string(1, std::tolower(blockChar)) + "block");
 }
 
-
 void Player::moveLeft() {
     if (!currentBlock) return;
     Coordinate oldPos = currentBlock->getPosition();
