@@ -52,11 +52,13 @@ std::unique_ptr<Block> LevelZero::getBlock() {
 std::vector<std::string> LevelZero::getSequence() {return sequenceText;} 
 
 // sets seed for randomizer to be parameter, default is 0
-LevelOne::LevelOne(int seed): seed{seed} {}
+LevelOne::LevelOne(int seed) {
+    srand(seed);  
+}
 
 // gets next block for level one
 std::unique_ptr<Block> LevelOne::getBlock() {
-    srand(seed);
+
     //probability calcualted using culmulative distribution
    static const std::map<int, std::string> blockProbabilities = {
         {2, "iblock"},  // 1/6
@@ -69,15 +71,18 @@ std::unique_ptr<Block> LevelOne::getBlock() {
     };
     // Generate a random number between 1 and 12
     int randNum = (rand() % 12) + 1;
+    //std::cout << "random number" << randNum << std::endl;
     unique_ptr<Block> tempBlock = createBlock(blockProbabilities, randNum);
     return createBlock(blockProbabilities, randNum);
 }
 
-LevelTwo::LevelTwo(int seed): seed{seed} {}
+LevelTwo::LevelTwo(int seed) {
+    srand(seed);  
+}
 
 // gets next block for level 2
 std::unique_ptr<Block> LevelTwo::getBlock() {
-    srand(seed);
+
     static const std::map<int, std::string> blockProbabilities = {
         {1, "iblock"},  // 1/7
         {2, "jblock"},  // 1/7
@@ -95,9 +100,11 @@ std::unique_ptr<Block> LevelTwo::getBlock() {
 
 // gets next block for level 3
 // need to write logic for random and norandom
-LevelThree::LevelThree(int seed): seed{seed} {}
+LevelThree::LevelThree(int seed) {
+    srand(seed);  
+}
 std::unique_ptr<Block> LevelThree::getBlock() {
-    srand(seed);
+
     static const std::map<int, std::string> blockProbabilities = {
         {1, "iblock"},  // 1/9
         {2, "jblock"},  // 1/9
@@ -118,9 +125,11 @@ void LevelThree::setRandom(bool input) {isRandom = input;}
 void LevelFour::setRandom(bool input) {isRandom = input;}
 
 // will finish integrating one by one block after 
-LevelFour::LevelFour(int seed): seed{seed}, blocksWithoutClear{0} {}
-std::unique_ptr<Block> LevelFour::getBlock() {
+LevelFour::LevelFour(int seed): blocksWithoutClear{0} {
     srand(seed);
+}
+std::unique_ptr<Block> LevelFour::getBlock() {
+    
     static const std::map<int, std::string> blockProbabilities = {
         {1, "iblock"},  // 1/9
         {2, "jblock"},  // 1/9
@@ -142,7 +151,10 @@ std::unique_ptr<Block> LevelFour::getBlock() {
 std::unique_ptr<Block> createBlock(const std::map<int, std::string> &probabilities, int randNum) {
     std::string blockType;
     for (auto& p : probabilities) {
-        if(randNum <= p.first) blockType = p.second;
+        if(randNum <= p.first) {
+            blockType = p.second;
+            break;
+        } 
     }
     if(blockType == "iblock") {
         return std::make_unique<IBlock>();

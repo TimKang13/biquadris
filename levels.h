@@ -26,7 +26,7 @@ class LevelZero: public Level {
 };
 
 class LevelOne: public Level {
-    int seed;
+
     public:
         LevelOne(int seed = 0);
         std::unique_ptr<Block> getBlock() override;
@@ -34,14 +34,14 @@ class LevelOne: public Level {
 };
 
 class LevelTwo: public Level {
-    int seed;
+
     public:
         LevelTwo(int seed = 0);
         std::unique_ptr<Block> getBlock() override;
         int getLevelNumber() const override;
 };
 class LevelThree: public Level {
-    int seed;
+
     bool isRandom;
     public:
         LevelThree(int seed = 0);
@@ -51,7 +51,7 @@ class LevelThree: public Level {
 };
 
 class LevelFour: public Level {
-    int seed;
+
     int blocksWithoutClear;
     bool isRandom;
     public:
