@@ -14,6 +14,12 @@ void TextDisplay::render(const std::vector<std::unique_ptr<Player>>& players, co
     const std::string border = '.' + std::string(Board::WIDTH, '-') + '.';
     // Score and level info
     displayScoreInfo(players, highScores);
+    
+    //locker testing
+    std::vector<CellLocker> lockers = players[0]->getBoard().getLockers();
+    for(int i = 0; i < lockers.size(); ++i){
+        std::cout << "[" << i << "] " << lockers[i].c << " " << lockers[i].count << endl;
+    }
     // Top border
     std::cout << border  << SPACE  << border << "\n";
     // Game boards row by row
