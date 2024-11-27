@@ -161,6 +161,7 @@ const std::string Player::getSequenceFile() const {return sequenceFile;}
 const int Player::getSeed() const {return seed;};
 // Setters
 void Player::setScore(int newScore) { score = newScore; }
+void Player::setBoardRowsCleared(int num) {board.setRowsCleared(num);}
 void Player::setLevel(int newLevel) { 
     switch (newLevel) {
         case 0:

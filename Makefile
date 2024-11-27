@@ -11,7 +11,8 @@ CXX = g++					# compiler
 CXXFLAGS = -std=c++20 -g -Wall -MMD			# compiler flags
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}	# makefile name
 
-SOURCES = $(wildcard *.cc)			# source files (*.cc)
+EXCLUDE_FILES = command_test.cc    # files to exclude
+SOURCES = $(filter-out ${EXCLUDE_FILES}, $(wildcard *.cc))			# source files (*.cc)
 OBJECTS = ${SOURCES:.cc=.o}			# object files forming executable
 DEPENDS = ${OBJECTS:.o=.d}			# substitute ".o" with ".d"
 EXEC = a.out					# executable name
