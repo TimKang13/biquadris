@@ -1,6 +1,7 @@
 #include "player.h"
 #include "levels.h"
 #include <stdexcept>
+#include <iostream>
 #include <memory>
 
 // default constructor

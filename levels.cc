@@ -67,12 +67,10 @@ std::unique_ptr<Block> LevelOne::getBlock() {
         {11, "sblock"}, // 1/12
         {12, "zblock"}  // 1/12
     };
-
     // Generate a random number between 1 and 12
     int randNum = (rand() % 12) + 1;
+    unique_ptr<Block> tempBlock = createBlock(blockProbabilities, randNum);
     return createBlock(blockProbabilities, randNum);
-
-    return nullptr;
 }
 
 LevelTwo::LevelTwo(int seed): seed{seed} {}
@@ -147,19 +145,19 @@ std::unique_ptr<Block> createBlock(const std::map<int, std::string> &probabiliti
         if(randNum <= p.first) blockType = p.second;
     }
     if(blockType == "iblock") {
-        return std::unique_ptr<IBlock>();
+        return std::make_unique<IBlock>();
     } else if (blockType == "jblock") {
-        return std::unique_ptr<JBlock>();
+        return std::make_unique<JBlock>();
     } else if(blockType == "sblock") {
-        return std::unique_ptr<SBlock>();
+        return std::make_unique<SBlock>();
     } else if(blockType == "zblock") {
-        return std::unique_ptr<ZBlock>();
+        return std::make_unique<ZBlock>();
     } else if(blockType == "oblock") {
-        return std::unique_ptr<OBlock>();
+        return std::make_unique<OBlock>();
     } else if(blockType == "tblock") {
-        return std::unique_ptr<TBlock>();
+        return std::make_unique<TBlock>();
     } else {
-        return std::unique_ptr<LBlock>();
+        return std::make_unique<LBlock>();
     }
 
     return nullptr;
