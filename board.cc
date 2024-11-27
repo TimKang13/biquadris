@@ -9,7 +9,7 @@ const int EMPTY_LIFE = -1;
 const Cell EMPTY_CELL = Cell(' ', EMPTY_LIFE, -1, -1);
 
 Board::Board():
-    grid{HEIGHT, std::vector<Cell>(WIDTH, EMPTY_CELL)} {}
+    grid{HEIGHT, std::vector<Cell>(WIDTH, EMPTY_CELL)},emptyLocker{-1} {}
 
 std::vector<std::vector<Cell>> Board::getGrid(){
     return grid;
@@ -41,7 +41,7 @@ int Board::clear(int level){
         rowsClearedPoints = (rowsClearedPair.first+level)*(rowsClearedPair.first+level);
     }
     // now clear dead cells
-    int fullBlockClearPoints = clearDeadCells();
+    int fullBlockClearPoints = rowsClearedPair.second + clearDeadCells();
     // move everything down if cleared
     collapseRows();
     
@@ -70,8 +70,8 @@ pair<int,int> Board::clearFullRows(){
                 lockers[id].count -= 1;
                 if(lockers[id].count == 0){ //then we cleared all objects
                     fullBlockClearPoints += (lockers[id].level + 1)*(lockers[id].level + 1);
+                    emptyLocker = id; //update which locker is empty
                 }
-                emptyLocker = id; //update which locker is empty
             }
             grid[i] = emptyRow;
             ++count;
@@ -81,9 +81,16 @@ pair<int,int> Board::clearFullRows(){
 }
 
 int Board::clearDeadCells(){
+    int fullBlockClearPoints = 0;
     for(int i = 0; i < this->grid.size(); ++i) {
         for(int j = 0; j < this->grid[i].size(); ++j) {
             if(this->grid[i][j].getC() != ' ' && this->grid[i][j].getLife() == 0) {
+                int id = grid[i][j].getLockerID();
+                lockers[id].count -= 1;
+                if(lockers[id].count == 0){ //then we cleared all objects
+                    fullBlockClearPoints += (lockers[id].level + 1)*(lockers[id].level + 1);
+                    emptyLocker = id; //update which locker is empty
+                }
                 this->grid[i][j] = EMPTY_CELL;
             }
         }
@@ -137,10 +144,12 @@ int Board::placeBlock(Block &b, int level){
         int lockerID;
         if(emptyLocker == -1){
             lockerID = lockers.size();
+            cout << "filling locker " << c << endl;
             lockers.emplace_back(CellLocker{4, c, level});
+            cout << lockers[lockerID].c << endl;
         } else {
             lockerID = emptyLocker;
-            lockers.push_back(CellLocker{4, c, level});
+            lockers[lockerID] = CellLocker{4, c, level};
         }
 
         //put cells to grid
