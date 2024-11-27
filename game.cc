@@ -59,10 +59,10 @@ void Game::executeCmd(string cmd){
         players[turn]->levelUp();
     } else if (cmd == "leveldown") {
         players[turn]->levelDown();
-    } else if (cmd == "norandom") {
-        // players[turn]->noRandom();
+    } else if (cmd.substr(0,8) == "norandom") {
+        players[turn]->noRandom(cmd.substr(9));
     } else if (cmd == "random") {
-        // players[turn]->makeLevelRandom();
+        players[turn]->makeLevelRandom();
     } else if (cmd.substr(0, 8) == "sequence") {
         string s;
         ifstream f{cmd.substr(9)};

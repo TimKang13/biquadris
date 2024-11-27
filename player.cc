@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <memory>
+#include <fstream>
 
 // default constructor
 Player::Player(std::string fileName): sequenceFile{fileName} {
@@ -143,12 +144,19 @@ void Player::levelDown(){
         level = std::make_unique<LevelThree>(seed);
     }
 }
-void Player::noRandom() {
-    if(level->getLevelNumber() != 3 && level->getLevelNumber() != 4) return;
+void Player::noRandom(std::string file) {
+    if(level->getLevelNumber() < 3) return;
+    ifstream s{file};
     level->setRandom(false);
+    if(!s.good()) {
+        std::cerr << "File is does not exist. Set to norandom and using default file";
+        level->addSequence(sequenceFile);
+    } else level->addSequence(file);
+    
 }
 void Player::makeLevelRandom(){
-    
+    if(level->getLevelNumber() < 3) return;
+    level->setRandom(true);
 }
 
 // Getters
