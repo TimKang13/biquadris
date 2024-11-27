@@ -28,6 +28,9 @@ class Board {
         char getCell(int row, int col) const {
             return grid[row][col].getC();
         }
+        std::vector<CellLocker> getLockers() const{
+            return lockers;
+        }
         //check if this block is colliding given 
         //current block position and current grid
         bool checkCollision(Block &b);

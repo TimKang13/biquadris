@@ -36,7 +36,10 @@ bool Board::checkCollision(Block &b){
 int Board::clear(int level){
     //clear full rows, return points?
     pair<int, int> rowsClearedPair = clearFullRows();
-    int rowsClearedPoints = (rowsClearedPair.first+level)*(rowsClearedPair.first+level);
+    int rowsClearedPoints = 0;
+    if(rowsClearedPair.first > 0){ //only when at least one rows cleared
+        rowsClearedPoints = (rowsClearedPair.first+level)*(rowsClearedPair.first+level);
+    }
     // now clear dead cells
     int fullBlockClearPoints = clearDeadCells();
     // move everything down if cleared
@@ -129,18 +132,22 @@ void Board::collapseRows(){
 int Board::placeBlock(Block &b, int level){
     if(!checkCollision(b)){
         char c = b.getFill();
+
+        //put cells to locker
+        int lockerID;
+        if(emptyLocker == -1){
+            lockerID = lockers.size();
+            lockers.emplace_back(CellLocker{4, c, level});
+        } else {
+            lockerID = emptyLocker;
+            lockers.push_back(CellLocker{4, c, level});
+        }
+
+        //put cells to grid
         std::vector<Coordinate> positions = b.getAbsolutePositions();
         for(int i = 0; i < positions.size(); ++i){
             int row = positions[i].row;
             int col = positions[i].col;
-            int lockerID;
-            if(emptyLocker == -1){  //all locker full, need to emplace back
-                lockerID = lockers.size();
-                lockers.emplace_back(CellLocker{4, c, level});
-            } else {
-                lockerID = emptyLocker;
-                lockers.push_back(CellLocker{4, c, level});
-            }
             this->grid[row][col] = Cell(c, 10, level, lockerID); // 10 for now, will have to implement logic
         }
     }
