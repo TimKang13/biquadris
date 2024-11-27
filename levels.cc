@@ -11,7 +11,7 @@ LevelZero::LevelZero(std::string file) : count{0} {
     // Load sequence1.txt into sequenceOne
     std::ifstream streamOne{file};
     if (!streamOne) {
-        throw std::runtime_error("Error: Could not open sequence1.txt");
+        throw std::runtime_error("Error: Could not open file");
     }
     std::string line;
     while (std::getline(streamOne, line)) {
@@ -23,9 +23,9 @@ LevelZero::LevelZero(std::string file) : count{0} {
     }
 }
 
-// given the player number (either 0 or 1),returns the next block for that player, update the count
+// gets the block for player in level zero
 std::unique_ptr<Block> LevelZero::getBlock() {
-    // Get the next block type for Player 1
+
     std::string blockType;
     blockType = sequenceText[count];
     count = (count + 1) % sequenceText.size(); // Loop back to the start
@@ -71,7 +71,6 @@ std::unique_ptr<Block> LevelOne::getBlock() {
     };
     // Generate a random number between 1 and 12
     int randNum = (rand() % 12) + 1;
-    //std::cout << "random number" << randNum << std::endl;
     unique_ptr<Block> tempBlock = createBlock(blockProbabilities, randNum);
     return createBlock(blockProbabilities, randNum);
 }
