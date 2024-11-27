@@ -47,7 +47,7 @@ class LevelThree: public Level {
         LevelThree(int seed = 0);
         std::unique_ptr<Block> getBlock() override;
         int getLevelNumber() const override;
-        void setRandom(bool input);
+        void setRandom(bool input) override;
 };
 
 class LevelFour: public Level {
@@ -55,7 +55,7 @@ class LevelFour: public Level {
     int blocksWithoutClear;
     bool isRandom;
     public:
-        void setRandom(bool input);
+        void setRandom(bool input) override;
         LevelFour(int seed = 0);
         std::unique_ptr<Block> getBlock() override;
         int getLevelNumber() const override;
