@@ -2,6 +2,7 @@
 #define BLOCK_H
 #include <vector>
 #include <utility>
+#include <iostream>
 using namespace std;
 
 
@@ -54,7 +55,7 @@ class IBlock : public Block {
 
 class JBlock : public Block {
     public:
-        JBlock(const Coordinate& pos = {3, 0}, int life = 10, bool invincible = false) : Block{pos, 'J', life, invincible} {
+        JBlock(const Coordinate& pos = {3, 0}, int life = -1, bool invincible = true) : Block{pos, 'J', life, invincible} {
             shape = {
                 {0,0,0},
                 {1,0,0},
