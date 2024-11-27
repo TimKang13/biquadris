@@ -26,8 +26,11 @@ class Board {
         static const int HEIGHT = 18;
         //accessors
         std::vector<std::vector<Cell>> getGrid();
-        char getCell(int row, int col) const {
+        char getCellChar(int row, int col) const {
             return grid[row][col].getC();
+        }
+        int getCellLife(int row, int col) const {
+            return grid[row][col].getLife();
         }
         std::vector<CellLocker> getLockers() const{
             return lockers;
@@ -40,9 +43,10 @@ class Board {
         int clear(int level);
         // clear full rows
         pair<int,int> clearFullRows();
-        int clearDeadCells();
+        void clearDeadCells();
         void collapseRows();
         int placeBlock(Block &b, int level);
+        void decrementCellLife();
 
         //for testing
         void printGrid();

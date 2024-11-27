@@ -6,7 +6,10 @@
 using namespace std;
 
 const int EMPTY_LIFE = -1;
-const Cell EMPTY_CELL = Cell(' ', EMPTY_LIFE, -1, -1);
+const bool EMPTY_INVINCBILITY = true;
+const int EMPTY_LEVEL = -1;
+const int EMPTY_LOCKER_ID = -1;
+const Cell EMPTY_CELL = Cell(' ', EMPTY_LIFE, EMPTY_INVINCBILITY, EMPTY_LEVEL, EMPTY_LOCKER_ID);
 
 Board::Board():
     grid{HEIGHT, std::vector<Cell>(WIDTH, EMPTY_CELL)} {}
@@ -41,8 +44,9 @@ int Board::clear(int level){
     if(rowsClearedPair.first > 0){ //only when at least one rows cleared
         rowsClearedPoints = (rowsClearedPair.first+level)*(rowsClearedPair.first+level);
     }
+    int fullBlockClearPoints = rowsClearedPair.second;
     // now clear dead cells
-    int fullBlockClearPoints = rowsClearedPair.second + clearDeadCells();
+    clearDeadCells();
     // move everything down if cleared
     collapseRows();
     
@@ -81,22 +85,18 @@ pair<int,int> Board::clearFullRows(){
     return {count, fullBlockClearPoints};
 }
 
-int Board::clearDeadCells(){
-    int fullBlockClearPoints = 0;
+void Board::clearDeadCells(){
     for(int i = 0; i < this->grid.size(); ++i) {
         for(int j = 0; j < this->grid[i].size(); ++j) {
             if(this->grid[i][j].getC() != ' ' && this->grid[i][j].getLife() == 0) {
                 int id = grid[i][j].getLockerID();
-                lockers[id].count -= 1;
-                if(lockers[id].count == 0){ //then we cleared all objects
-                    fullBlockClearPoints += (lockers[id].level + 1)*(lockers[id].level + 1);
-                    emptyLockers.emplace_back(id); //update which locker is empty
-                }
+                //if a cell dies, the block cannot be scored
+                lockers[id].count == 0;
+                emptyLockers.emplace_back(id);
                 this->grid[i][j] = EMPTY_CELL;
             }
         }
     }
-    return 0; //implement dead cell points logic
 }
 
 void Board::collapseRows(){
@@ -136,8 +136,25 @@ void Board::collapseRows(){
     }
 }
 
+void Board::decrementCellLife(){
+    for(int i = 0; i < HEIGHT; ++i){
+        for(int j = 0; j < WIDTH; ++j){
+            if(!grid[i][j].isInvincible()){
+                int curLife = grid[i][j].getLife();
+                if(curLife > 0){
+                    grid[i][j].setLife(curLife - 1);
+                }
+            }
+        }
+    }
+}
+
 //place block if no collision, do nothing if collision 
 int Board::placeBlock(Block &b, int level){
+    //before doing anything, now decrement the life of every cell by 1
+    decrementCellLife();
+
+    //place block logic
     if(!checkCollision(b)){
         char c = b.getFill();
 
@@ -157,7 +174,7 @@ int Board::placeBlock(Block &b, int level){
         for(int i = 0; i < positions.size(); ++i){
             int row = positions[i].row;
             int col = positions[i].col;
-            this->grid[row][col] = Cell(c, 10, level, lockerID); // 10 for now, will have to implement logic
+            this->grid[row][col] = Cell(c, b.getLife(), b.isInvincible(), level, lockerID); // 10 for now, will have to implement logic
         }
     }
     int points = clear(level); //clears the grid and (ex. full row) and returns points scored

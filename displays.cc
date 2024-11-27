@@ -14,12 +14,16 @@ void TextDisplay::render(const std::vector<std::unique_ptr<Player>>& players, co
     const std::string border = '.' + std::string(Board::WIDTH, '-') + '.';
     // Score and level info
     displayScoreInfo(players, highScores);
+
+    //cell life testing
+    // std::cout<< players[0]->getBoard().getCellLife(17,0) << endl;
     
     //locker testing
-    std::vector<CellLocker> lockers = players[0]->getBoard().getLockers();
-    for(int i = 0; i < lockers.size(); ++i){
-        std::cout << "[" << i << "] " << lockers[i].c << " " << lockers[i].count << endl;
-    }
+    // std::vector<CellLocker> lockers = players[0]->getBoard().getLockers();
+    // for(int i = 0; i < lockers.size(); ++i){
+    //     std::cout << "[" << i << "] " << lockers[i].c << " " << lockers[i].count << endl;
+    // }
+
     // Top border
     std::cout << border  << SPACE  << border << "\n";
     // Game boards row by row
@@ -69,7 +73,7 @@ void TextDisplay::displayBoardRow(const Player* player, const std::vector<Coordi
     for (int col = 0; col < Board::WIDTH; ++col) {
         bool isBlock = std::any_of(blockCords.begin(), blockCords.end(),
             [row, col](const Coordinate& pos) { return pos.row == row && pos.col == col; });
-        std::cout << (isBlock ? block->getFill() : player->getBoard().getCell(row, col));
+        std::cout << (isBlock ? block->getFill() : player->getBoard().getCellChar(row, col));
     }
     std::cout << '|';
 }
@@ -79,7 +83,7 @@ void TextDisplay::displayNextBlocks(const Block* nextBlock1, const Block* nextBl
     const auto shape1 = nextBlock1->getShape();
     const char fill1 = nextBlock1->getFill();
     const auto shape2 = nextBlock2->getShape();
-    const char fill2 = nextBlock1->getFill();
+    const char fill2 = nextBlock2->getFill();
     
     // Display next blocks header
     std::cout << std::left 

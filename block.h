@@ -2,6 +2,7 @@
 #define BLOCK_H
 #include <vector>
 #include <utility>
+#include <iostream>
 using namespace std;
 
 
@@ -20,8 +21,10 @@ class Block {
         char fill;
         // Helper functions
         void rotateMatrix(int degrees);
+        int life;
+        bool invincible;
     public:
-        Block(const Coordinate& pos = {0, 0}, char fill = '#');
+        Block(const Coordinate& pos = {0, 0}, char fill = '#', int life = -1, bool invincible = true);
         virtual ~Block() = default;
         // Rotates the block 90 degrees clockwise
         void rotateCW();
@@ -34,11 +37,13 @@ class Block {
         void setPosition(const Coordinate& newPos);
         const std::vector<std::vector<bool>>& getShape() const;
         char getFill() const;
+        int getLife() const;
+        bool isInvincible() const;
 };
 
 class IBlock : public Block {
     public:
-        IBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'I'} {
+        IBlock(const Coordinate& pos = {3, 0}, int life = -1, bool invincible = true) : Block{pos, 'I', life, invincible} {
             shape = {
                 {0,0,0,0},
                 {0,0,0,0},
@@ -50,7 +55,7 @@ class IBlock : public Block {
 
 class JBlock : public Block {
     public:
-        JBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'J'} {
+        JBlock(const Coordinate& pos = {3, 0}, int life = -1, bool invincible = true) : Block{pos, 'J', life, invincible} {
             shape = {
                 {0,0,0},
                 {1,0,0},
@@ -61,7 +66,7 @@ class JBlock : public Block {
 
 class LBlock : public Block {
     public:
-        LBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'L'} {
+        LBlock(const Coordinate& pos = {3, 0}, int life = -1, bool invincible = true) : Block{pos, 'L', life, invincible} {
             shape = {
                 {0,0,0},
                 {0,0,1},
@@ -72,7 +77,7 @@ class LBlock : public Block {
 
 class OBlock : public Block {
     public:
-        OBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'O'} {
+        OBlock(const Coordinate& pos = {3, 0}, int life = -1, bool invincible = true) : Block{pos, 'O', life, invincible} {
             shape = {
                 {1,1},
                 {1,1}
@@ -82,7 +87,7 @@ class OBlock : public Block {
 
 class SBlock : public Block {
     public:
-        SBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'S'} {
+        SBlock(const Coordinate& pos = {3, 0}, int life = -1, bool invincible = true) : Block{pos, 'S', life, invincible} {
             shape = {
                 {0,0,0},
                 {0,1,1},
@@ -93,7 +98,7 @@ class SBlock : public Block {
 
 class ZBlock : public Block {
     public:
-        ZBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'Z'} {
+        ZBlock(const Coordinate& pos = {3, 0}, int life = -1, bool invincible = true) : Block{pos, 'Z', life, invincible} {
             shape = {
                 {0,0,0},
                 {1,1,0},
@@ -104,7 +109,7 @@ class ZBlock : public Block {
 
 class TBlock : public Block {
     public:
-        TBlock(const Coordinate& pos = {3, 0}) : Block{pos, 'T'} {
+        TBlock(const Coordinate& pos = {3, 0}, int life = -1, bool invincible = true) : Block{pos, 'T', life, invincible} {
             shape = {
                 {0,0,0},
                 {1,1,1},

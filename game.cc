@@ -55,6 +55,15 @@ void Game::executeCmd(string cmd){
         if(!canDrop){
             endGame();
         }
+        if(players[turn]->getBoard().getRowsCleared() > 1){
+            cout << "special action activated" << endl;
+            string specialAction = CI.getSpecialAction(cin);
+            //player[!turn]->applySpecialAction();
+            players[turn]->setBoardRowsCleared(0); 
+        }
+        if(players[turn]->getScore() > highScores[turn]){
+            highScores[turn] = players[turn]->getScore();
+        }
     } else if (cmd == "levelup") {
         players[turn]->levelUp();
     } else if (cmd == "leveldown") {
@@ -96,16 +105,7 @@ void Game::startGame(){
             for(int i = 0; i < cmdPair.first; ++i){
                 executeCmd(cmdPair.second);
             }
-            isTurnOver = "drop" == cmdPair.second || "" == cmdPair.second;
-            if(cmdPair.second == "drop" && players[turn]->getBoard().getRowsCleared() > 1){
-                cout << "special action activated" << endl;
-                string specialAction = CI.getSpecialAction(cin);
-                //player[!turn]->applySpecialAction();
-                players[turn]->setBoardRowsCleared(0); 
-            }
-            if(players[turn]->getScore() > highScores[turn]){
-                highScores[turn] = players[turn]->getScore();
-            }
+            isTurnOver = "drop" == cmdPair.second || "" == cmdPair.second; 
         }
         endTurn();
     } 

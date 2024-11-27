@@ -2,8 +2,12 @@
 #include <stdexcept>
 
 //ctor
-Cell::Cell(char c, int life, int level, int lockerID): 
-    c{c}, life{life}, level{level}, lockerID{lockerID} {}
+Cell::Cell(char c, int life, bool invincible, int level, int lockerID): 
+    c{c}, life{life}, level{level}, invincible{invincible}, lockerID{lockerID} {}
+
+void Cell::setLife(int newLife) {
+    life = newLife;
+}
 
 int Cell::getLife() const{
     return life;
@@ -19,4 +23,8 @@ int Cell::getLevel() const{
 
 int Cell::getLockerID() const {
     return lockerID;
+}
+
+bool Cell::isInvincible() const {
+    return invincible;
 }
