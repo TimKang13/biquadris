@@ -39,7 +39,7 @@ bool Board::checkCollision(Block &b){
 int Board::clear(int level){
     //clear full rows, return points?
     pair<int, int> rowsClearedPair = clearFullRows();
-    rowsCleared = rowsClearedPair.first;
+    rowsCleared += rowsClearedPair.first;
     int rowsClearedPoints = 0;
     if(rowsClearedPair.first > 0){ //only when at least one rows cleared
         rowsClearedPoints = (rowsClearedPair.first+level)*(rowsClearedPair.first+level);
