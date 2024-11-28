@@ -96,9 +96,13 @@ int main(int argc, char* argv[]){
     Game g{std::move(players), CI};
 
     TextDisplay textDisplay(g);
-    GraphicalDisplay graphicalDisplay(g);
     g.attach(&textDisplay);
-    g.attach(&graphicalDisplay);
+
+    if(!textOnly) {
+        GraphicalDisplay graphicalDisplay(g);
+        g.attach(&graphicalDisplay);
+    }
+   
 
     g.startGame();
 
