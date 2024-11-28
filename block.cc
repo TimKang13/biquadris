@@ -3,8 +3,8 @@
 using namespace std;
 
 
-Block::Block(const Coordinate& pos, char fill, int life, bool invincible): 
-    position{pos}, fill{fill}, life{life}, invincible{invincible} {}
+Block::Block(const Coordinate& pos, char fill, int life, bool invincible, bool heavy): 
+    position{pos}, fill{fill}, life{life}, invincible{invincible}, heavy{heavy} {}
 
 void Block::rotateMatrix(int degrees) {
     // Validate input
@@ -60,6 +60,7 @@ std::vector<Coordinate> Block::getAbsolutePositions() const {
 void Block::setPosition(const Coordinate& newPosition) {
     position = newPosition;
 }
+void Block::setHeavy(bool input) {heavy = input;}
 Coordinate Block::getPosition() const {
     return position;
 }
@@ -72,10 +73,6 @@ char Block::getFill() const {
     return fill;
 }
 
-int Block::getLife() const {
-    return life;
-}
-
-bool Block::isInvincible() const {
-    return invincible;
-}
+int Block::getLife() const { return life;}
+bool Block::isInvincible() const {return invincible;}
+bool Block::isHeavy() const {return heavy;}

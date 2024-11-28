@@ -73,7 +73,11 @@ void TextDisplay::displayBoardRow(const Player* player, const std::vector<Coordi
     for (int col = 0; col < Board::WIDTH; ++col) {
         bool isBlock = std::any_of(blockCords.begin(), blockCords.end(),
             [row, col](const Coordinate& pos) { return pos.row == row && pos.col == col; });
-        std::cout << (isBlock ? block->getFill() : player->getBoard().getCellChar(row, col));
+        if(player->isBlind() && 2 <= row && row <= 11 && 2 <= col && col <= 8 ){
+            std::cout<< '?';
+        } else {
+            std::cout << (isBlock ? block->getFill() : player->getBoard().getCellChar(row, col));
+        }
     }
     std::cout << '|';
 }

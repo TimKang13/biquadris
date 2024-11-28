@@ -101,7 +101,7 @@ std::unique_ptr<Block> LevelThree::getBlock() {
     }
     
     // set block to be heavy
-    //temp.setHeavy(true);
+    temp->setHeavy(true);
     return temp;
 }
 
