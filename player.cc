@@ -159,6 +159,27 @@ bool Player::drop() {
     return true;     
 }
 
+pair<bool,bool> Player::specialActionMoveDown(){
+    bool dropped = false;
+    bool canDrop = true; //only relevant when dropped
+    //return (drop called) (can't drop when drop called)
+    Coordinate oldPos = currentBlock->getPosition();
+    Coordinate newPos = currentBlock->getPosition();
+    newPos.row++; //check drop once
+    currentBlock->setPosition(newPos);
+    bool collide = board.checkCollision(*currentBlock);
+    newPos.row++; //check drop twice
+    currentBlock->setPosition(newPos);
+    collide = collide || board.checkCollision(*currentBlock);
+    
+    if(collide){
+        dropped = true;
+        currentBlock->setPosition(oldPos);
+        canDrop = drop();
+    }
+    return {dropped, canDrop};
+}
+
 bool Player::advanceBlock(){
     currentBlock = std::move(nextBlock);
     nextBlock = level->getBlock();
