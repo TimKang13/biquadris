@@ -16,6 +16,7 @@ class Player {
         //special action
         bool heavy;
         bool blind;
+        bool bonusEnabled;
 
     public:
         // Constructor and destructor
@@ -62,6 +63,7 @@ class Player {
         void setLevel(int newLevel);
         void setCurrentBlock(char blockChar);
         void setBoardRowsCleared(int num);
+        void enableBonus();
 };
 
 #endif

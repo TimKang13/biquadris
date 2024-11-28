@@ -22,6 +22,7 @@ int main(int argc, char* argv[]){
     std::string scriptFile1 = "sequence1.txt";
     std::string scriptFile2 = "sequence2.txt";
     int startLevel = 0;
+    bool bonusEnabled = false;
 
   for (int i = 1; i < argc; ++i) { // Start from 1 to skip the program name
         std::string arg = argv[i];
@@ -80,6 +81,9 @@ int main(int argc, char* argv[]){
                 std::cerr << "Warning: No value provided for -startlevel. Using default." << std::endl;
                 startLevel = 0; // or some default value
             }
+
+        } else if(arg == "-enablebonus"){
+            bonusEnabled = true;
         } else {
             std::cerr << "Unknown option: " << arg << std::endl;
         }
@@ -91,7 +95,10 @@ int main(int argc, char* argv[]){
     std::vector<std::unique_ptr<Player>> players;
     players.push_back(std::make_unique<Player>(scriptFile1, startLevel, seed));
     players.push_back(std::make_unique<Player>(scriptFile2, startLevel, seed));
-
+    if(bonusEnabled){
+        players[0]->enableBonus();
+        players[1]->enableBonus();
+    }
     // Initialize the game - note the std::move
     Game g{std::move(players), CI};
 
