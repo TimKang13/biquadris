@@ -176,3 +176,6 @@ int LevelOne::getLevelNumber() const{return 1;}
 int LevelTwo::getLevelNumber() const{return 2;}
 int LevelThree::getLevelNumber() const{return 3;}
 int LevelFour::getLevelNumber() const{return 4;}
+
+int LevelFour::getBlocksWithoutClear() const {return blocksWithoutClear;}
+void LevelFour::setBlocksWithoutClear(int num) {blocksWithoutClear = num;}

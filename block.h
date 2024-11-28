@@ -120,4 +120,11 @@ class TBlock : public Block {
             };
         }
 };
+
+class OneBlock : public Block {
+    public:
+        OneBlock(const Coordinate& pos = {3, 5}, int life = -1, bool invincible = true) : Block{pos, '*', life, invincible} {
+            shape = {{1}};
+        }
+};
 #endif

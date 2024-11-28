@@ -13,6 +13,8 @@ class Level {
         virtual ~Level() {};
         virtual void setRandom(bool random) {};
         virtual void addSequence(std::string file) {}
+        virtual int getBlocksWithoutClear() const {}
+        virtual void setBlocksWithoutClear(int num) {}
 };
 
 class LevelZero: public Level {
@@ -54,12 +56,14 @@ class LevelThree: public Level {
 };
 
 class LevelFour : public LevelThree {
-public:
-    LevelFour(int seed = 0);
-   // std::unique_ptr<Block> getBlock() override;
-    int getLevelNumber() const override;
-    int blocksWithoutClear; // Tracks blocks placed without clearing rows
-};
+    int blocksWithoutClear;
+    public:
+        LevelFour(int seed = 0);
+        // std::unique_ptr<Block> getBlock() override;
+        int getLevelNumber() const override;
+        int getBlocksWithoutClear() const override;
+        void setBlocksWithoutClear(int num) override;
+    };
 
 std::unique_ptr<Block> createBlock(std::string blockType);
 std::vector<std::string> parseBlockSequence(const std::string& file);
