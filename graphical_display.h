@@ -12,6 +12,7 @@ class GraphicalDisplay : public Observer {
     
     // Constants for display
     static const int CELL_SIZE;
+    static const int BORDER_WIDTH;
     static const int PADDING;
     static const int SCORE_HEIGHT;
     static const int NEXT_BLOCK_SIZE;
@@ -25,13 +26,12 @@ public:
 private:
     void render(const std::vector<std::unique_ptr<Player>>& players,
                 const std::vector<int>& highScores);
-    void displayScoreInfo(const std::vector<std::unique_ptr<Player>>& players,
-                         const std::vector<int>& highScores);
-    void displayBoard(const Player* player, int offsetX);
-    void displayNextBlock(const Block* nextBlock, int offsetX);
+    void displayScoreInfo(const Player* player, int highScore, int offsetX, int offsetY);
+    void displayBoard(const Player* player, int offsetX, int offsetY);
+    void displayNextBlock(const Block* nextBlock, int offsetX, int offsetY);
     
-    // Helper to convert char to color
-    int getColorFromChar(char c) const;
+    // Helper to convert char to colour
+    int getColourFromFill(char c) const;
 };
 
 #endif
