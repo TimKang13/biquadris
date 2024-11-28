@@ -60,7 +60,7 @@ std::pair<int, std::string> CommandInterpreter::getUserCmd(std::istream& input) 
     std::string line;
     // get a valid command
     while(std::getline(input, line)) {
-        if(line == "") return {0,""};
+        
         std::istringstream iss{line};
         std::string word;
         iss >> word;
