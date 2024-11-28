@@ -101,18 +101,28 @@ void Game::startGame(){
         bool isTurnOver = false;
         while(!isTurnOver){ //next player's turn if drop
             updateDisplay();
+            Coordinate oldPosition = players[turn]->getCurrentBlock()->getPosition();
+
             pair<int, string> cmdPair = getUserCmd();
             for(int i = cmdPair.first-1; i >= 0; --i){
                 executeCmd(cmdPair.second, i);
             }
+
             isTurnOver = "drop" == cmdPair.second || "" == cmdPair.second;
                 // check for level three and four block which is heavy
 
-            if( (cmdPair.second == "right" || cmdPair.second == "left" || cmdPair.second == "down" || cmdPair.second == "counterclockwise" || cmdPair.second == "clockwise") && players[turn]->getCurrentBlock()->isHeavy()) {
+            //block heavy case
+            if((cmdPair.second == "right" || cmdPair.second == "left" || cmdPair.second == "down" || cmdPair.second == "counterclockwise" || cmdPair.second == "clockwise") 
+                && players[turn]->getCurrentBlock()->isHeavy()) {
                 players[turn]->moveDown();
             }
-            if(players[turn]->isHeavy() && (cmdPair.second == "right" || cmdPair.second == "left")) {
-                // players[turn]->heavyDown();
+            // special action heavy case
+            if((cmdPair.second == "right" || cmdPair.second == "left") && players[turn]->isHeavy() && players[turn]->getCurrentBlock()->getPosition().col != oldPosition.col) {
+                pair<bool,bool> calledDropPair = players[turn]->specialActionMoveDown();
+                isTurnOver = calledDropPair.first;
+                if(!calledDropPair.second){
+                    endGame(); //drop called, but can't drop
+                }
             }
         }
         endTurn();
