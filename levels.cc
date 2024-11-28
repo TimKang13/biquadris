@@ -3,6 +3,7 @@
 #include <memory>
 #include <map>
 #include <string>
+#include <cctype>
 #include <stdexcept>
 #include "levels.h"
 
@@ -128,17 +129,17 @@ std::string getBlockType(const std::map<int, std::string> &probabilities, int ra
     return blockType;
 }
 std::unique_ptr<Block> createBlock(std::string blockType) {
-    if(blockType == "iblock") {
+    if(blockType == "iblock" || blockType == "iblock\r") {
         return std::make_unique<IBlock>();
-    } else if (blockType == "jblock") {
+    } else if (blockType == "jblock" || blockType == "jblock\r") {
         return std::make_unique<JBlock>();
-    } else if(blockType == "sblock") {
+    } else if(blockType == "sblock" || blockType == "sblock\r") {
         return std::make_unique<SBlock>();
-    } else if(blockType == "zblock") {
+    } else if(blockType == "zblock" || blockType == "zblock\r") {
         return std::make_unique<ZBlock>();
-    } else if(blockType == "oblock") {
+    } else if(blockType == "oblock" || blockType == "oblock\r") {
         return std::make_unique<OBlock>();
-    } else if(blockType == "tblock") {
+    } else if(blockType == "tblock" || blockType == "tblock\r") {
         return std::make_unique<TBlock>();
     } else {
         return std::make_unique<LBlock>();
@@ -153,10 +154,14 @@ std::vector<std::string> parseBlockSequence(const std::string& file) {
     std::vector<std::string> sequence;
     std::string line;
     while (std::getline(stream, line)) {
+        cout << line << endl;
+        cout << (line == "iblock\r") << endl;
         if (line == "iblock" || line == "jblock" || line == "sblock" || 
             line == "zblock" || line == "tblock" || line == "lblock" || 
-            line == "oblock") {
-            sequence.push_back(line);
+            line == "oblock" || line == "iblock\r" || line == "jblock\r" || line == "sblock\r" || 
+            line == "zblock\r" || line == "tblock\r" || line == "lblock\r" || 
+            line == "oblock\r") {
+            sequence.emplace_back(line);
         }
     }
 
@@ -171,3 +176,6 @@ int LevelOne::getLevelNumber() const{return 1;}
 int LevelTwo::getLevelNumber() const{return 2;}
 int LevelThree::getLevelNumber() const{return 3;}
 int LevelFour::getLevelNumber() const{return 4;}
+
+int LevelFour::getBlocksWithoutClear() const {return blocksWithoutClear;}
+void LevelFour::setBlocksWithoutClear(int num) {blocksWithoutClear = num;}

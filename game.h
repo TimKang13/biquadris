@@ -32,7 +32,7 @@ class Game: public Subject {
         void startTurn();
         void endTurn();
         pair<int,string> getUserCmd();
-        void executeCmd(string cmd);
+        void executeCmd(string cmd, int moveRemaining);
         void updateDisplay();
         GameState getGameState() const;
 

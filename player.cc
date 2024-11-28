@@ -115,22 +115,69 @@ void Player::rotateCCW() {
     if (!valid) currentBlock->rotateCCW();
 }
 
+
+int Player::placeOneBlock(unique_ptr<Block> oneBlock) {
+    Coordinate newPos = oneBlock->getPosition();
+    while(!board.checkCollision(*oneBlock)) {
+        newPos.row++;
+        oneBlock->setPosition(newPos);
+    }
+    if(newPos.row == 0) return -1;
+    newPos.row -= 1;
+    oneBlock->setPosition(newPos);
+    return board.placeBlock(*oneBlock, level->getLevelNumber());
+ 
+}
 bool Player::drop() {
+    int currentCleared = board.getRowsCleared();
     if (!currentBlock) return false;
+    Coordinate newPos = currentBlock->getPosition();
+    while(!board.checkCollision(*currentBlock)) {
+        newPos.row++;
+        currentBlock->setPosition(newPos);
+    }
+    if(newPos.row == 0) return false;
+    newPos.row -= 1;
+    currentBlock->setPosition(newPos);  
+    score += board.placeBlock(*currentBlock, level->getLevelNumber());
+
+    if(getLevelNumber() == 4 && currentCleared == board.getRowsCleared()) {
+            
+        int temp = level->getBlocksWithoutClear();
+        std::cout << temp;
+        temp++;
+                
+        if(temp % 5 == 0) {
+            int tempScore = placeOneBlock(make_unique<OneBlock>());
+            if(tempScore == -1) return false;
+            score += tempScore;
+        }
+        level->setBlocksWithoutClear(temp);
+        std::cout << temp << std::endl;
+                
+    }
+    return true;     
+}
+
+pair<bool,bool> Player::specialActionMoveDown(){
+    bool dropped = false;
+    bool canDrop = true; //only relevant when dropped
+    //return (drop called) (can't drop when drop called)
     Coordinate oldPos = currentBlock->getPosition();
     Coordinate newPos = currentBlock->getPosition();
-    for(int row = Board::HEIGHT - 1; row >= 0; --row){
-        newPos.row = row;
-        currentBlock->setPosition(newPos);
-        if(!board.checkCollision(*currentBlock)){
-            //can place!!
-            int points = board.placeBlock(*currentBlock, level->getLevelNumber());
-            score += points;
-            return true;
-        }
+    newPos.row++; //check drop once
+    currentBlock->setPosition(newPos);
+    bool collide = board.checkCollision(*currentBlock);
+    newPos.row++; //check drop twice
+    currentBlock->setPosition(newPos);
+    collide = collide || board.checkCollision(*currentBlock);
+    
+    if(collide){
+        dropped = true;
+        currentBlock->setPosition(oldPos);
+        canDrop = drop();
     }
-    currentBlock->setPosition(oldPos);
-    return false;
+    return {dropped, canDrop};
 }
 
 bool Player::advanceBlock(){
