@@ -167,7 +167,7 @@ void GraphicalDisplay::displayNextBlock(const Block* nextBlock, int offsetX, int
 
 int GraphicalDisplay::getColourFromFill(char c) const {
     switch (c) {
-        case 'I': return Xwindow::Red;
+        case 'I': return Xwindow::Fuchsia;
         case 'J': return Xwindow::Blue;
         case 'L': return Xwindow::Green;
         case 'O': return Xwindow::Red;

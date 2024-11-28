@@ -28,13 +28,13 @@ Xwindow::Xwindow(int width, int height) : width{width}, height{height} {
   XFlush(d);
   XFlush(d);
 
-  // Set up colours.
+  // Set up 1rrights.
   XColor xcolour;
   Colormap cmap;
-  char color_vals[5][10]={"white", "black", "red", "green", "blue"};
+  char color_vals[7][10]={"white", "black", "red", "green", "blue", "#FF00FF", "#228B22"};
 
   cmap=DefaultColormap(d,DefaultScreen(d));
-  for(int i=0; i < 5; ++i) {
+  for(int i=0; i < 7; ++i) {
       XParseColor(d,cmap,color_vals[i],&xcolour);
       XAllocColor(d,cmap,&xcolour);
       colours[i]=xcolour.pixel;
