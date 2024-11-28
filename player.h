@@ -34,7 +34,7 @@ class Player {
         void rotateCW();
         void rotateCCW();
         bool drop();
-
+        int placeOneBlock(unique_ptr<Block> oneBlock); 
         //Block actions
         bool advanceBlock();
         void flushCurrentBlock();

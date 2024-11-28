@@ -115,7 +115,22 @@ void Player::rotateCCW() {
     if (!valid) currentBlock->rotateCCW();
 }
 
+
+int Player::placeOneBlock(unique_ptr<Block> oneBlock) {
+    Coordinate oldPos = oneBlock->getPosition();
+    Coordinate newPos = oneBlock->getPosition();
+    while(!board.checkCollision(*oneBlock)) {
+        newPos.row++;
+        oneBlock->setPosition(newPos);
+    }
+    if(newPos.row == 0) return -1;
+    newPos.row -= 1;
+    oneBlock->setPosition(newPos);
+    return board.placeBlock(*oneBlock, level->getLevelNumber());
+ 
+}
 bool Player::drop() {
+    int currentCleared = board.getRowsCleared();
     if (!currentBlock) return false;
     Coordinate oldPos = currentBlock->getPosition();
     Coordinate newPos = currentBlock->getPosition();
@@ -126,6 +141,22 @@ bool Player::drop() {
             //can place!!
             int points = board.placeBlock(*currentBlock, level->getLevelNumber());
             score += points;
+
+            if(getLevelNumber() == 4 && currentCleared == board.getRowsCleared()) {
+                std::cout << "is running" << std::endl;
+                int temp = level->getBlocksWithoutClear();
+                std::cout << temp;
+                temp++;
+                
+                if(temp % 5 == 0) {
+                    int tempScore = placeOneBlock(make_unique<OneBlock>());
+                    if(tempScore == -1) return false;
+                    score += tempScore;
+                }
+                level->setBlocksWithoutClear(temp);
+                std::cout << temp << std::endl;
+                
+            }
             return true;
         }
     }
