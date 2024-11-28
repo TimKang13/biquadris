@@ -7,14 +7,14 @@
 using namespace std;
 
 // default constructor
-Player::Player(std::string fileName): sequenceFile{fileName}, heavy{false}, blind{false}{
+Player::Player(std::string fileName): sequenceFile{fileName}, heavy{false}, blind{false}, bonusEnabled{false}{
     level = std::make_unique<LevelZero>(sequenceFile);
     currentBlock = nullptr;
     nextBlock = level->getBlock();
 }
 
 // constructor with cmd line args
-Player::Player(std::string fileName, int levelNum, int seed): seed{seed}, sequenceFile{fileName}, heavy{false}{
+Player::Player(std::string fileName, int levelNum, int seed): seed{seed}, sequenceFile{fileName}, heavy{false}, blind{false}, bonusEnabled{false}{
     switch(levelNum){
         case 0:
             level = std::make_unique<LevelZero>(sequenceFile);
@@ -68,7 +68,14 @@ void Player::applyBlind(){
 }
 void Player::applyForce(char blockChar){
     //applied when the player's next block is not yet current block.
-    nextBlock = createBlock(std::string(1, std::tolower(blockChar)) + "block");
+    int life = 0;
+    bool invincible = true;
+    if(dynamic_cast<LevelOne*>(level.get())){
+        //generate block with life when level one
+        life = 10;
+        invincible = false;
+    }
+    nextBlock = createBlock(std::string(1, std::tolower(blockChar)) + "block", life, invincible);
 }
 
 void Player::moveLeft() {
@@ -156,6 +163,7 @@ bool Player::drop() {
         std::cout << temp << std::endl;
                 
     }
+    cout << "dropped at" <<endl;
     return true;     
 }
 
@@ -299,4 +307,8 @@ void Player::setCurrentBlock(char blockChar) {
         default:
             throw std::invalid_argument("Invalid block type");
     }
+}
+void Player::enableBonus(){
+    bonusEnabled = true;
+    board.enableBonus();
 }

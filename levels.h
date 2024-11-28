@@ -65,7 +65,7 @@ class LevelFour : public LevelThree {
         void setBlocksWithoutClear(int num) override;
     };
 
-std::unique_ptr<Block> createBlock(std::string blockType);
+std::unique_ptr<Block> createBlock(std::string blockType, int life, bool invincible);
 std::vector<std::string> parseBlockSequence(const std::string& file);
 std::string getBlockType(const std::map<int, std::string> &probabilities, int randNum);
 #endif

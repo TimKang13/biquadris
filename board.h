@@ -17,6 +17,7 @@ class Board {
     std::vector<CellLocker> lockers;
     std::vector<int> emptyLockers; 
     int rowsCleared;
+    bool bonusEnabled;
 
     public:
         //ctor
@@ -36,6 +37,8 @@ class Board {
             return lockers;
         }
         int getRowsCleared() const;
+        //setters
+        void enableBonus();
         //check if this block is colliding given 
         //current block position and current grid
         bool checkCollision(Block &b);
