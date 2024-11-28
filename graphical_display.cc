@@ -1,8 +1,9 @@
 #include "graphical_display.h"
 #include <string>
+#include "window.h"
 
 const int GraphicalDisplay::CELL_SIZE = 20;
-const int GraphicalDisplay::BORDER_WIDTH = 3;
+const int GraphicalDisplay::BORDER_WIDTH = 2;
 const int GraphicalDisplay::PADDING = 20;
 const int GraphicalDisplay::SCORE_HEIGHT = 60;
 const int GraphicalDisplay::NEXT_BLOCK_SIZE = CELL_SIZE * 2;
@@ -14,6 +15,9 @@ const int GraphicalDisplay::WINDOW_HEIGHT =
     (Board::HEIGHT * CELL_SIZE) +    // Board height
     NEXT_BLOCK_SIZE +                // Next block preview
     (PADDING * 3);                   // Padding top, middle, and bottom
+
+const int GraphicalDisplay::BOARD_COLOUR = Xwindow::Black;
+const int GraphicalDisplay::TEXT_COLOUR = Xwindow::White;
     
 GraphicalDisplay::GraphicalDisplay(Game& g) 
     : game(g), 
@@ -27,14 +31,14 @@ void GraphicalDisplay::notify() {
 void GraphicalDisplay::render(const std::vector<std::unique_ptr<Player>>& players,
                             const std::vector<int>& highScores) {
     // Clear window
-    window->fillRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, Xwindow::White);
+    window->fillRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BOARD_COLOUR);
     
     int leftBoardX = PADDING;
     int rightBoardX = PADDING * 2 + Board::WIDTH * CELL_SIZE;
 
     // Display scores and level info
     displayScoreInfo(players[0].get(), highScores[0], leftBoardX, PADDING);
-    displayScoreInfo(players[1].get(), highScores[0], rightBoardX, PADDING);
+    displayScoreInfo(players[1].get(), highScores[1], rightBoardX, PADDING);
     
     // Display boards
     int boardY = SCORE_HEIGHT + PADDING;
@@ -51,15 +55,18 @@ void GraphicalDisplay::displayScoreInfo(const Player* player, int highScore, int
     int textY = offsetY;
     // Level
     window->drawString(offsetX, textY, 
-        "Level: " + std::to_string(player->getLevelNumber()));
+        "Level: " + std::to_string(player->getLevelNumber()),
+        TEXT_COLOUR);
     textY += 20;
     // High Score
     window->drawString(offsetX, textY, 
-        "High Score: " + std::to_string(highScore));
+        "High Score: " + std::to_string(highScore),
+        TEXT_COLOUR);
     textY += 20;
     // Current Score
     window->drawString(offsetX, textY, 
-        "Score: " + std::to_string(player->getScore()));
+        "Score: " + std::to_string(player->getScore()),
+        TEXT_COLOUR);
 }
 
 
@@ -69,30 +76,16 @@ void GraphicalDisplay::displayBoard(const Player* player, int offsetX, int offse
     const int BLIND_COLOUR = Xwindow::Black;
     std::vector<Coordinate> blockPositions;
     
-    // Left border
-    window->fillRectangle(offsetX - BORDER_WIDTH,
-                          offsetY - BORDER_WIDTH, 
-                          BORDER_WIDTH, 
-                          Board::HEIGHT * CELL_SIZE + (BORDER_WIDTH * 2), 
-                          Xwindow::Black);
-    // Right border
-    window->fillRectangle(Board::WIDTH * CELL_SIZE + offsetX,
-                          offsetY - BORDER_WIDTH, 
-                          BORDER_WIDTH, 
-                          Board::HEIGHT * CELL_SIZE + (BORDER_WIDTH * 2), 
-                          Xwindow::Black);
-    // Top border
-    window->fillRectangle(offsetX - BORDER_WIDTH,
-                          offsetY - BORDER_WIDTH, 
-                          Board::WIDTH * CELL_SIZE + (BORDER_WIDTH * 2),
-                          BORDER_WIDTH,
-                          Xwindow::Black);
-    // Bottom border
-    window->fillRectangle(offsetX - BORDER_WIDTH,
-                          offsetY + (Board::HEIGHT * CELL_SIZE),
-                          Board::WIDTH * CELL_SIZE + (BORDER_WIDTH * 2),
-                          BORDER_WIDTH,
-                          Xwindow::Black);
+    // Board Background and outline
+    window->drawRectangleWithStroke(
+        offsetX,                           // x position
+        offsetY,                           // y position
+        Board::WIDTH * CELL_SIZE,         // width of the board
+        Board::HEIGHT * CELL_SIZE,        // height of the board
+        Xwindow::Black,                   // fill color (assuming you want white fill)
+        Xwindow::White,                   // stroke color (black border as in original)
+        BORDER_WIDTH                      // stroke width (using your existing BORDER_WIDTH)
+    );
 
     // Get current block positions if there is one
     if (currentBlock) blockPositions = currentBlock->getAbsolutePositions();
@@ -136,13 +129,25 @@ void GraphicalDisplay::displayBoard(const Player* player, int offsetX, int offse
             }
             prevColour = currentColour;
         }
+
+        // Draw grid lines
+        // const int GRID_LINE_THICKNESS = 1;
+        // for (int row = 0; row <= Board::HEIGHT; ++row) {
+        //     int y = offsetY + (row * CELL_SIZE);
+        //     window->fillRectangle(offsetX, y, Board::WIDTH * CELL_SIZE, GRID_LINE_THICKNESS, Xwindow::Black);
+        // }
+
+        // for (int col = 0; col <= Board::WIDTH; ++col) {
+        //     int x = offsetX + (col * CELL_SIZE);
+        //     window->fillRectangle(x, offsetY, GRID_LINE_THICKNESS, Board::HEIGHT * CELL_SIZE, Xwindow::Black);
+        // }
     }
 }
 
 void GraphicalDisplay::displayNextBlock(const Block* nextBlock, int offsetX, int offsetY) {
     if (!nextBlock) return;
     
-    window->drawString(offsetX, offsetY, "Next Block: ");
+    window->drawString(offsetX, offsetY, "Next Block: ", TEXT_COLOUR);
     
     const auto& shape = nextBlock->getShape();
     const int colour = getColourFromFill(nextBlock->getFill());
@@ -175,6 +180,6 @@ int GraphicalDisplay::getColourFromFill(char c) const {
         case 'Z': return Xwindow::Green;
         case 'T': return Xwindow::Blue;
         case '*': return Xwindow::Black;
-        default: return Xwindow::White;
+        default: return BOARD_COLOUR;
     }
 }
