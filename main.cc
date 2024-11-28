@@ -95,16 +95,15 @@ int main(int argc, char* argv[]){
     // Initialize the game - note the std::move
     Game g{std::move(players), CI};
 
+    // Attach displays
     TextDisplay textDisplay(g);
     g.attach(&textDisplay);
-
+    std::unique_ptr<GraphicalDisplay> graphicalDisplay;
     if(!textOnly) {
-        GraphicalDisplay graphicalDisplay(g);
-        g.attach(&graphicalDisplay);
+        graphicalDisplay = std::make_unique<GraphicalDisplay>(g);
+        g.attach(graphicalDisplay.get());
     }
-   
 
+    // Start game
     g.startGame();
-
-
 }
