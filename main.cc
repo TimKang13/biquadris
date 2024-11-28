@@ -9,6 +9,7 @@
 #include <fstream>
 #include "block.h"
 #include "text_display.h"
+#include "graphical_display.h"
 #include <fstream>
 
 using namespace std;
@@ -94,8 +95,10 @@ int main(int argc, char* argv[]){
     // Initialize the game - note the std::move
     Game g{std::move(players), CI};
 
-    TextDisplay display(g);
-    g.attach(&display);
+    TextDisplay textDisplay(g);
+    GraphicalDisplay graphicalDisplay(g);
+    g.attach(&textDisplay);
+    g.attach(&graphicalDisplay);
 
     g.startGame();
 

@@ -1,5 +1,5 @@
-#ifndef TEXTDISPLAY_H
-#define TEXTDISPLAY_H
+#ifndef TEXT_DISPLAY_H
+#define TEXT_DISPLAY_H
 
 #include "observer.h"
 #include "subject.h"
