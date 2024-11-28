@@ -31,22 +31,20 @@ void Game::startTurn(){
 }
 
 void Game::endTurn(){
-    if(players[turn]->getScore() > highScores[turn]){
-        highScores[turn] = players[turn]->getScore();
+    if(players[turn]->getBoard().getRowsCleared() > 1){
+        cout << "special action activated" << endl;
+        string specialAction = CI.getSpecialAction(cin);
+        players[!turn]->applySpecialAction(specialAction);
+        players[turn]->setBoardRowsCleared(0); 
     }
-    //remove special action for current player
     players[turn]->removeSpecialAction();
-    players[turn]->flushCurrentBlock();
-    ++numTotalMoves;
-
     turn = !turn; //switch turn
 }
 
 pair<int, string> Game::getUserCmd(){
     return CI.getUserCmd(cin);
 }
-void Game::executeCmd(string cmd){
-
+void Game::executeCmd(string cmd, int moveRemaining){
     if (cmd == "left") {
         players[turn]->moveLeft();
     } else if (cmd == "right") {
@@ -62,11 +60,13 @@ void Game::executeCmd(string cmd){
         if(!canDrop){
             endGame();
         }
-        if(players[turn]->getBoard().getRowsCleared() > 1){
-            cout << "special action activated" << endl;
-            string specialAction = CI.getSpecialAction(cin);
-            players[!turn]->applySpecialAction(specialAction);
-            players[turn]->setBoardRowsCleared(0); 
+        if(players[turn]->getScore() > highScores[turn]){
+            highScores[turn] = players[turn]->getScore();
+        }
+        //remove special action for current player
+        players[turn]->flushCurrentBlock();
+        if(moveRemaining > 0){
+            players[turn]->advanceBlock();
         }
     } else if (cmd == "levelup") {
         players[turn]->levelUp();
@@ -88,15 +88,6 @@ void Game::executeCmd(string cmd){
     } else {
         std::cout << "Invalid command" << "\n";
     }
-    // check for level three and four block which is heavy
-    if(players[turn]->getCurrentBlock()->isHeavy() && (cmd == "right" || cmd == "left" || cmd == "down" || cmd == "counterclockwise" || cmd == "clockwise")) {
-        players[turn]->moveDown();
-    }
-
-    if(players[turn]->isHeavy()) {
-        
-    }
-
 }
 
 void Game::updateDisplay(){
@@ -111,10 +102,18 @@ void Game::startGame(){
         while(!isTurnOver){ //next player's turn if drop
             updateDisplay();
             pair<int, string> cmdPair = getUserCmd();
-            for(int i = 0; i < cmdPair.first; ++i){
-                executeCmd(cmdPair.second);
+            for(int i = cmdPair.first-1; i >= 0; --i){
+                executeCmd(cmdPair.second, i);
             }
-            isTurnOver = "drop" == cmdPair.second || "" == cmdPair.second; 
+            isTurnOver = "drop" == cmdPair.second || "" == cmdPair.second;
+                // check for level three and four block which is heavy
+
+            if( (cmdPair.second == "right" || cmdPair.second == "left" || cmdPair.second == "down" || cmdPair.second == "counterclockwise" || cmdPair.second == "clockwise") && players[turn]->getCurrentBlock()->isHeavy()) {
+                players[turn]->moveDown();
+            }
+            if(players[turn]->isHeavy() && (cmdPair.second == "right" || cmdPair.second == "left")) {
+                // players[turn]->heavyDown();
+            }
         }
         endTurn();
     } 
