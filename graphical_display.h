@@ -19,6 +19,9 @@ class GraphicalDisplay : public Observer {
     static const int WINDOW_WIDTH;
     static const int WINDOW_HEIGHT;
 
+    static const int BOARD_COLOUR;
+    static const int TEXT_COLOUR;
+
 public:
     explicit GraphicalDisplay(Game& g);
     void notify() override;

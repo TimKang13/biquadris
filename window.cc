@@ -28,13 +28,13 @@ Xwindow::Xwindow(int width, int height) : width{width}, height{height} {
   XFlush(d);
   XFlush(d);
 
-  // Set up colours.
+  // Set up 1rrights.
   XColor xcolour;
   Colormap cmap;
-  char color_vals[5][10]={"white", "black", "red", "green", "blue"};
+  char color_vals[7][10]={"white", "black", "red", "green", "blue", "#FF00FF", "#228B22"};
 
   cmap=DefaultColormap(d,DefaultScreen(d));
-  for(int i=0; i < 5; ++i) {
+  for(int i=0; i < 7; ++i) {
       XParseColor(d,cmap,color_vals[i],&xcolour);
       XAllocColor(d,cmap,&xcolour);
       colours[i]=xcolour.pixel;
@@ -68,7 +68,31 @@ void Xwindow::fillRectangle(int x, int y, int width, int height, int colour) {
   XSetForeground(d, gc, colours[Black]);
 }
 
-void Xwindow::drawString(int x, int y, string msg) {
-  XDrawString(d, w, DefaultGC(d, s), x, y, msg.c_str(), msg.length());
+void Xwindow::drawRectangleWithStroke(int x, int y, int width, int height,
+                                     int fill_colour, int stroke_colour, int stroke_width) {
+  // Draw the outer stroke
+  XSetForeground(d, gc, colours[stroke_colour]);
+  XFillRectangle(d, w, gc, 
+                  x - stroke_width,           // Left edge of stroke
+                  y - stroke_width,           // Top edge of stroke
+                  width + (2 * stroke_width), // Full width including stroke
+                  height + (2 * stroke_width) // Full height including stroke
+  );
+  // Draw the inner filled rectangle
+  XSetForeground(d, gc, colours[fill_colour]);
+  XFillRectangle(d, w, gc,
+                  x,      // Inner rectangle x
+                  y,      // Inner rectangle y
+                  width,  // Inner rectangle width
+                  height  // Inner rectangle height
+  );
+  
+  XSetForeground(d, gc, colours[Black]);
+}
+
+void Xwindow::drawString(int x, int y, string msg, int colour) {
+  XSetForeground(d, gc, colours[colour]);
+  XDrawString(d, w, gc, x, y, msg.c_str(), msg.length());
+  XSetForeground(d, gc, colours[Black]);
 }
 
