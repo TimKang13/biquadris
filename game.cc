@@ -46,6 +46,7 @@ pair<int, string> Game::getUserCmd(){
     return CI.getUserCmd(cin);
 }
 void Game::executeCmd(string cmd){
+
     if (cmd == "left") {
         players[turn]->moveLeft();
     } else if (cmd == "right") {
@@ -87,6 +88,15 @@ void Game::executeCmd(string cmd){
     } else {
         std::cout << "Invalid command" << "\n";
     }
+    // check for level three and four block which is heavy
+    if(players[turn]->getCurrentBlock()->isHeavy() && (cmd == "right" || cmd == "left" || cmd == "down" || cmd == "counterclockwise" || cmd == "clockwise")) {
+        players[turn]->moveDown();
+    }
+
+    if(players[turn]->isHeavy()) {
+        
+    }
+
 }
 
 void Game::updateDisplay(){
