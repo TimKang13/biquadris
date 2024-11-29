@@ -15,7 +15,7 @@ EXCLUDE_FILES = command_test.cc   # files to exclude
 SOURCES = $(filter-out ${EXCLUDE_FILES}, $(wildcard *.cc))			# source files (*.cc)
 OBJECTS = ${SOURCES:.cc=.o}			# object files forming executable
 DEPENDS = ${OBJECTS:.o=.d}			# substitute ".o" with ".d"
-EXEC = a.out					# executable name
+EXEC = biquadris					# executable name
 
 ########## Targets ##########
 
