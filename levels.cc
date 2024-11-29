@@ -19,7 +19,7 @@ std::unique_ptr<Block> LevelZero::getBlock() {
     std::string blockType = sequenceText[count];
     count = (count + 1) % sequenceText.size(); // Loop back to the start
  //   std::cout<< blockType << "\n";
-    return createBlock(blockType);
+    return createBlock(blockType, 0, true);
 }
 
 // for testing purposes
@@ -32,7 +32,6 @@ LevelOne::LevelOne(int seed) {
 
 // gets next block for level one
 std::unique_ptr<Block> LevelOne::getBlock() {
-
     //probability calcualted using culmulative distribution
    static const std::map<int, std::string> blockProbabilities = {
         {2, "iblock"},  // 1/6
@@ -46,7 +45,8 @@ std::unique_ptr<Block> LevelOne::getBlock() {
     // Generate a random number between 1 and 12
     int randNum = (rand() % 12) + 1;
     string blockType = getBlockType(blockProbabilities,randNum);
-    std::unique_ptr<Block> temp = createBlock(blockType);
+    //generate blocks that is auto cleared after 10 moves
+    std::unique_ptr<Block> temp = createBlock(blockType, 10, false); 
     return temp;
 }
 
@@ -70,7 +70,7 @@ std::unique_ptr<Block> LevelTwo::getBlock() {
     // Generate a random number between 1 and 7
     int randNum = (rand() % 7) + 1;
     string blockType = getBlockType(blockProbabilities,randNum);
-    std::unique_ptr<Block> temp = createBlock(blockType);
+    std::unique_ptr<Block> temp = createBlock(blockType, 0, true);
     return temp;
 }
 
@@ -94,11 +94,11 @@ std::unique_ptr<Block> LevelThree::getBlock() {
         };
         int randNum = (rand() % 9) + 1;
         string blockType = getBlockType(blockProbabilities,randNum);
-        temp = createBlock(blockType);
+        temp = createBlock(blockType, 0, true);
     } else {
         string blockType = sequenceText[count];
         count = (count + 1) % sequenceText.size(); // Loop back to the start
-        temp =  createBlock(blockType);
+        temp =  createBlock(blockType, 0, true);
     }
     
     // set block to be heavy
@@ -128,21 +128,21 @@ std::string getBlockType(const std::map<int, std::string> &probabilities, int ra
     }
     return blockType;
 }
-std::unique_ptr<Block> createBlock(std::string blockType) {
+std::unique_ptr<Block> createBlock(std::string blockType, int life, bool invincible) {
     if(blockType == "iblock" || blockType == "iblock\r") {
-        return std::make_unique<IBlock>();
+        return std::make_unique<IBlock>(Coordinate{3, 0}, life, invincible);
     } else if (blockType == "jblock" || blockType == "jblock\r") {
-        return std::make_unique<JBlock>();
+        return std::make_unique<JBlock>(Coordinate{3, 0}, life, invincible);
     } else if(blockType == "sblock" || blockType == "sblock\r") {
-        return std::make_unique<SBlock>();
+        return std::make_unique<SBlock>(Coordinate{3, 0}, life, invincible);
     } else if(blockType == "zblock" || blockType == "zblock\r") {
-        return std::make_unique<ZBlock>();
+        return std::make_unique<ZBlock>(Coordinate{3, 0}, life, invincible);
     } else if(blockType == "oblock" || blockType == "oblock\r") {
-        return std::make_unique<OBlock>();
+        return std::make_unique<OBlock>(Coordinate{3, 0}, life, invincible);
     } else if(blockType == "tblock" || blockType == "tblock\r") {
-        return std::make_unique<TBlock>();
+        return std::make_unique<TBlock>(Coordinate{3, 0}, life, invincible);
     } else {
-        return std::make_unique<LBlock>();
+        return std::make_unique<LBlock>(Coordinate{3, 0}, life, invincible);
     }
 
     return nullptr;
