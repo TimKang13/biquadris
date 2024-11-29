@@ -154,8 +154,6 @@ std::vector<std::string> parseBlockSequence(const std::string& file) {
     std::vector<std::string> sequence;
     std::string line;
     while (std::getline(stream, line)) {
-        cout << line << endl;
-        cout << (line == "iblock\r") << endl;
         if (line == "iblock" || line == "jblock" || line == "sblock" || 
             line == "zblock" || line == "tblock" || line == "lblock" || 
             line == "oblock" || line == "iblock\r" || line == "jblock\r" || line == "sblock\r" || 
