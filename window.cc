@@ -28,16 +28,21 @@ Xwindow::Xwindow(int width, int height) : width{width}, height{height} {
   XFlush(d);
   XFlush(d);
 
-  // Set up 1rrights.
-  XColor xcolour;
-  Colormap cmap;
-  char color_vals[8][10]={"white", "black", "red", "green", "blue", "#FF00FF", "#228B22", "#6F4E37"};
+  // Define colors
+  const char* color_vals[] = {
+      "white", "black", "red", "green", "blue",
+      "#2888b8", "#ff9932", "#ffcc00", "#99cc33", 
+      "#986699", "#e61c34", "#33cb98", "#895129"
+  };
 
-  cmap=DefaultColormap(d,DefaultScreen(d));
-  for(int i=0; i < 8; ++i) {
-      XParseColor(d,cmap,color_vals[i],&xcolour);
-      XAllocColor(d,cmap,&xcolour);
-      colours[i]=xcolour.pixel;
+  Colormap cmap = DefaultColormap(d, DefaultScreen(d));
+  XColor xcolour;
+  
+  for(int i = 0; i < NUM_COLORS; ++i) {
+      if(XParseColor(d, cmap, color_vals[i], &xcolour) && 
+          XAllocColor(d, cmap, &xcolour)) {
+          colours[i] = xcolour.pixel;
+      }
   }
 
   XSetForeground(d,gc,colours[Black]);
