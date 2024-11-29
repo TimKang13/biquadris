@@ -4,13 +4,15 @@
 // CONSTRUCTOR
 TextDisplay::TextDisplay(Game& g) : game(g) {}
 
-// NOTIFY
 void TextDisplay::notify() {
-    render(game.getGameState().players, game.getGameState().highScores);
+    render(game.getGameState());
 }
 
 // RENDER GAME
-void TextDisplay::render(const std::vector<std::unique_ptr<Player>>& players, const std::vector<int>& highScores) {
+void TextDisplay::render(const GameState& gameState) {
+    const std::vector<std::unique_ptr<Player>> &players = gameState.players; 
+    const std::vector<int>& highScores = gameState.highScores;
+
     const std::string border = '.' + std::string(Board::WIDTH, '-') + '.';
     // Score and level info
     displayScoreInfo(players, highScores);
@@ -25,7 +27,7 @@ void TextDisplay::render(const std::vector<std::unique_ptr<Player>>& players, co
     // }
 
     // Top border
-    std::cout << border  << SPACE  << border << "\n";
+    std::cout << border  << PADDING  << border << "\n";
     // Game boards row by row
     const auto blockCords0 = players[0]->getCurrentBlock() ? 
         players[0]->getCurrentBlock()->getAbsolutePositions() : std::vector<Coordinate>{};
@@ -33,12 +35,12 @@ void TextDisplay::render(const std::vector<std::unique_ptr<Player>>& players, co
         players[1]->getCurrentBlock()->getAbsolutePositions() : std::vector<Coordinate>{};
     for (int row = 0; row < Board::HEIGHT; ++row) {
         displayBoardRow(players[0].get(), blockCords0, row);
-        std::cout << SPACE;
+        std::cout << PADDING;
         displayBoardRow(players[1].get(), blockCords1, row);
         std::cout << "\n";
     }
     // Bottom border
-    std::cout << border << SPACE  << border  << "\n";
+    std::cout << border << PADDING  << border  << "\n";
     // Next blocks
     displayNextBlocks(players[0]->getNextBlock(), players[1]->getNextBlock());
 }
@@ -48,21 +50,21 @@ void TextDisplay::displayScoreInfo(const std::vector<std::unique_ptr<Player>>& p
                                  const std::vector<int>& highScores) {
     // Levels
     std::cout << std::left 
-              << std::setw(WIDTH) << "Level:" << players[0]->getLevelNumber()
-              << SPACE 
-              << std::setw(WIDTH) << "Level:" << players[1]->getLevelNumber() 
+              << std::setw(Board::WIDTH + 1) << "Level:" << players[0]->getLevelNumber()
+              << PADDING 
+              << std::setw(Board::WIDTH + 1) << "Level:" << players[1]->getLevelNumber() 
               << "\n";
     // High scores
     std::cout << std::left 
-              << std::setw(WIDTH) << "High Score:" << highScores[0]
-              << SPACE 
-              << std::setw(WIDTH) << "High Score:" << highScores[1] 
+              << std::setw(Board::WIDTH + 1) << "High Score:" << highScores[0]
+              << PADDING 
+              << std::setw(Board::WIDTH + 1) << "High Score:" << highScores[1] 
               << "\n";
     // Current scores
     std::cout << std::left 
-              << std::setw(WIDTH) << "Score:" << players[0]->getScore()
-              << SPACE 
-              << std::setw(WIDTH) << "Score:" << players[1]->getScore() 
+              << std::setw(Board::WIDTH + 1) << "Score:" << players[0]->getScore()
+              << PADDING 
+              << std::setw(Board::WIDTH + 1) << "Score:" << players[1]->getScore() 
               << "\n";
 }
 
@@ -92,7 +94,7 @@ void TextDisplay::displayNextBlocks(const Block* nextBlock1, const Block* nextBl
     // Display next blocks header
     std::cout << std::left 
               << std::setw(Board::WIDTH) << "Next:" 
-              << SPACE
+              << PADDING
               << std::left 
               << std::setw(Board::WIDTH) << "Next:"
               << "\n";
@@ -116,7 +118,7 @@ void TextDisplay::displayNextBlocks(const Block* nextBlock1, const Block* nextBl
         }
         // print shape rows
         std::cout << std::left << std::setw(Board::WIDTH) << leftPreview
-                  << SPACE << std::left << std::setw(Board::WIDTH) << rightPreview
+                  << PADDING << std::left << std::setw(Board::WIDTH) << rightPreview
                   << "\n";
     }
 }

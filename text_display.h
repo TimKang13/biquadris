@@ -14,8 +14,7 @@ class TextDisplay : public Observer {
 
 public:
     // Constants
-    static const int WIDTH = 12;
-    static const char SPACE = '\t';
+    static const char PADDING = '\t';
     // Constructor
     explicit TextDisplay(Game& g);
     // Observer override
@@ -23,7 +22,7 @@ public:
 
 private:
     // Helper methods
-    void render(const std::vector<std::unique_ptr<Player>>& players, const std::vector<int>& highScores);
+    void render(const GameState& gameState);
     void displayScoreInfo(const std::vector<std::unique_ptr<Player>>& players,
                                  const std::vector<int>& highScores);
     void displayBoardRow(const Player* player, const std::vector<Coordinate>& blockCords, int row);
