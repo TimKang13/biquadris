@@ -12,7 +12,7 @@ const int EMPTY_LOCKER_ID = -1;
 const Cell EMPTY_CELL = Cell(' ', EMPTY_LIFE, EMPTY_INVINCBILITY, EMPTY_LEVEL, EMPTY_LOCKER_ID);
 
 Board::Board():
-    grid{HEIGHT, std::vector<Cell>(WIDTH, EMPTY_CELL)}, bonusEnabled{false} {}
+    grid{HEIGHT, std::vector<Cell>(WIDTH, EMPTY_CELL)}, rowsCleared{0}, bonusEnabled{false} {}
 
 std::vector<std::vector<Cell>> Board::getGrid(){
     return grid;
