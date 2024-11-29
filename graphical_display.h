@@ -27,8 +27,7 @@ public:
     void notify() override;
 
 private:
-    void render(const std::vector<std::unique_ptr<Player>>& players,
-                const std::vector<int>& highScores);
+    void render(const GameState& gameState);
     void displayScoreInfo(const Player* player, int highScore, int offsetX, int offsetY);
     void displayBoard(const Player* player, int offsetX, int offsetY);
     void displayNextBlock(const Block* nextBlock, int offsetX, int offsetY);

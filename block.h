@@ -31,7 +31,7 @@ class Block {
         void rotateCW();
         // Rotates the block 90 degrees counter-clockwise
         void rotateCCW();
-        // Returns vector of absolute coordinates of all filled cells
+        // Returns vector of absolute coordinates of all it's shape's (filled) cells
         std::vector<Coordinate> getAbsolutePositions(bool filledOnly = true) const;
         // Getters and setters
         Coordinate getPosition() const;

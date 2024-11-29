@@ -25,11 +25,12 @@ GraphicalDisplay::GraphicalDisplay(Game& g)
 
 
 void GraphicalDisplay::notify() {
-    render(game.getGameState().players, game.getGameState().highScores);
+    render(game.getGameState());
 }
 
-void GraphicalDisplay::render(const std::vector<std::unique_ptr<Player>>& players,
-                            const std::vector<int>& highScores) {
+void GraphicalDisplay::render(const GameState& gameState) {
+    const std::vector<std::unique_ptr<Player>> &players = gameState.players; 
+    const std::vector<int>& highScores = gameState.highScores;
     int leftBoardX = PADDING;
     int rightBoardX = PADDING * 2 + Board::WIDTH * CELL_SIZE;
 
