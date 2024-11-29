@@ -86,7 +86,7 @@ std::pair<int, std::string> CommandInterpreter::getUserCmd(std::istream& input) 
 
         break;
     } 
-    
+    if (input.eof()) return {1,""};
     updateNum();
     return commandToReturn;
     
@@ -195,6 +195,7 @@ void CommandInterpreter::rename(std::string oldName, std::string newName) {
 }
 
 void CommandInterpreter::setSequence(string file) {
+    std::vector<std::string> temp;
     ifstream f{file};
     if(!f.good()) {
         std::cerr << "File does not exist" << std::endl;
@@ -202,8 +203,9 @@ void CommandInterpreter::setSequence(string file) {
     }
     string line;
     while(f >> line) {
-        sequence.emplace_back(line);
+        temp.emplace_back(line);
     }
     useCmdLine = false;
     count = 0;
+    sequence = temp;
 }

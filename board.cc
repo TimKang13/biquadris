@@ -12,11 +12,14 @@ const int EMPTY_LOCKER_ID = -1;
 const Cell EMPTY_CELL = Cell(' ', EMPTY_LIFE, EMPTY_INVINCBILITY, EMPTY_LEVEL, EMPTY_LOCKER_ID);
 
 Board::Board():
-    grid{HEIGHT, std::vector<Cell>(WIDTH, EMPTY_CELL)} {}
+    grid{HEIGHT, std::vector<Cell>(WIDTH, EMPTY_CELL)}, bonusEnabled{false} {}
 
 std::vector<std::vector<Cell>> Board::getGrid(){
     return grid;
 }
+
+void Board::enableBonus(){bonusEnabled=true;}
+
 int Board::getRowsCleared() const {return rowsCleared;}
 //check if current position of the block collides
 bool Board::checkCollision(Block &b){
@@ -88,7 +91,7 @@ pair<int,int> Board::clearFullRows(){
 void Board::clearDeadCells(){
     for(int i = 0; i < this->grid.size(); ++i) {
         for(int j = 0; j < this->grid[i].size(); ++j) {
-            if(this->grid[i][j].getC() != ' ' && this->grid[i][j].getLife() == 0) {
+            if(this->grid[i][j].getC() != ' ' && !this->grid[i][j].isInvincible() && this->grid[i][j].getLife() == 0) {
                 int id = grid[i][j].getLockerID();
                 //if a cell dies, the block cannot be scored
                 lockers[id].count == 0;
