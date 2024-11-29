@@ -49,7 +49,9 @@ int Board::clear(int level){
     }
     int fullBlockClearPoints = rowsClearedPair.second;
     // now clear dead cells
-    clearDeadCells();
+    if(bonusEnabled){
+        clearDeadCells();
+    }
     // move everything down if cleared
     collapseRows();
     
