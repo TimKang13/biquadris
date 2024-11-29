@@ -11,7 +11,7 @@ CXX = g++					# compiler
 CXXFLAGS = -std=c++20 -g -Wall -MMD			# compiler flags
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}	# makefile name
 
-EXCLUDE_FILES = command_test.cc    # files to exclude
+EXCLUDE_FILES = command_test.cc   # files to exclude
 SOURCES = $(filter-out ${EXCLUDE_FILES}, $(wildcard *.cc))			# source files (*.cc)
 OBJECTS = ${SOURCES:.cc=.o}			# object files forming executable
 DEPENDS = ${OBJECTS:.o=.d}			# substitute ".o" with ".d"
@@ -22,7 +22,7 @@ EXEC = a.out					# executable name
 .PHONY : clean					# not file names
 
 ${EXEC} : ${OBJECTS}				# link step
-	${CXX} ${CXXFLAGS} $^ -o $@	 -lX11	# additional object files before $^
+	${CXX} ${CXXFLAGS} $^ -o $@	 -I/opt/X11/include -L/opt/X11/lib -lX11	# additional object files before $^
 
 ${OBJECTS} : ${MAKEFILE_NAME}			# OPTIONAL : changes to this file => recompile
 
