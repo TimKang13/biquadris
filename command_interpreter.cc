@@ -7,7 +7,7 @@
 #include <fstream>
 using namespace std;
 
-CommandInterpreter::CommandInterpreter(){
+CommandInterpreter::CommandInterpreter() {
     // using a map format to accomodate for renaming commands
     useCmdLine = false;
     commands = {{"left", "left"},
