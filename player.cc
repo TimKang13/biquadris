@@ -141,20 +141,23 @@ bool Player::drop() {
     currentBlock->setPosition(newPos);  
     score += board.placeBlock(*currentBlock, level->getLevelNumber());
 
-    if(getLevelNumber() == 4 && currentCleared == board.getRowsCleared()) {
+    if(getLevelNumber() == 4) {
+        if(currentCleared == board.getRowsCleared()) {
             
-        int temp = level->getBlocksWithoutClear();
-        std::cout << temp;
-        temp++;
+            int temp = level->getBlocksWithoutClear();
+            std::cout << temp;
+            temp++;
                 
-        if(temp % 5 == 0) {
-            int tempScore = placeOneBlock(make_unique<OneBlock>());
-            if(tempScore == -1) return false;
-            score += tempScore;
+            if(temp % 5 == 0) {
+                int tempScore = placeOneBlock(make_unique<OneBlock>());
+                if(tempScore == -1) return false;
+                    score += tempScore;
+            }
+            level->setBlocksWithoutClear(temp);
+            std::cout << temp << std::endl;
+        } else {
+            level->setBlocksWithoutClear(0);
         }
-        level->setBlocksWithoutClear(temp);
-        std::cout << temp << std::endl;
-                
     }
     return true;     
 }
