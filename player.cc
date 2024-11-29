@@ -7,14 +7,14 @@
 using namespace std;
 
 // default constructor
-Player::Player(std::string fileName): sequenceFile{fileName}, heavy{false}, blind{false}, bonusEnabled{false}{
+Player::Player(std::string fileName): sequenceFile{fileName}, score{0}, heavy{false}, blind{false}, bonusEnabled{false}{
     level = std::make_unique<LevelZero>(sequenceFile);
     currentBlock = nullptr;
     nextBlock = level->getBlock();
 }
 
 // constructor with cmd line args
-Player::Player(std::string fileName, int levelNum, int seed): seed{seed}, sequenceFile{fileName}, heavy{false}, blind{false}, bonusEnabled{false}{
+Player::Player(std::string fileName, int levelNum, int seed): seed{seed}, sequenceFile{fileName}, score{0}, heavy{false}, blind{false}, bonusEnabled{false}{
     switch(levelNum){
         case 0:
             level = std::make_unique<LevelZero>(sequenceFile);
