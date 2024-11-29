@@ -20,10 +20,11 @@ Game::Game(std::vector<std::unique_ptr<Player>>&& playerList, CommandInterpreter
     numTotalMoves{0} {}
 
 GameState Game::getGameState() const{
-    return GameState{players, highScores};
+    return GameState{players, highScores, numTotalMoves};
 }
 
 void Game::startTurn(){
+    numTotalMoves++;
     bool canPlaceNextBlock = players[turn]->advanceBlock();
     if(!canPlaceNextBlock){
         endGame();
