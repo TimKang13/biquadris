@@ -179,7 +179,7 @@ int GraphicalDisplay::getColourFromFill(char c) const {
         case 'S': return Xwindow::Blue;
         case 'Z': return Xwindow::Green;
         case 'T': return Xwindow::Blue;
-        case '*': return Xwindow::Black;
+        case '*': return Xwindow::Brown;
         default: return BOARD_COLOUR;
     }
 }

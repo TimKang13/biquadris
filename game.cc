@@ -105,7 +105,7 @@ void Game::startGame(){
 
             pair<int, string> cmdPair = getUserCmd();
             if(cmdPair.first == 0) continue;
-            std::cout << "TESTING: " << cmdPair.first << cmdPair.second << std::endl;
+            
             for(int i = cmdPair.first-1; i >= 0; --i){
                 executeCmd(cmdPair.second, i);
             }
