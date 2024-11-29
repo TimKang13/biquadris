@@ -41,17 +41,18 @@ void Block::rotateCCW() {
     rotateMatrix(-90);
 }
 
-std::vector<Coordinate> Block::getAbsolutePositions() const {
+std::vector<Coordinate> Block::getAbsolutePositions(bool filledOnly) const {
     std::vector<Coordinate> positions;
     for (int row = 0; row < shape.size(); ++row) {
         int relativeRow = shape.size() - row - 1; // Convert row index to bottom-left origin
         for (int col = 0; col < shape[row].size(); ++col) {
-            if (shape[row][col]) {
-                positions.emplace_back(
-                    position.row - relativeRow,
-                    position.col + col
-                );
+            if (filledOnly && !shape[row][col]) {
+                continue;
             }
+            positions.emplace_back(
+                position.row - relativeRow,
+                position.col + col
+            );
         }
     }
     return positions;

@@ -41,7 +41,7 @@ class Board {
         void enableBonus();
         //check if this block is colliding given 
         //current block position and current grid
-        bool checkCollision(Block &b);
+        bool checkCollision(Block &b, bool checkRotatable = false);
         // clear full rows and dead cells
         int clear(int level);
         // clear full rows

@@ -22,8 +22,8 @@ void Board::enableBonus(){bonusEnabled=true;}
 
 int Board::getRowsCleared() const {return rowsCleared;}
 //check if current position of the block collides
-bool Board::checkCollision(Block &b){
-    std::vector<Coordinate> positions = b.getAbsolutePositions();
+bool Board::checkCollision(Block &b, bool checkRotatable){
+    std::vector<Coordinate> positions = b.getAbsolutePositions(!checkRotatable);
     for(int i = 0; i < positions.size(); ++i){
         int row = positions[i].row;
         int col = positions[i].col;

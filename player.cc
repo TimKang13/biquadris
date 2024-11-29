@@ -111,15 +111,15 @@ void Player::moveDown() {
 void Player::rotateCW() {
     if (!currentBlock) return;
     currentBlock->rotateCW();
-    bool valid = !board.checkCollision(*currentBlock);
+    bool valid = !board.checkCollision(*currentBlock, true);
     if (!valid) currentBlock->rotateCCW();
 }
 
 void Player::rotateCCW() {
     if (!currentBlock) return;
     currentBlock->rotateCCW();
-    bool valid = !board.checkCollision(*currentBlock);
-    if (!valid) currentBlock->rotateCCW();
+    bool valid = !board.checkCollision(*currentBlock, true);
+    if (!valid) currentBlock->rotateCW();
 }
 
 
