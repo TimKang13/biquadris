@@ -307,6 +307,9 @@ void Player::setCurrentBlock(char blockChar) {
         default:
             throw std::invalid_argument("Invalid block type");
     }
+    if(level->getLevelNumber() == 3 || level->getLevelNumber() == 4) {
+        currentBlock->setHeavy(true);
+    }
 }
 void Player::enableBonus(){
     bonusEnabled = true;
