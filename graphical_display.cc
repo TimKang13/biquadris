@@ -103,15 +103,18 @@ void GraphicalDisplay::displayBoard(const Player* player, int offsetX, int offse
                 [row, col](const Coordinate& pos) {
                     return pos.row == row && pos.col == col;
                 });
-            // Determine cell colour
-            int currentColour;
-            if (player->isBlind() && 2 <= row && row <= 11 && 2 <= col && col <= 8) {
-                currentColour = BLIND_COLOUR;
-            } else {
-                if (isBlock) {
-                    currentColour = getColourFromFill(currentBlock->getFill());
+            
+            int currentColour = INVALID_COLOUR;
+            // Determine cell colour if within bounds
+            if (col != Board::WIDTH) {                
+                if (player->isBlind() && 2 <= row && row <= 11 && 2 <= col && col <= 8) {
+                    currentColour = BLIND_COLOUR;
                 } else {
-                    currentColour = getColourFromFill(board.getCellChar(row, col));
+                    if (isBlock) {
+                        currentColour = getColourFromFill(currentBlock->getFill());
+                    } else {
+                        currentColour = getColourFromFill(board.getCellChar(row, col));
+                    }
                 }
             }
             // If colour changes or we're at the end of the row, draw the accumulated rectangle
