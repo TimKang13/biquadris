@@ -5,7 +5,7 @@
 const int GraphicalDisplay::CELL_SIZE = 20;
 const int GraphicalDisplay::BORDER_WIDTH = 2;
 const int GraphicalDisplay::PADDING = 20;
-const int GraphicalDisplay::SCORE_HEIGHT = 60;
+const int GraphicalDisplay::SCORE_HEIGHT = 55;
 const int GraphicalDisplay::NEXT_BLOCK_SIZE = CELL_SIZE * 2;
 const int GraphicalDisplay::WINDOW_WIDTH = 
     (Board::WIDTH * CELL_SIZE * 2) + // Two boards
@@ -14,14 +14,14 @@ const int GraphicalDisplay::WINDOW_HEIGHT =
     SCORE_HEIGHT +                   // Score display area
     (Board::HEIGHT * CELL_SIZE) +    // Board height
     NEXT_BLOCK_SIZE +                // Next block preview
-    (PADDING * 3);                   // Padding top, middle, and bottom
+    (PADDING * 4);                   // Padding top, middle, and bottom
 
 const int GraphicalDisplay::BOARD_COLOUR = Xwindow::Black;
 const int GraphicalDisplay::TEXT_COLOUR = Xwindow::White;
     
 GraphicalDisplay::GraphicalDisplay(Game& g) 
     : game(g), 
-      window{std::make_unique<Xwindow>(WINDOW_WIDTH, WINDOW_HEIGHT)} {}
+      window{std::make_unique<Xwindow>(WINDOW_WIDTH, WINDOW_HEIGHT, Xwindow::Black)} {}
 
 
 void GraphicalDisplay::notify() {
@@ -30,9 +30,6 @@ void GraphicalDisplay::notify() {
 
 void GraphicalDisplay::render(const std::vector<std::unique_ptr<Player>>& players,
                             const std::vector<int>& highScores) {
-    // Clear window
-    window->fillRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BOARD_COLOUR);
-    
     int leftBoardX = PADDING;
     int rightBoardX = PADDING * 2 + Board::WIDTH * CELL_SIZE;
 
@@ -41,17 +38,19 @@ void GraphicalDisplay::render(const std::vector<std::unique_ptr<Player>>& player
     displayScoreInfo(players[1].get(), highScores[1], rightBoardX, PADDING);
     
     // Display boards
-    int boardY = SCORE_HEIGHT + PADDING;
+    int boardY = PADDING + SCORE_HEIGHT + PADDING;
     displayBoard(players[0].get(), leftBoardX, boardY);
     displayBoard(players[1].get(), rightBoardX, boardY);
     
     // Display next blocks
-    int nextBlockY = SCORE_HEIGHT + PADDING + (Board::HEIGHT * CELL_SIZE) + PADDING;
+    int nextBlockY = boardY + (Board::HEIGHT * CELL_SIZE) + PADDING;
     displayNextBlock(players[0]->getNextBlock(), leftBoardX, nextBlockY);
     displayNextBlock(players[1]->getNextBlock(), rightBoardX, nextBlockY);
 }
 
 void GraphicalDisplay::displayScoreInfo(const Player* player, int highScore, int offsetX, int offsetY) {
+    window->fillRectangle(offsetX, offsetY, Board::WIDTH * CELL_SIZE, SCORE_HEIGHT, BOARD_COLOUR);
+    
     int textY = offsetY;
     // Level
     window->drawString(offsetX, textY, 
@@ -158,6 +157,12 @@ void GraphicalDisplay::displayNextBlock(const Block* nextBlock, int offsetX, int
     size_t startRow = (shape.size() > PREVIEW_HEIGHT) ? 
                       (shape.size() - PREVIEW_HEIGHT) : 0;
     
+    // Clear preview
+    const int PREVIEW_WIDTH = 4;
+    const int previewHeightPx = PREVIEW_HEIGHT * CELL_SIZE;
+    const int previewWidthPx = PREVIEW_WIDTH * CELL_SIZE;
+    window->fillRectangle(previewOffsetX, offsetY, previewWidthPx, previewHeightPx, BOARD_COLOUR);
+
     // Draw preview
     for (size_t row = startRow; row < shape.size(); ++row) {
         for (size_t col = 0; col < shape[row].size(); ++col) {

@@ -12,6 +12,7 @@ using namespace std;
 struct GameState {
     const std::vector<std::unique_ptr<Player>>& players;
     const std::vector<int>& highScores;
+    int numTotalMoves;
 };
 
 class Game: public Subject {
