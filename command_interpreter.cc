@@ -151,6 +151,10 @@ std::vector<std::string> CommandInterpreter::getCommandValue(std::string substri
     // go through the entire map
     for (auto& p : commands) {
         if(p.first.length() >= substring.length() && substring == p.first.substr(0,substring.length())) {
+            if(substring == p.first) {
+                std::vector<std::string> temp1 = {{p.second}};
+                return temp1;
+            }
             temp.emplace_back(p.second);
         }
     }

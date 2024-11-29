@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Xwindow::Xwindow(int width, int height) : width{width}, height{height} {
+Xwindow::Xwindow(int width, int height, int background_color) : width{width}, height{height} {
 
   d = XOpenDisplay(NULL);
   if (d == NULL) {
@@ -57,6 +57,7 @@ Xwindow::Xwindow(int width, int height) : width{width}, height{height} {
   XSynchronize(d,True);
 
   usleep(1000);
+  fillRectangle(0, 0, width, height, background_color);
 }
 
 Xwindow::~Xwindow() {
@@ -97,7 +98,8 @@ void Xwindow::drawRectangleWithStroke(int x, int y, int width, int height,
 
 void Xwindow::drawString(int x, int y, string msg, int colour) {
   XSetForeground(d, gc, colours[colour]);
-  XDrawString(d, w, gc, x, y, msg.c_str(), msg.length());
+  const int TEXT_HEIGHT = 9;
+  XDrawString(d, w, gc, x, y + TEXT_HEIGHT, msg.c_str(), msg.length());
   XSetForeground(d, gc, colours[Black]);
 }
 
